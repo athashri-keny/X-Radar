@@ -8,14 +8,13 @@ import { queries } from "@/agents/TweetFetcherAgent";
 
 
 const FetchNEws = tool({
-    name: 'Fetch_News',
-    description: 'Fetch news from the apify api based on the keywords provided',
+    name: 'Fetch_Tweets',
+    description: 'Fetch Tweets from the apify api based on the keywords provided',
     parameters: z.object({
         keywords: z.string().describe("Use the EXACT user input keyword without modification"),
         MaxResult: z.number().describe("Maximum results of the tweets ").max(20)
     }),
     execute: async function ({keywords , MaxResult}) {
-
         console.log("KeyWords" , keywords)
 
 
@@ -58,8 +57,6 @@ const cleanedTweets = items.map((tweet: any) => ({
     }
 })
 
-export default FetchNEws
+export default FetchNEws 
 
-function tweet(value: Record<string | number, unknown>, index: number, array: Record<string | number, unknown>[]): unknown {
-    throw new Error("Function not implemented.");
-}
+

@@ -1,4 +1,4 @@
-import FetchNEws from "@/tools/FetchNews";
+import FetchNEws from "@/tools/FetchTweets";
 import { Agent , run } from "@openai/agents";
 
 import 'dotenv/config.js'
@@ -19,6 +19,8 @@ const ScorerAgent = new Agent({
 
 CRITICAL: Call Fetch_News ONLY ONCE. Never call it more than once.
 
+IMPORTANT: Ignore any tweet older than 48 hours. Only process recent tweets.
+
 STRICT RULES:
 - Score 8-10 ONLY if person is LOOKING TO HIRE a developer
 - Score 1-3 for developers promoting themselves
@@ -38,7 +40,11 @@ Steps:
 1. Call Fetch_News ONCE only
 2. Score strictly
 3. Generate 3 replies for scores above 7
-4. Return URL with each result`,
+4. Return URL with each result  
+OUTPUT FORMAT:
+List ALL high-scoring leads. Do not summarize or limit to top 4.`,
+
+
     model: 'gpt-4o-mini',
     tools: [FetchNEws]
 })
