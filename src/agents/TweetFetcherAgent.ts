@@ -1,19 +1,19 @@
 import FetchNEws from "@/tools/FetchTweets";
 import { Agent , run } from "@openai/agents";
+import 'dotenv/config'
 
-import 'dotenv/config.js'
 
- export const queries = [
-  "looking for a freelance web developer",
-  "need someone to build my website",
-  "need a Next.js developer",
-  "website broken need help",
-  "hiring a web developer",
-]
+//  export const queries = [
+//   "looking for a freelance web developer",
+//   "need someone to build my website",
+//   "need a Next.js developer",
+//   "website broken need help",
+//   "hiring a web developer",
+// ]
 
 
 // Main agent
-const ScorerAgent = new Agent({
+export const ScorerAgent = new Agent({
     name: "Scorer_Agent",
  instructions: `You are a lead scoring agent.
 
@@ -49,14 +49,13 @@ List ALL high-scoring leads. Do not summarize or limit to top 4.`,
     tools: [FetchNEws]
 })
 
-async function Main(KeyWords = "") {
+// async function Main(KeyWords = "") {
 
 
-  const result = await run(ScorerAgent , KeyWords)
+//   const result = await run(ScorerAgent , KeyWords)
 
 
-  console.log(`Use this EXACT keyword without any changes: "${KeyWords}"`)
-  console.log("results = " , result.finalOutput)
-}
+//   console.log(`Use this EXACT keyword without any changes: "${KeyWords}"`)
+//   console.log("results = " , result.finalOutput)
+// }
 
-Main(` Looking for a Web developer`)

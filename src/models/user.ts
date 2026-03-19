@@ -7,7 +7,7 @@ export interface User extends Document{
     Name: string,
     Email: string,
     password: string,
-    verifycode?: number,
+    verifycode: string,
     verifyCodeExpiry: Date,
     isVerifiedEmail?: boolean
      // need to add pricing 
@@ -28,11 +28,12 @@ const UserSchema = new Schema<User>({
         required: [true , "Passsword is requireed!"]
     },
     verifycode: {
-        type: Boolean,
-
+        type: String,
+        required: [true , "Verifycode is required!"]
     },
     isVerifiedEmail: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     verifyCodeExpiry: {
         type: Date

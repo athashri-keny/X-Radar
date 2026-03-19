@@ -1,11 +1,17 @@
-import { tool, Tool } from "@openai/agents";
-import { ApifyClient } from "apify-client";
+import { tool } from "@openai/agents";
 import z from "zod";
-import 'dotenv/config.js'
-import { queries } from "@/agents/TweetFetcherAgent";
+import 'dotenv/config'
+import { ApifyClient } from "apify-client";
 
 
-
+export function generateQueries(niche: string) {
+  return [
+    `looking for a freelance ${niche}`,
+    `need a ${niche}`,
+    `hiring a ${niche}`,
+    `looking for ${niche} help`,
+  ]
+}
 
 const FetchNEws = tool({
     name: 'Fetch_Tweets',
@@ -17,6 +23,12 @@ const FetchNEws = tool({
     execute: async function ({keywords , MaxResult}) {
         console.log("KeyWords" , keywords)
 
+        const since = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // 48 hours
+        
+        // adding since in the array 
+        const searchTermss = generateQueries(keywords).map(
+            qurey => `${qurey} since:${since}`
+        )
 
     try {
             const client = new ApifyClient({
@@ -25,14 +37,16 @@ const FetchNEws = tool({
     
 
             // starts an actor
-            console.log("Searching for this quires" , queries , keywords);
+            console.log("Searching for this quires" , searchTermss , keywords);
             
+            // actor url (which had to run)
             const run = await client.actor('kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest').call({
-            searchTerms: [...queries , keywords],
+            searchTerms: [...searchTermss , keywords],
+            
             maxItems: MaxResult,
             queryType: 'Latest',
-        
-             since: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // last 48 hours
+            
+         // since lastest tweets
             })
     
             // get results from the actors database 
@@ -40,7 +54,7 @@ const FetchNEws = tool({
     
             console.log(items)
             
-
+// removing all the other fields
 const cleanedTweets = items.map((tweet: any) => ({
     text: tweet.text,
     id: tweet.id,
@@ -53,8 +67,7 @@ const cleanedTweets = items.map((tweet: any) => ({
     } catch (error) {
         console.log("Error while getting tweets" , error)
         return error
-    }
-    }
+        }    }
 })
 
 export default FetchNEws 

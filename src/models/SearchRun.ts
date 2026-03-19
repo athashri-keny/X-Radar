@@ -23,13 +23,12 @@ const SearchRunSchema = new Schema<SearchRun>({
         type: String,
         enum: ['pending', 'done' , 'failed'],
         default: 'pending'
-    }
-    
+    },
 } , {
 timestamps: true
 })
 
-const SearchRunModel = (mongoose.models.SearchRunSchema<SearchRun> || mongoose.model<SearchRun>("SearchRun" , SearchRunSchema))
+const SearchRunModel = mongoose.models.SearchRun || mongoose.model<SearchRun>("SearchRun", SearchRunSchema)
 
 
 export default SearchRunModel
