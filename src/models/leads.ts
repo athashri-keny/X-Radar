@@ -7,6 +7,7 @@ TweetText: string,
 Tweeturl: string,
 Score: Number,
 suggestReplyAi: string,
+createdAt: Date
 }
 
 const LeadsSchema = new Schema<Lead>({
@@ -21,26 +22,33 @@ const LeadsSchema = new Schema<Lead>({
     },
     TweetText: {
         type: String,
-        required: [true , "Tweet Text is required!"]
+        required: [true , "tweet text is required!"],
+        maxLength: 5000
     },
     Tweeturl: {
         type: String,
         required: [true , "Tweet url is required!"]
     },
     Score: {
-        type: String,
+        type: Number,
         required: [true , "Tweet Url is required"]
     },
     suggestReplyAi: {
         type: String,
-      required: [true , "Suggest Ai reply required"]
-    }
+      required: [true , "Suggest Ai reply required"],
+      maxLength: 5000
+    },
+     createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 60 * 60 * 6, // auto delete after 6 hours
+  },
 } , {
-    timestamps: true
+   
 })
 
 
-const LeadsModel = (mongoose.models.LeadsSchema<Lead> || mongoose.model<Lead>("Leads" , LeadsSchema))
+const LeadsModel = (mongoose.models.Leads|| mongoose.model<Lead>("Leads" , LeadsSchema))
 
 
 export default LeadsModel

@@ -42,7 +42,25 @@ Steps:
 3. Generate 3 replies for scores above 7
 4. Return URL with each result  
 OUTPUT FORMAT:
-List ALL high-scoring leads. Do not summarize or limit to top 4.`,
+List ALL high-scoring leads. Do not summarize or limit to top 4.
+
+Format:
+note this is an example of format
+[
+  {
+    "tweetUrl": "https://x.com/...",
+    "tweetText": "we are looking for a developer"
+    "score": 9,
+    "suggestedReply": "Hey! I saw you're looking for..."
+  }
+]
+You MUST respond with ONLY a raw JSON array. 
+No intro text. No explanation. No markdown. No backticks.
+Just the array starting with [ and ending with ]
+
+`,
+
+
 
 
     model: 'gpt-4o-mini',

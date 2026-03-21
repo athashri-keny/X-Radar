@@ -4,7 +4,7 @@ import { ScorerAgent } from "../../../agents/TweetFetcherAgent";
 import { run } from "@openai/agents";
 import SearchRunModel from "../../../models/SearchRun";
 import mongoose from "mongoose";
-
+import LeadsModel from "@/models/leads";
 
 
  export async function POST(request: NextRequest) {
@@ -42,23 +42,57 @@ import mongoose from "mongoose";
     // agent (not quires)
       const result =  await run(ScorerAgent , keywords)
  
-      const finalOutputt =  result.finalOutput
-      console.log(result.finalOutput)
+      // array of object
+       const rawOutput = result.finalOutput ?? ""
+
+       console.log("raw output from agent type = " ,  typeof rawOutput) // string
+
+       const jsonMatch = rawOutput.match(/\[[\s\S]*\]/) 
+       
+       if (!jsonMatch) {
+  throw new Error("Agent didn't return a valid JSON array")
+}
+
+      // loop cause agent will return an array objects of leads
+
+      // changing the string which contains arrray of objects to real array of object to store in db
+      const leads = JSON.parse(jsonMatch[0])
+
+      // creating an array for saving the leads
+      const savedLeads: any[] = []
+
+      for(const lead of leads) {
+
+       const newLead = new LeadsModel({
+        SearchRunId: NewSearchRunModel._id,
+        userId: new mongoose.Types.ObjectId("69bad90f6a937ff303866bcf"),
+        Tweeturl: lead.tweetUrl,
+        TweetText: lead.tweetText,
+        Score: lead.score,             
+       suggestReplyAi: lead.suggestedReply  
+       })
+       await newLead.save()
+        savedLeads.push(newLead)
+      }
 
       NewSearchRunModel.status = 'done'
       await NewSearchRunModel.save()
     
      return NextResponse.json({
         message: "your agent run successfully!",
-       finalOutputt
+       leads: savedLeads
      } , {status: 200})
 
    } catch (error) {
+
+     console.log("error while running the agent" , error)
     NewSearchRunModel.status = 'failed'
+
     await NewSearchRunModel.save()
 
       return NextResponse.json({
-        message: "Error while running agent",
+        message: "Error while running agent",       
+      
      } , {status: 500})
    }
     
