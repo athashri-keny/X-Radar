@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Radar } from 'lucide-react'
+import Link from 'next/link'
 
 export function Header() {
   return (
@@ -42,7 +43,10 @@ export function Header() {
           whileTap={{ scale: 0.95 }}
           className="px-6 py-2 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition"
         >
-          Sign In
+          <Link href={'/early-access'}>
+                    Early-Access
+
+          </Link>
         </motion.button>
       </div>
     </motion.header>

@@ -108,7 +108,7 @@ export function Hero() {
             className="px-8 py-3 mt-10 bg-white text-black rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-white/20 transition"
           >
             <Link href={'/early-access'}>
-            Get Started Free
+            Sign up for early access
             </Link>
             <ArrowRight className="w-4 h-4" />
           </motion.button>
