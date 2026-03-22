@@ -35,7 +35,7 @@ export function Features() {
       title: 'Works for any niche',
       description: 'Customize keywords to match your expertise',
       color: 'from-gray-300 to-gray-400',
-    },
+    },  
     {
       icon: Shield,
       title: 'Privacy & Security',

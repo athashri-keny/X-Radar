@@ -145,7 +145,8 @@ export function FAQ() {
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href="mailto:support@xradar.com"
+            href="https://mail.google.com/mail/?view=cm&to=xradar10@gmail.com&su=X-Radar Early Access"
+            target='_blank'
             className="inline-block px-6 py-2 glass-effect rounded-lg text-white hover:bg-white/10 transition font-medium"
           >
             Contact Our Team

@@ -74,8 +74,8 @@ export function Hero() {
         className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
       >
         {/* Big X-Radar wordmark */}
-        <motion.div variants={itemVariants} className="mb-4">
-          <h1 className="text-[clamp(4rem,14vw,10rem)] font-black leading-none tracking-tighter text-white select-none">
+        <motion.div variants={itemVariants} className="mb-9">
+          <h1 className="text-[clamp(4rem,14vw,10rem)] font-black leading-none tracking-tighter text-white select-none mt-15">
             X-Radar
           </h1>
         </motion.div>

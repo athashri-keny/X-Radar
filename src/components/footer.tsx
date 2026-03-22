@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Zap, Twitter, Linkedin, Mail } from 'lucide-react'
+import { Zap, XIcon , Linkedin, Mail, X } from 'lucide-react'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -112,14 +112,15 @@ export function Footer() {
             <div className="flex items-center gap-4">
               <motion.a
                 whileHover={{ scale: 1.1 }}
-                href="#"
+                href="https://x.com/XRadarAI"
+                target='blank'
                 className="text-gray-400 hover:text-blue-400 transition"
               >
-                <Twitter className="w-5 h-5" />
+                <XIcon className="w-7 h-7" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1 }}
-                href="#"
+                href=""
                 className="text-gray-400 hover:text-blue-400 transition"
               >
                 <Linkedin className="w-5 h-5" />
