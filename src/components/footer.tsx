@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Zap, XIcon , Linkedin, Mail, X } from 'lucide-react'
+import { Zap, XIcon , Linkedin, Mail, X, Radar } from 'lucide-react'
+import Link from 'next/link'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -18,7 +19,7 @@ export function Footer() {
           >
             <div className="flex items-center gap-2 mb-4">
               <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <Zap className="w-4 h-4 text-black" />
+                <Radar className="w-4 h-4 text-black" />
               </div>
               <span className="text-lg font-bold text-white">X-Radar</span>
             </div>
@@ -87,15 +88,11 @@ export function Footer() {
           >
             <h4 className="font-semibold text-white mb-4">Legal</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Terms of Service
-                </a>
+              <li className="hover:text-white transition">
+                 <Link href={'/privacy'} >
+                    Privacy Policy
+                    </Link>   
+              
               </li>
             </ul>
           </motion.div>
