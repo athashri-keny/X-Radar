@@ -27,15 +27,15 @@ import { SendEmailAboutEarlyaccess } from "@/helpers/SendEmailAboutEarly-Access"
             )
         }
 
-        const existingNiche = await WaitListModel.findOne({niche: niche.toLowerCase().trim()})
+        // const existingNiche = await WaitListModel.findOne({niche: niche.toLowerCase().trim()})
 
-        if (existingNiche) {
-            return NextResponse.json({
-                message: "Someone from this niche already joined! We will notify you when more spots open!"
-            } , {
-                status: 503
-            })
-        }
+        // if (existingNiche) {
+        //     return NextResponse.json({
+        //         message: "Someone from this niche already joined! We will notify you when more spots open!"
+        //     } , {
+        //         status: 503
+        //     })
+        // }
 
         const totalUsers = await WaitListModel.countDocuments()
 
