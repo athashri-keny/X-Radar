@@ -103,10 +103,16 @@ export default function EarlyAccessPage() {
       setError(errorMsg)
       toast.error(errorMsg)
     } else if (error.response?.status === 503) {
-      const errorMsg = "The waitlist is currently full. Please try again later."
+      const errorMsg = "Someone from this niche already joined! We will notify you when more spots open"
       setError(errorMsg)
       toast.error(errorMsg)
-    } else {
+    } 
+    else if (error.response?.status === 504) {
+      const errorMsg = "All seats are full. We will notify you when more spots are open"
+      setError(errorMsg)
+      toast.error(errorMsg)
+    } 
+    else {
       const errorMsg = "Something went wrong. Please try again."
       setError(errorMsg)
       toast.error(errorMsg)
