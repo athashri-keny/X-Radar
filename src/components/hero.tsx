@@ -95,6 +95,15 @@ export function Hero() {
         >
           Scans Twitter/X in real-time, scores leads with AI, and crafts perfect
           reply suggestions
+          
+        </motion.p>
+
+         <motion.p
+          variants={itemVariants}
+          className="text-base sm:text-lg text-gray-500 mb-10 max-w-2xl leading-relaxed"
+        >
+          Lets get your Next client on X-radar
+          
         </motion.p>
 
       
@@ -107,8 +116,8 @@ export function Hero() {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 mt-10 bg-white text-black rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-white/20 transition"
           >
-            <Link href={'/early-access'}>
-            Sign up for early access
+            <Link href={'/auth/signup'}>
+            Sign Up 
             </Link>
             <ArrowRight className="w-4 h-4" />
           </motion.button>

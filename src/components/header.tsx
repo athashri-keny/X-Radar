@@ -43,8 +43,8 @@ export function Header() {
           whileTap={{ scale: 0.95 }}
           className="px-6 py-2 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition"
         >
-          <Link href={'/early-access'}>
-                    Early-Access
+          <Link href={'/auth/signup'}>
+                    Sign-Up
 
           </Link>
         </motion.button>

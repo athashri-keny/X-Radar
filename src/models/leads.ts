@@ -41,7 +41,7 @@ const LeadsSchema = new Schema<Lead>({
      createdAt: {
     type: Date,
     default: Date.now,
-    expires: 60 * 60 * 6, // auto delete after 6 hours
+    expires: 60 * 60 * 12, // 24 hours
   },
 } , {
    

@@ -8,12 +8,19 @@ import bycrpt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 
+interface AutoLoginPayload {
+  purpose: string,
+  userId: string
+}
+
 
 export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+          allowDangerousEmailAccountLinking: true // This ensures users who start with credentials can later add Google sign-in, or vice versa
+
         }),
         // TwitterProvider({
         //     clientId: process.env.TWITER_CLIENT_ID!,
@@ -24,24 +31,32 @@ export const authOptions: NextAuthOptions = {
             credentials: {
                 email: {label: "Username" , type: "text" , placeholder: "Enter your username"},
                 password: {label: "Password" , type: 'password' , placeholder: "Enter your password"},
-                AutoLogin: {label: "Auto login token" , type: 'text'}
+                AutoLoginToken: {label: "Auto login token" , type: 'text'}
             },
            async authorize(credentials: any):Promise<any> {
+            await DBConnect()
+              console.log("1. authorize called", credentials?.email)
             // for normal login
           try {
                 if(credentials?.email && credentials.password) {
                       const user = await UserModel.findOne({
                       Email: credentials.email
                   });
+                      console.log("2. user found", user)
                   if (!user) {
+                    console.log("3. user not found")
                       throw new Error('Email does not exists in our database')
                   }
+                   console.log("4. isVerifiedEmail", user.isVerifiedEmail)
                   if (!user.isVerifiedEmail) {
                       throw new Error("email is not verified")
                   }
                   // check password 
                   const Ispassswordcorrect = await bycrpt.compare(credentials.password, user.password)
+                  console.log("5. password correct?", Ispassswordcorrect)
+
                   if (Ispassswordcorrect) {
+                    console.log("user = " , user)
                       return user;
                   } else {
                       return new Error("Error password is incorrect!")
@@ -52,10 +67,25 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Error")
           }
           
-          // for auto logging the user after sucessfully signup and passsword
-        //   if (credentials.AutoLogin) {
-        //     const decoded = jwt.verify(credentials.AutoLoginToken , process.env.JWT_SECRET) as Autologin
-        //   }
+        //  for auto logging the user after sucessfully signup and passsword
+        // opening and truting the Envelope
+
+          if (credentials.AutoLoginToken) {
+
+            const decoded = jwt.verify(credentials.AutoLoginToken , process.env.JWT_SECRET!) as AutoLoginPayload
+
+            if (decoded.purpose == 'auto_login_after_verification') {
+            
+                const user = await UserModel.findById(decoded.userId) 
+
+                if (user && user.isVerifiedEmail) {
+                    return user
+                }
+            } else {
+                throw new Error('Error occured while autologin plz try manually')
+            }
+
+          }
             },
         })
     ],

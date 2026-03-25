@@ -34,8 +34,6 @@ export async function POST(request: NextRequest) {
 
         verifycodeExpiry.setHours(verifycodeExpiry.getHours() + 1) // 1 hour
 
-        await EmailAboutNewSignup(email , verifycode , Name)
-
         const newUser = new UserModel({
             Name: Name,
              Email: email,
@@ -46,9 +44,11 @@ export async function POST(request: NextRequest) {
         })
         await newUser.save()
 
+        await EmailAboutNewSignup(email , verifycode , Name)
 
           return NextResponse.json({
-            message: "User registered successfully. Check your email for the OTP."
+            message: "User registered successfully. Check your email for the OTP.",
+            userId: newUser._id
         }, { status: 201 })
 
 

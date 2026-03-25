@@ -28,7 +28,7 @@ const SearchRunSchema = new Schema<SearchRun>({
 timestamps: true
 })
 
-const SearchRunModel = mongoose.models.SearchRun || mongoose.model<SearchRun>("SearchRun", SearchRunSchema)
+const SearchRunModel = mongoose.models.SearchRun || mongoose.model<SearchRun>("searchruns", SearchRunSchema)
 
 
 export default SearchRunModel

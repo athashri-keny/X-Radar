@@ -5,7 +5,8 @@ import { run } from "@openai/agents";
 import SearchRunModel from "../../../models/SearchRun";
 import mongoose from "mongoose";
 import LeadsModel from "@/models/leads";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
  export async function POST(request: NextRequest) {
     try {
@@ -13,14 +14,16 @@ import LeadsModel from "@/models/leads";
 
         await DBConnect()
 
-        // const session = await getServerSession(authOptions)
-        // if (!session || !session.user) {
-        //     return NextResponse.json({
-        //         message: "this is a protected route plz login!"
-        //     } , {status: 404})
-        // }
+        const session = await getServerSession(authOptions)
+        if (!session || !session.user) {
+            return NextResponse.json({
+                message: "this is a protected route plz login!"
+            } , {status: 404})
+        }
 
         const {keywords} = await request.json()
+
+        console.log( "keywords" , keywords)
         
         if (!keywords) {
             return NextResponse.json({
@@ -29,7 +32,7 @@ import LeadsModel from "@/models/leads";
         }
 
        const NewSearchRunModel = new SearchRunModel({
-         UserId: new mongoose.Types.ObjectId("69bad90f6a937ff303866bcf"),
+         UserId: new mongoose.Types.ObjectId(session.user._id),
          keywords: keywords,
          status: 'pending'
        })
@@ -65,7 +68,7 @@ import LeadsModel from "@/models/leads";
 
        const newLead = new LeadsModel({
         SearchRunId: NewSearchRunModel._id,
-        userId: new mongoose.Types.ObjectId("69bad90f6a937ff303866bcf"),
+        userId: new mongoose.Types.ObjectId(session.user._id),
         Tweeturl: lead.tweetUrl,
         TweetText: lead.tweetText,
         Score: lead.score,             
