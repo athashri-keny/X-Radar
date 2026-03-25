@@ -2,7 +2,6 @@ import { tool } from "@openai/agents";
 import z from "zod";
 import 'dotenv/config'
 // import { ApifyClient } from "apify-client";
-  const { ApifyClient } = await import('apify-client')
 const nicheQueries: Record<string, string[]> = {
   'video-editor': [
     'looking for a video editor',
@@ -60,6 +59,8 @@ const FetchNEws = tool({
         MaxResult: z.number().describe("Maximum results of the tweets ").max(20)
     }),
     execute: async function ({keywords , MaxResult}) {
+
+            const { ApifyClient } = await import('apify-client')
         console.log("KeyWords" , keywords)
 
         const since = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // 48 hours
