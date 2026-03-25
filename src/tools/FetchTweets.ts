@@ -1,8 +1,8 @@
 import { tool } from "@openai/agents";
 import z from "zod";
 import 'dotenv/config'
-import { ApifyClient } from "apify-client";
-
+// import { ApifyClient } from "apify-client";
+  const { ApifyClient } = await import('apify-client')
 const nicheQueries: Record<string, string[]> = {
   'video-editor': [
     'looking for a video editor',
