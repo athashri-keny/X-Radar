@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import DBConnect from "../../../lib/connectdb";
 import { NextRequest, NextResponse } from "next/server";
 import { ScorerAgent } from "../../../agents/TweetFetcherAgent";
