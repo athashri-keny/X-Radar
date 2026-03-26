@@ -1,7 +1,6 @@
 import { tool } from "@openai/agents";
 import z from "zod";
 import 'dotenv/config'
-import { ApifyClient } from "apify-client";
 
 
 
@@ -64,7 +63,8 @@ const FetchNEws = tool({
     }),
     execute: async function ({keywords , MaxResult}) {
 
-    
+       // Dynamic import at runtime — forces Node.js to resolve it properly
+    const { ApifyClient } = await import('apify-client')
         console.log("KeyWords" , keywords)
 
         const since = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // 48 hours
