@@ -12,100 +12,92 @@ async function EmailAboutNewSignup(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your X-Radar OTP</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;padding:40px 20px;">
+<body style="margin:0;padding:0;background-color:#f5f5f5;font-family:Arial,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f5f5;padding:40px 20px;">
     <tr>
       <td align="center">
-        <table width="520" cellpadding="0" cellspacing="0" style="background-color:#111111;border-radius:12px;border:1px solid #222222;overflow:hidden;">
+
+        <table width="520" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;border-radius:10px;max-width:520px;width:100%;">
 
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:36px 40px;text-align:center;">
-              <h1 style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:2px;text-transform:uppercase;">
-                ✦ X-RADAR
-              </h1>
-              <p style="margin:6px 0 0;font-size:12px;color:#7b93b4;letter-spacing:3px;text-transform:uppercase;">
-                Lead Intelligence Platform
-              </p>
+            <td style="padding:24px 36px;border-bottom:1px solid #eeeeee;">
+              <span style="font-size:18px;font-weight:800;color:#111111;font-family:Arial,sans-serif;letter-spacing:-0.5px;">X-Radar</span>
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
-            <td style="padding:40px 40px 32px;">
-              <p style="margin:0 0 8px;font-size:13px;color:#555555;text-transform:uppercase;letter-spacing:2px;">
-                Hello,
+            <td style="padding:36px 36px 28px;">
+
+              <p style="margin:0 0 20px 0;font-size:20px;font-weight:700;color:#111111;font-family:Arial,sans-serif;">
+                Hi ${Name} 👋
               </p>
-              <h2 style="margin:0 0 24px;font-size:22px;font-weight:600;color:#ffffff;">
-                ${Name} 👋
-              </h2>
-              <p style="margin:0 0 28px;font-size:15px;color:#aaaaaa;line-height:1.7;">
-                You requested a one-time verification code to access your X-Radar account.
+
+              <p style="margin:0 0 12px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
+                You requested a verification code to access your X-Radar account.
+              </p>
+              <p style="margin:0 0 28px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
                 Use the code below to complete your login.
               </p>
 
               <!-- OTP Box -->
-              <table width="100%" cellpadding="0" cellspacing="0">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f9f9;border:1px solid #eeeeee;border-radius:8px;margin-bottom:28px;">
                 <tr>
-                  <td align="center">
-                    <div style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:10px;padding:28px 20px;margin:0 0 28px;">
-                      <p style="margin:0 0 10px;font-size:11px;color:#555555;text-transform:uppercase;letter-spacing:3px;">
-                        Your Verification Code
-                      </p>
-                      <p style="margin:0;font-size:40px;font-weight:700;color:#4f9cf9;letter-spacing:10px;font-family:'Courier New',monospace;">
-                        ${verifycode}
-                      </p>
-                      <p style="margin:12px 0 0;font-size:12px;color:#444444;">
-                        ⏱ Expires in 10 minutes
-                      </p>
-                    </div>
+                  <td style="padding:24px 18px;text-align:center;">
+                    <p style="margin:0 0 8px 0;font-size:11px;font-weight:600;color:#aaaaaa;text-transform:uppercase;letter-spacing:0.8px;font-family:Arial,sans-serif;">
+                      Your Verification Code
+                    </p>
+                    <p style="margin:0 0 8px 0;font-size:36px;font-weight:800;color:#111111;letter-spacing:10px;font-family:'Courier New',monospace;">
+                      ${verifycode}
+                    </p>
+                    <p style="margin:0;font-size:12px;color:#aaaaaa;font-family:Arial,sans-serif;">
+                      ⏱ Expires in 10 minutes
+                    </p>
                   </td>
                 </tr>
               </table>
 
-              <p style="margin:0;font-size:13px;color:#555555;line-height:1.6;">
+              <p style="margin:0 0 28px 0;font-size:13px;color:#aaaaaa;line-height:1.6;font-family:Arial,sans-serif;">
                 If you didn't request this, you can safely ignore this email.
-                Someone may have entered your email by mistake.
               </p>
-            </td>
-          </tr>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding:0 40px;">
-              <hr style="border:none;border-top:1px solid #1e1e1e;margin:0;" />
+              <p style="margin:0;font-size:14px;color:#111111;font-weight:500;font-family:Arial,sans-serif;">
+                The X-Radar Team
+              </p>
+
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="padding:24px 40px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#333333;">
-                © ${new Date().getFullYear()} X-Radar · Built for lead intelligence
-              </p>
-              <p style="margin:6px 0 0;font-size:11px;color:#2a2a2a;">
-                Do not reply to this email · This is an automated message
+            <td style="padding:18px 36px 24px;border-top:1px solid #eeeeee;">
+              <p style="margin:0;font-size:12px;color:#bbbbbb;font-family:Arial,sans-serif;">
+                © 2026 X-Radar · You're receiving this because you signed in to X-Radar.
               </p>
             </td>
           </tr>
 
         </table>
+
       </td>
     </tr>
   </table>
+
 </body>
 </html>
     `;
 
     await transporter.sendMail({
-      from: `"X-Radar" <athashrikeny94@gmail.com>`,
+      from: `"X-Radar" <xradar10@gmail.com>`,
       to: UserEmail,
       subject: `${verifycode} is your X-Radar verification code`,
-      text: `Hello ${Name},\n\nYour X-Radar verification code is: ${verifycode}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, ignore this email.\n\n— X-Radar Team`,
+      text: `Hi ${Name},\n\nYour X-Radar verification code is: ${verifycode}\n\nExpires in 10 minutes.\n\n— The X-Radar Team`,
       html: htmlContent,
     });
+
   } catch (error) {
     console.error("Error while sending email:", error);
     return error;

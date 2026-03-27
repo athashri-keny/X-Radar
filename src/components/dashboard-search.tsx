@@ -79,14 +79,14 @@ export function DashboardSearch({
     xradar10@gmail.com
   </a>
   <span className='mt-3 block'>
-    Liked X-Radar? Tweet about tagging us {' '}
+    Liked X-Radar? Tweet about tagging us. Your tweet will be Featured in our Landing page 
     <a 
       href="https://x.com/XRadarAI" 
       target="_blank" 
       rel="noopener noreferrer"
       className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition"
     >
-      @XRadarAI 
+        @XRadarAI 
     </a>
   </span>
 </p>

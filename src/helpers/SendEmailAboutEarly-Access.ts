@@ -32,14 +32,25 @@ function getEmailHtml(email: string, niche: string) {
               </p>
 
               <p style="margin:0 0 12px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
-                Thanks for joining X-Radar's early access list.
+                Your early access to X-Radar is ready!
               </p>
               <p style="margin:0 0 12px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
-                We're building an AI that hunts hiring tweets so you don't have to scanning Twitter/X in real-time, scoring leads, and crafting perfect reply suggestions.
+                X-Radar hunts hiring tweets on Twitter/X in real-time, scores each lead by intent, and suggests the perfect reply so you can close faster.
               </p>
               <p style="margin:0 0 28px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
-                We'll reach out as soon as your access is ready.
+                Click below to get started 👇
               </p>
+
+              <!-- CTA Button -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="background-color:#111111;border-radius:6px;padding:12px 24px;">
+                    <a href="https://x-radar-ai.vercel.app" style="color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;font-family:Arial,sans-serif;">
+                      Access X-Radar →
+                    </a>
+                  </td>
+                </tr>
+              </table>
 
               <!-- Niche Card -->
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f9f9;border:1px solid #eeeeee;border-radius:8px;">
@@ -82,15 +93,15 @@ function getEmailHtml(email: string, niche: string) {
   `;
 }
 
-export async function SendEmailAboutEarlyaccess(UserEmail: string, niche: string) {
+export async function SendAccessReadyEmail(UserEmail: string, niche: string) {
   try {
     await transporter.sendMail({
       from: "X-Radar <xradar10@gmail.com>",
       to: UserEmail,
-      subject: "You're on the early access list 🎯",
+      subject: "Your X-Radar early access is ready 🎯",
       html: getEmailHtml(UserEmail, niche),
     });
   } catch (error) {
-    console.log("Error while sending early access email:", error);
+    console.log("Error while sending access ready email:", error);
   }
 }
