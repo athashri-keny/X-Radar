@@ -1,6 +1,7 @@
 import { tool } from "@openai/agents";
 import z from "zod";
 import 'dotenv/config'
+import axios from "axios";
 
 
 
@@ -75,29 +76,52 @@ const FetchNEws = tool({
         )
 
     try {
-            const client = new ApifyClient({
-                token: process.env.APIFY_API_TOKEN
-            })
+
+      // THis is an SDK apporach (it is not working in prod (vercel) due to bundling promblems)
+            // const client = new ApifyClient({
+            //     token: process.env.APIFY_API_TOKEN
+            // })
     
 
-            // starts an actor
-            console.log("Searching for this quires" , searchTermss , keywords);
+        //     // starts an actor
+
             
-            // actor url (which had to run)
-            const run = await client.actor('kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest').call({
-            searchTerms: [...searchTermss , keywords],
+        //     // actor url (which had to run)
+        //     const run = await client.actor('kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest').call({
+        //     searchTerms: [...searchTermss , keywords],
             
-            maxItems: MaxResult,
-            queryType: 'Latest',
+        //     maxItems: MaxResult,
+        //     queryType: 'Latest',
             
-         // since lastest tweets
-            })
+        //  // since lastest tweets
+        //     })
     
-            // get results from the actors database 
-            const {items} = await client.dataset(run.defaultDatasetId).listItems()
+        //     // get results from the actors database 
+        //     const {items} = await client.dataset(run.defaultDatasetId).listItems()
     
-            console.log(items)
-            
+        //     console.log(items)
+
+
+        // Request the APi
+
+                    console.log("Searching for this quires" , searchTermss , keywords);
+
+
+        const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/run-sync-get-dataset-items?token=${process.env.APIFY_API_TOKEN}`, {
+          searchTerms: [...searchTermss , keywords],
+          maxItems: MaxResult,
+          qureyType: 'Latest'
+        })
+        
+const items = res.data.filter((tweet: any) => tweet.type !== 'mock_tweet')
+
+
+        if (items.length === 0) {
+  console.log("No real tweets found");
+  return [];
+}
+        console.log("Query ran successfully!" , items)
+
 // removing all the other fields
 const cleanedTweets = items.map((tweet: any) => ({
     text: tweet.text,

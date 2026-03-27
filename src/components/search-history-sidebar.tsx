@@ -82,7 +82,7 @@ export function SearchHistorySidebar({
     className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg flex flex-col gap-2"
   >
     <div className="flex items-center gap-2">
-      <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+      <AlertCircle className="w-4 h-4 text-yellow-500 shrink-0" />
       <div className="flex items-center justify-between w-full">
         <p className="text-xs font-semibold text-yellow-500">Cooldown Active</p>
         <p className="text-xs font-mono text-yellow-400">{countdown}</p>

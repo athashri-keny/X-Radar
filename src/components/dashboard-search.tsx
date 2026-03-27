@@ -147,7 +147,7 @@ export function DashboardSearch({
             <motion.div
               animate={{ width: ['0%', '100%'] }}
               transition={{ duration: 2, ease: 'easeInOut' }}
-              className="h-full bg-gradient-to-r from-white via-gray-400 to-white"
+              className="h-full bg-linear-to-r from-white via-gray-400 to-white"
             />
           </div>
         </motion.div>
