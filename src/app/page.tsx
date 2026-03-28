@@ -7,6 +7,7 @@ import { FAQ } from "@/components/faq"
 import { Footer } from "@/components/footer"
 import { AnimatedBackground } from "@/components/animated-background"
 import { GradientOrbs } from "@/components/gradient-orbs"
+import { TweetsCarousel } from "@/components/tweet-carosel"
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <Header />
         <main>
           <Hero />
+          <TweetsCarousel/>
           <HowItWorks />
           <Features />
           {/* <Pricing /> */}
