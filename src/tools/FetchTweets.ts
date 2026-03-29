@@ -64,12 +64,13 @@ const nicheQueries: Record<string, string[]> = {
 }
 
 export function generateQueries(niche: string): string[] {
-
 const key = niche.toLowerCase().trim()
 
+// Video Editor - removed bare 'edit'
 if (key.includes('video') || key.includes('reel') || key === 'video editor' || key.includes('youtube editor'))
   return nicheQueries['video-editor']
 
+// Developer - replaced bare 'next' with 'next.js'
 if (key.includes('dev') || key.includes('code') || key.includes('react') || 
     key.includes('next.js') || key.includes('frontend') || key.includes('backend') || 
     key.includes('fullstack'))
