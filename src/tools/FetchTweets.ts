@@ -25,24 +25,75 @@ const nicheQueries: Record<string, string[]> = {
     'need a full stack developer',
     'hiring frontend developer',
   ],
-  'social-media': [
-    'looking for a social media manager',
-    'need someone to manage my Instagram',
-    'hiring social media manager',
-    'need help with content creation',
-    'looking for SMM freelancer',
-    'need someone to grow my Twitter',
-    'hiring content creator',
-  ],
+  // 'social-media': [
+  //   'looking for a social media manager',
+  //   'need someone to manage my Instagram',
+  //   'hiring social media manager',
+  //   'need help with content creation',
+  //   'looking for SMM freelancer',
+  //   'need someone to grow my Twitter',
+  //   'hiring content creator',
+  // ],
+  'copywriter': [
+  'looking for a copywriter',
+  'need someone to write copy',
+  'hiring copywriter',
+  'need email copywriter',
+  'looking for landing page copywriter',
+  'need sales page writer',
+  'hiring UX writer',
+],
+'designer': [
+  'looking for a UI designer',
+  'need a UX designer',
+  'hiring product designer',
+  'need someone to design my app',
+  'looking for Figma designer',
+  'need landing page design',
+  'hiring graphic designer',
+],
+'ghostwriter': [
+  'looking for a ghostwriter',
+  'need someone to write my tweets',
+  'hiring ghostwriter',
+  'need LinkedIn ghostwriter',
+  'looking for content ghostwriter',
+  'need someone to write my newsletter',
+  'hiring Twitter ghostwriter',
+]
 }
 
 export function generateQueries(niche: string): string[] {
 
-  const key = niche.toLowerCase().trim()
+const key = niche.toLowerCase().trim()
 
-  if (key.includes('video')) return nicheQueries['video-editor']
-  if (key.includes('dev') || key.includes('code')) return nicheQueries['developer']
-  if (key.includes('social') || key.includes('smm')) return nicheQueries['social-media']
+if (key.includes('video') || key.includes('reel') || key === 'video editor' || key.includes('youtube editor'))
+  return nicheQueries['video-editor']
+
+if (key.includes('dev') || key.includes('code') || key.includes('react') || 
+    key.includes('next.js') || key.includes('frontend') || key.includes('backend') || 
+    key.includes('fullstack'))
+  return nicheQueries['developer']
+
+// Social Media
+if (key.includes('social') || key.includes('smm') || key.includes('instagram') || 
+    key.includes('content'))
+  return nicheQueries['social-media']
+
+// Copywriter - replaced bare 'email' with 'email copy'
+if (key.includes('copy') || key.includes('copywriter') || key.includes('landing page') || 
+    key.includes('email copy'))
+  return nicheQueries['copywriter']
+
+// Designer - replaced bare 'ui' with 'ui design'
+if (key.includes('design') || key.includes('ui design') || key.includes('ux') || 
+    key.includes('figma'))
+  return nicheQueries['designer']
+
+// Ghostwriter
+if (key.includes('ghost') || key.includes('tweet') || key.includes('newsletter') || 
+    key.includes('linkedin'))
+  return nicheQueries['ghostwriter']
 
 console.log("Genenrating qureis " , niche)
 
