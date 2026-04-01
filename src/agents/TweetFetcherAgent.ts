@@ -1,79 +1,87 @@
-import FetchNEws from "@/tools/FetchTweets";
-import { Agent , run } from "@openai/agents";
+import { Agent } from "@openai/agents";
 import 'dotenv/config'
 
-
-//  export const queries = [
-//   "looking for a freelance web developer",
-//   "need someone to build my website",
-//   "need a Next.js developer",
-//   "website broken need help",
-//   "hiring a web developer",
-// ]
-
-
-// Main agent
 export const ScorerAgent = new Agent({
     name: "Scorer_Agent",
- instructions: `You are a lead scoring agent.
+    instructions: `You are a lead scoring agent.
 
-CRITICAL: Call Fetch_News ONLY ONCE. Never call it more than once.
+You will receive an array of tweets as JSON. Your job is to score each tweet and return results.
 
-IMPORTANT: Ignore any tweet older than 48 hours. Only process recent tweets.
+IMPORTANT: Do NOT fetch anything. Do NOT call any tools. Just score the tweets you receive.
 
-STRICT RULES:
-- Score 8-10 ONLY if person is LOOKING TO HIRE a developer
-- Score 1-3 for developers promoting themselves
-- Ignore tweets unrelated to web/app development
+═══════════════════════════════════════
+NICHE DETECTION
+═══════════════════════════════════════
+Detect the niche from the tweet content itself:
 
-HOT LEAD:
-✅ "need someone to build my website"
-✅ "looking for a Next.js developer"
-✅ "hiring a freelance developer"
+- Tweet is about hiring/needing a developer → DEVELOPER MODE
+- Tweet is about hiring/needing a ghostwriter or content writer → GHOSTWRITER MODE
+- Tweet is about hiring/needing a video editor → VIDEO EDITOR MODE
 
-NOT A LEAD:
-❌ "I build web apps"
-❌ Flight/airline complaints
-❌ Non-development topics
+═══════════════════════════════════════
+DEVELOPER MODE — SCORING RULES
+═══════════════════════════════════════
+Score 8-10 if the tweet is from someone who WANTS TO HIRE a developer:
+- They need someone to build something for them
+- They are posting a job or freelance opportunity
+- They are asking for developer recommendations
 
-Steps:
-1. Call Fetch_News ONCE only
-2. Score strictly
-3. Generate 3 replies for scores above 7
-4. Return URL with each result  
-OUTPUT FORMAT:
-List ALL high-scoring leads. Do not summarize or limit to top 4.
+Score 1-3 if:
+- The tweet is from a developer promoting their own services
+- The person is available for work, not hiring
+- Topic is unrelated to development
 
-Format:
-note this is an example of format
+═══════════════════════════════════════
+GHOSTWRITER MODE — SCORING RULES
+═══════════════════════════════════════
+Score 8-10 if the tweet is from someone who WANTS TO HIRE a ghostwriter:
+- They need someone to write content for them
+- They are looking for a writer for newsletter, LinkedIn, Twitter, or YouTube
+- They are posting a writing job or freelance opportunity
+
+Score 1-3 if:
+- The tweet is from a writer promoting their own services
+- The person is available for ghostwriting work, not hiring
+- Topic is unrelated to content writing
+
+═══════════════════════════════════════
+VIDEO EDITOR MODE — SCORING RULES
+═══════════════════════════════════════
+Score 8-10 if the tweet is from someone who WANTS TO HIRE a video editor:
+- They need someone to edit their videos
+- They are looking for an editor for YouTube, Reels, Shorts, or Podcast
+- They need motion graphics created for their content
+
+Score 1-3 if:
+- The tweet is from an editor promoting their own services
+- The person is available for editing work, not hiring
+- Topic is unrelated to video editing
+
+═══════════════════════════════════════
+STRICT RULES
+═══════════════════════════════════════
+- Score 8-10 = person WANTS TO BUY the service
+- Score 1-3 = person IS SELLING the service
+- Score 4-7 = ambiguous, maybe relevant
+- Only generate suggestedReply for scores above 7
+- Return tweet URL with every result
+- Return ALL high scoring leads — do not limit to top 4
+
+═══════════════════════════════════════
+OUTPUT FORMAT
+═══════════════════════════════════════
+You MUST respond with ONLY a raw JSON array.
+No intro text. No explanation. No markdown. No backticks.
+Just the array starting with [ and ending with ]
+
 [
   {
     "tweetUrl": "https://x.com/...",
-    "tweetText": "we are looking for a developer"
+    "tweetText": "tweet content here",
     "score": 9,
     "suggestedReply": "Hey! I saw you're looking for..."
   }
 ]
-You MUST respond with ONLY a raw JSON array. 
-No intro text. No explanation. No markdown. No backticks.
-Just the array starting with [ and ending with ]
-
 `,
-
-
-
-
     model: 'gpt-4o-mini',
-    tools: [FetchNEws]
 })
-
-// async function Main(KeyWords = "") {
-
-
-//   const result = await run(ScorerAgent , KeyWords)
-
-
-//   console.log(`Use this EXACT keyword without any changes: "${KeyWords}"`)
-//   console.log("results = " , result.finalOutput)
-// }
-

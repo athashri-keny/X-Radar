@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Copy, ExternalLink, Zap } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -23,10 +22,9 @@ export function LeadCard({
   tweet,
   score,
   tweetUrl,
-  suggestReplyAi
+  suggestReplyAi,
 }: LeadCardProps) {
   const [replyCopied, setReplyCopied] = useState(false)
-  
 
   const getScoreColor = () => {
     if (score >= 8) return 'text-white'
@@ -39,9 +37,7 @@ export function LeadCard({
   const handleCopyReply = () => {
     setReplyCopied(true)
     navigator.clipboard.writeText(suggestReplyAi)
-    setTimeout(() => {
-      setReplyCopied(false)
-    }, 2000)
+    setTimeout(() => setReplyCopied(false), 2000)
   }
 
   return (
@@ -80,37 +76,34 @@ export function LeadCard({
         </motion.div>
       )}
 
-      {/* Top section: Score and metadata */}
+      {/* Top section: Score + small subtle view tweet link */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
           <Zap className="w-4 h-4 text-white/60" />
           <span className="text-xs text-gray-500 font-medium">Lead Quality</span>
         </div>
-        <div className={`text-2xl font-bold ${getScoreColor()}`}>
-          {score}
+        <div className="flex items-center gap-3">
+          {/* Small subtle View Tweet — just an icon + tiny text, not a button */}
+          <a
+            href={tweetUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-400 transition-colors"
+          >
+            <ExternalLink className="w-3 h-3" />
+            <span>view tweet</span>
+          </a>
+          <div className={`text-2xl font-bold ${getScoreColor()}`}>
+            {score}
+          </div>
         </div>
       </div>
 
       {/* Tweet text */}
-      <div className="space-y-4">
-        {/* Tweet text */}
-<p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
+      <div className="space-y-2">
+        <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
           {tweet}
         </p>
-        <a
-          href={tweetUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full border-white/20 text-white hover:bg-white/5 rounded-lg flex items-center justify-center gap-2 text-sm"
-          >
-            <ExternalLink className="w-4 h-4" />
-            View Tweet
-          </Button>
-        </a>
       </div>
 
       {/* Suggested reply section */}
@@ -157,26 +150,7 @@ export function LeadCard({
       </div>
 
       {/* Status dropdown */}
-      <Select defaultValue="new">
-        <SelectTrigger className="w-full bg-white/5 border-white/10 text-gray-300 rounded-lg py-2 px-3 text-sm">
-          <SelectValue />
-
-        </SelectTrigger>
-        <SelectContent className="bg-black/80 border-white/10">
-          <SelectItem value="new">
-            <span className="text-gray-300">New</span>
-          </SelectItem>
-          <SelectItem value="contacted">
-            <span className="text-gray-300">Contacted</span>
-          </SelectItem>
-          <SelectItem value="replied">
-            <span className="text-gray-300">Replied</span>
-          </SelectItem>
-          <SelectItem value="converted">
-            <span className="text-gray-300">Converted</span>
-          </SelectItem>
-        </SelectContent>
-      </Select>
+      
     </motion.div>
   )
 }

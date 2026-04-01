@@ -6,118 +6,297 @@ import axios from "axios";
 
 
 
-const nicheQueries: Record<string, string[]> = {
-  'video-editor': [
-    'looking for a video editor',
-    'need video editing help',
-    'hiring video editor',
-    'need someone to edit my videos',
-    'looking for YouTube video editor',
-    'need reels editor',
-    'short form video editor needed',
+ export const nicheQueries: Record<string, string[]> = {
+  // ── React ──
+  "React freelance leads": [
+    "looking for a React developer",
+    "need a freelance React dev",
+    "hiring React developer",
+    "need someone to build in React",
+    "need React freelancer",
   ],
-  'developer': [
-    'looking for a developer',
-    'need a freelance dev',
-    'hiring a React developer',
-    'need someone to build my website',
-    'looking for Next.js developer',
-    'need a full stack developer',
-    'hiring frontend developer',
+  "React jobs": [
+    "hiring React developer",
+    "React developer job opening",
+    "looking for React engineer",
+    "React developer remote job",
+    "React dev position open",
   ],
-  // 'social-media': [
-  //   'looking for a social media manager',
-  //   'need someone to manage my Instagram',
-  //   'hiring social media manager',
-  //   'need help with content creation',
-  //   'looking for SMM freelancer',
-  //   'need someone to grow my Twitter',
-  //   'hiring content creator',
-  // ],
-  'copywriter': [
-  'looking for a copywriter',
-  'need someone to write copy',
-  'hiring copywriter',
-  'need email copywriter',
-  'looking for landing page copywriter',
-  'need sales page writer',
-  'hiring UX writer',
-],
-'designer': [
-  'looking for a UI designer',
-  'need a UX designer',
-  'hiring product designer',
-  'need someone to design my app',
-  'looking for Figma designer',
-  'need landing page design',
-  'hiring graphic designer',
-],
-'ghostwriter': [
-  'looking for a ghostwriter',
-  'need someone to write my tweets',
-  'hiring ghostwriter',
-  'need LinkedIn ghostwriter',
-  'looking for content ghostwriter',
-  'need someone to write my newsletter',
-  'hiring Twitter ghostwriter',
-]
+
+  // ── Next.js ──
+  "Next.js freelance leads": [
+    "looking for a Next.js developer",
+    "need a freelance Next.js dev",
+    "hiring Next.js developer",
+    "need someone to build in Next.js",
+    "need Next.js freelancer",
+  ],
+  "Next.js jobs": [
+    "hiring Next.js developer",
+    "Next.js developer job opening",
+    "looking for Next.js engineer",
+    "Next.js developer remote job",
+  ],
+
+  // ── Vue ──
+  "Vue freelance leads": [
+    "looking for a Vue developer",
+    "need a Vue.js developer",
+    "hiring Vue developer",
+    "need Vue.js freelancer",
+  ],
+  "Vue jobs": [
+    "hiring Vue developer",
+    "Vue developer job opening",
+    "looking for Vue.js engineer",
+    "Vue developer remote job",
+  ],
+
+  // ── Angular ──
+  "Angular freelance leads": [
+    "looking for an Angular developer",
+    "need a freelance Angular dev",
+    "hiring Angular developer",
+    "need Angular freelancer",
+  ],
+  "Angular jobs": [
+    "hiring Angular developer",
+    "Angular developer job opening",
+    "looking for Angular engineer",
+    "Angular developer remote job",
+  ],
+
+  // ── Node.js ──
+  "Node.js freelance leads": [
+    "looking for a Node.js developer",
+    "need a freelance Node.js dev",
+    "hiring Node.js developer",
+    "need backend Node.js freelancer",
+  ],
+  "Node.js jobs": [
+    "hiring Node.js developer",
+    "Node.js developer job opening",
+    "looking for Node.js engineer",
+    "Node.js backend developer remote",
+  ],
+
+  // ── Python ──
+  "Python freelance leads": [
+    "looking for a Python developer",
+    "need a freelance Python dev",
+    "hiring Python developer",
+    "need Python freelancer",
+    "need someone to build Python script",
+  ],
+  "Python jobs": [
+    "hiring Python developer",
+    "Python developer job opening",
+    "looking for Python engineer",
+    "Python developer remote job",
+  ],
+
+  // ── Django ──
+  "Django freelance leads": [
+    "looking for a Django developer",
+    "need a freelance Django dev",
+    "hiring Django developer",
+    "need Django freelancer",
+  ],
+  "Django jobs": [
+    "hiring Django developer",
+    "Django developer job opening",
+    "looking for Django engineer",
+    "Django developer remote job",
+  ],
+
+  // ── Laravel ──
+  "Laravel freelance leads": [
+    "looking for a Laravel developer",
+    "need a freelance Laravel dev",
+    "hiring Laravel developer",
+    "need Laravel PHP freelancer",
+  ],
+  "Laravel jobs": [
+    "hiring Laravel developer",
+    "Laravel developer job opening",
+    "looking for Laravel engineer",
+    "Laravel developer remote job",
+  ],
+
+  // ── Flutter ──
+  "Flutter freelance leads": [
+    "looking for a Flutter developer",
+    "need a freelance Flutter dev",
+    "hiring Flutter developer",
+    "need Flutter app developer",
+  ],
+  "Flutter jobs": [
+    "hiring Flutter developer",
+    "Flutter developer job opening",
+    "looking for Flutter engineer",
+    "Flutter mobile developer remote",
+  ],
+
+  // ── React Native ──
+  "React Native freelance leads": [
+    "looking for a React Native developer",
+    "need a freelance React Native dev",
+    "hiring React Native developer",
+    "need React Native app developer",
+  ],
+  "React Native jobs": [
+    "hiring React Native developer",
+    "React Native developer job opening",
+    "looking for React Native engineer",
+    "React Native developer remote job",
+  ],
+
+  // ── Full Stack ──
+  "Full Stack freelance leads": [
+    "looking for a full stack developer",
+    "need a freelance full stack dev",
+    "hiring full stack developer",
+    "need someone to build my web app",
+    "need full stack freelancer",
+  ],
+  "Full Stack jobs": [
+    "hiring full stack developer",
+    "full stack developer job opening",
+    "looking for full stack engineer",
+    "full stack developer remote job",
+  ],
+
+  // ── Frontend ──
+  "Frontend freelance leads": [
+    "looking for a frontend developer",
+    "need a freelance frontend dev",
+    "hiring frontend developer",
+    "need someone to build my UI",
+    "need frontend freelancer",
+  ],
+  "Frontend jobs": [
+    "hiring frontend developer",
+    "frontend developer job opening",
+    "looking for frontend engineer",
+    "frontend developer remote job",
+  ],
+
+  // ── Backend ──
+  "Backend freelance leads": [
+    "looking for a backend developer",
+    "need a freelance backend dev",
+    "hiring backend developer",
+    "need someone to build my API",
+    "need backend freelancer",
+  ],
+  "Backend jobs": [
+    "hiring backend developer",
+    "backend developer job opening",
+    "looking for backend engineer",
+    "backend developer remote job",
+  ], 
+
+  // video editor
+   "YouTube freelance leads": [
+    "looking for a YouTube video editor",
+    "need someone to edit my YouTube videos",
+    "hiring YouTube editor",
+    "need a freelance YouTube editor",
+    "need video editor for my YouTube channel",
+  ],
+  "YouTube jobs": [
+    "hiring YouTube video editor",
+    "YouTube editor job opening",
+    "looking for YouTube video editor",
+    "YouTube editor remote job",
+    "video editor needed for YouTube channel",
+  ],
+ 
+  "Reels freelance leads": [
+    "looking for a Reels editor",
+    "need someone to edit my Instagram Reels",
+    "hiring Reels video editor",
+    "need a freelance Reels editor",
+    "need editor for my Reels content",
+  ],
+  "Reels jobs": [
+    "hiring Reels editor",
+    "Reels editor job opening",
+    "looking for Instagram Reels editor",
+    "Reels video editor remote job",
+    "social media editor needed for Reels",
+  ],
+ 
+  "Shorts freelance leads": [
+    "looking for a Shorts editor",
+    "need someone to edit my YouTube Shorts",
+    "hiring Shorts video editor",
+    "need a freelance Shorts editor",
+    "need editor for short form content",
+  ],
+  "Shorts jobs": [
+    "hiring Shorts editor",
+    "Shorts editor job opening",
+    "looking for YouTube Shorts editor",
+    "Shorts video editor remote job",
+    "short form video editor needed",
+  ],
+ 
+  "Podcast freelance leads": [
+    "looking for a podcast editor",
+    "need someone to edit my podcast",
+    "hiring podcast video editor",
+    "need a freelance podcast editor",
+    "need editor for podcast episodes",
+  ],
+  "Podcast jobs": [
+    "hiring podcast editor",
+    "podcast editor job opening",
+    "looking for podcast video editor",
+    "podcast editor remote job",
+    "audio video editor needed for podcast",
+  ],
+ 
+  "Motion Graphics freelance leads": [
+    "looking for a motion graphics designer",
+    "need someone to create motion graphics",
+    "hiring motion graphics editor",
+    "need a freelance motion graphics artist",
+    "need motion graphics for my videos",
+    "looking for animator for my content",
+  ],
+  "Motion Graphics jobs": [
+    "hiring motion graphics designer",
+    "motion graphics job opening",
+    "looking for motion graphics artist",
+    "motion graphics designer remote job",
+    "motion designer needed for video content",
+  ],
 }
 
 export function generateQueries(niche: string): string[] {
-const key = niche.toLowerCase().trim()
+  const queries = nicheQueries[niche]
 
-// Video Editor - removed bare 'edit'
-if (key.includes('video') || key.includes('reel') || key === 'video editor' || key.includes('youtube editor'))
-  return nicheQueries['video-editor']
+  if (!queries) {
+    console.warn("No queries found for:", niche)
+    return []
+  }
 
-// Developer - replaced bare 'next' with 'next.js'
-if (key.includes('dev') || key.includes('code') || key.includes('react') || 
-    key.includes('next.js') || key.includes('frontend') || key.includes('backend') || 
-    key.includes('fullstack'))
-  return nicheQueries['developer']
-
-// Social Media
-if (key.includes('social') || key.includes('smm') || key.includes('instagram') || 
-    key.includes('content'))
-  return nicheQueries['social-media']
-
-// Copywriter - replaced bare 'email' with 'email copy'
-if (key.includes('copy') || key.includes('copywriter') || key.includes('landing page') || 
-    key.includes('email copy'))
-  return nicheQueries['copywriter']
-
-// Designer - replaced bare 'ui' with 'ui design'
-if (key.includes('design') || key.includes('ui design') || key.includes('ux') || 
-    key.includes('figma'))
-  return nicheQueries['designer']
-
-// Ghostwriter
-if (key.includes('ghost') || key.includes('tweet') || key.includes('newsletter') || 
-    key.includes('linkedin'))
-  return nicheQueries['ghostwriter']
-
-console.log("Genenrating qureis " , niche)
-
-  // fall back for unknown niches
-  return [
-    `looking for a freelance ${niche}`,
-    `need a ${niche}`,
-    `hiring a ${niche}`,
-    `looking for ${niche} help`,
-  ]
+  console.log("Generating queries", queries)
+  return queries  
 }
 
 const FetchNEws = tool({
     name: 'Fetch_Tweets',
     description: 'Fetch Tweets from the apify api based on the keywords provided',
     parameters: z.object({
-    keywords: z.string().describe("Pass the EXACT string the user provided. Do not rephrase, translate, or infer. If user said 'Video-Editor', pass 'Video-Editor'."),
+    keywords: z.string().describe("Pass the EXACT all the keyword user provided. Do not rephrase, translate, or infer. If user said 'Video-Editor', pass 'Video-Editor' also if leads keyword provided pass as it as do not change or delete."),
         MaxResult: z.number().describe("Maximum results of the tweets ").max(20)
     }),
+
+
     execute: async function ({keywords , MaxResult}) {
 
-       // Dynamic import at runtime — forces Node.js to resolve it properly
-    const { ApifyClient } = await import('apify-client')
         console.log("KeyWords" , keywords)
 
         const since = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // 48 hours
@@ -155,8 +334,7 @@ const FetchNEws = tool({
 
 
         // Request the APi
-
-                    console.log("Searching for this quires" , searchTermss , keywords);
+       console.log("Searching for this quires" , searchTermss , keywords);
 
 
         const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/run-sync-get-dataset-items?token=${process.env.APIFY_API_TOKEN}`, {
@@ -182,7 +360,7 @@ const cleanedTweets = items.map((tweet: any) => ({
     url: tweet.url,
   }))
 
-  return cleanedTweets
+  return cleanedTweets // sending it to open ai 
 
     } catch (error) {
         console.log("Error while getting tweets" , error)

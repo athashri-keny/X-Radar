@@ -5,6 +5,38 @@ import { motion } from 'framer-motion'
 import { Search, ArrowRight } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group'
+
+
+
+const SubNiches: Record<string, string[]> = {
+  "Developer": [
+    "React Developer",
+    "Next.js Developer",
+    "Full Stack Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Node.js Developer",
+  ],
+  "VideoEditor": [
+    "YouTube",
+    "Reels",
+    "Shorts",
+    "Podcast",
+    "Motion Graphics",
+  ],
+}
+
+const Niches = Object.keys(SubNiches) // show only main key
+
 
 interface DashboardSearchProps {
   onSearch: (query: string) => Promise<void> // pass the keyword up
@@ -20,9 +52,14 @@ export function DashboardSearch({
   cooldownEndTime = 0,
 }: DashboardSearchProps) {
 
-  const [searchQuery, setSearchQuery] = useState('') as any
 
-  const [localScanning, setLocalScanning] = useState(false)
+
+const [selectedMain, setSelectedMain] = useState('')
+
+const [stack, setStack] = useState("")
+const [goal, setGoal] = useState("")
+
+const [localScanning, setLocalScanning] = useState(false)
   const [countdown, setCountdown] = useState('')
   const [isCooldown, setIsCooldown] = useState(false)
 
@@ -52,7 +89,12 @@ export function DashboardSearch({
     return () => clearInterval(interval)
   }, [cooldownEndTime])
 
+
+      const searchQuery = `${stack} ${goal}`.trim()  as string
+
   const handleSearch = async() => {
+      console.log("Full query before tool call:", searchQuery)
+
   if (!searchQuery.trim()) return
     setLocalScanning(true)
     try {
@@ -60,9 +102,128 @@ export function DashboardSearch({
     } finally {
       setLocalScanning(false)
     }
-  
-     
   }
+
+
+
+
+
+  // render UI developer
+  const renderDeveloperUI = () => (
+    
+    <>
+    
+<div className="space-y-1">
+
+  <p className="text-xs text-white mt-1 mb-3">I am a </p>
+    <ToggleGroup
+      type="single"
+      value={stack}
+      onValueChange={(val) => {setStack(val)}}
+      disabled={isScanning || isCooldown}
+      className="flex flex-wrap gap-2 justify-start"
+    >
+     {["React", "Next.js", "Vue", "Angular", "Node.js", "Python", "Django", "Laravel", "Flutter", "React Native", "Full Stack", "Frontend", "Backend"].map((item) => (
+  <ToggleGroupItem
+    key={item}
+    value={item}
+    className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+  >
+    {item}
+  </ToggleGroupItem>
+))}
+    </ToggleGroup>
+  </div>
+
+  <div className="space-y-1">
+    <p className="text-xs text-white mt-5 mb-3">Looking for</p>
+    <ToggleGroup
+      type="single"
+      value={goal}
+      onValueChange={(val:any) => setGoal(val)}
+      disabled={isScanning || isCooldown}
+      className="flex gap-2 justify-start"
+    >
+      
+      <ToggleGroupItem
+        value="freelance leads"
+        className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+      >
+        Freelance leads
+      </ToggleGroupItem>
+      <ToggleGroupItem
+        value="jobs"
+        className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+      >
+        Jobs
+      </ToggleGroupItem>
+     
+    </ToggleGroup>
+  </div>
+  <div className='text-gray-200'>
+Your Search qurey will be I am a {stack} developer looking for {goal}
+</div>
+    </>
+  )
+
+
+
+  const renderVideoEditorUI = () => (
+    <>
+      <div className="space-y-1">
+        <p className="text-xs text-white mt-1 mb-3">I am a</p>
+        <ToggleGroup
+          type="single"
+          value={stack}
+          onValueChange={(val) => setStack(val)}
+          disabled={isScanning || isCooldown}
+          className="flex flex-wrap gap-2 justify-start"
+        >
+          {SubNiches["VideoEditor"].map((item) => (
+            <ToggleGroupItem
+              key={item}
+              value={item}
+              className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+            >
+              {item}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+ 
+      <div className="space-y-1">
+        <p className="text-xs text-white mt-5 mb-3">Looking for</p>
+        <ToggleGroup
+          type="single"
+          value={goal}
+          onValueChange={(val) => setGoal(val)}
+          disabled={isScanning || isCooldown}
+          className="flex gap-2 justify-start"
+        >
+          <ToggleGroupItem
+            value="freelance leads"
+            className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+          >
+            Freelance leads
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="Jobs"
+            className="px-4 py-1.5 rounded-full border border-white/10 text-sm data-[state=on]:bg-white data-[state=on]:text-black text-gray-400 hover:text-white hover:border-white/30 transition"
+          >
+            Jobs
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+ 
+      {stack && goal && (
+        <p className="text-gray-200 text-xs mt-2">
+          Your Search Qurey will be:  <span className="text-white font-bold">I am {stack} Video Editor looking for {goal}</span>
+        </p>
+      )}
+    </>
+  )
+
+
 
   return (
     <div className="space-y-4">
@@ -101,20 +262,47 @@ export function DashboardSearch({
         transition={{ duration: 0.6, delay: 0.1 }}
         className="flex gap-3"
       >
+        
         <div className="flex-1 relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
-          <Input
-            type="text"
-            placeholder="Search hiring keywords e.g. hiring developer"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            disabled={isScanning || isCooldown}
-            className="pl-12 py-6 text-base bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg disabled:opacity-50"
-          />
+<div className="space-y-3">
+  
+  <Combobox 
+  items={Niches}>
+      <ComboboxInput placeholder="Enter Niche"
+        disabled={isScanning || isCooldown}
+    readOnly
+      />
+      <ComboboxContent className= 'bg-black '>
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+          {(item) => (
+            <ComboboxItem key={item} value={item} 
+          
+            onClick={() =>
+            {
+              setSelectedMain(item)
+            }
+          }
+            >
+              {item}
+            </ComboboxItem>
+          )}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+
+  {selectedMain === 'Developer' && renderDeveloperUI()}
+            {selectedMain == 'VideoEditor' && renderVideoEditorUI()}
+
+</div>
+
+
+      
+
         </div>
         <Button
           onClick={handleSearch}
-          disabled={localScanning || isCooldown || !searchQuery.trim()}
+          disabled={localScanning || isCooldown || !searchQuery.trim() || !stack || !goal }
           className="px-8 py-6 bg-white text-black hover:bg-gray-100 disabled:bg-gray-700 disabled:text-gray-500 font-semibold rounded-lg flex items-center gap-2 text-base transition"
         >
           {localScanning ? (

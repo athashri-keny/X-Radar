@@ -9,66 +9,6 @@ import { AnimatedBackground } from '@/components/animated-background'
 import { GradientOrbs } from '@/components/gradient-orbs'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
-import { log } from 'console'
-
-
-// Mock lead data with score reasons
-const mockLeads = [
-  {
-    id: 1,
-    username: 'Sarah Chen',
-    handle: 'sarahchen_co',
-    tweet: "Hiring a senior React developer to lead our frontend team. Must have 5+ years experience with TypeScript and have shipped SaaS products.",
-    score: 92,
-    leads: 3,
-    scoreReason: 'High intent — decision maker, specific skills, immediate need',
-  },
-  {
-    id: 2,
-    username: 'Alex Martinez',
-    handle: 'alexmartinez',
-    tweet: 'Looking for a content writer to create SEO-optimized blog posts. Ideally someone familiar with SaaS marketing and technical writing.',
-    score: 78,
-    leads: 5,
-    scoreReason: 'Good intent — clear role description, niche expertise required',
-  },
-  {
-    id: 3,
-    username: 'Jordan Liu',
-    handle: 'jordan_dev',
-    tweet: 'Need a freelance designer for a startup project. Looking for someone who can do UI/UX and some branding work.',
-    score: 65,
-    leads: 2,
-    scoreReason: 'Medium intent — vague scope, multiple skills, startup budget uncertain',
-  },
-  {
-    id: 4,
-    username: 'Emma Robinson',
-    handle: 'emmadesigns',
-    tweet: 'Seeking a full-stack developer. Project involves Next.js, PostgreSQL, and AWS. Contract work, 6-month project.',
-    score: 88,
-    leads: 4,
-    scoreReason: 'High intent — specific tech stack, defined timeline, contract terms clear',
-  },
-  {
-    id: 5,
-    username: 'Tech Startup Hub',
-    handle: 'techstartuphub',
-    tweet: 'We need a DevOps engineer to set up our infrastructure. Experience with Kubernetes and Docker required.',
-    score: 72,
-    leads: 6,
-    scoreReason: 'Good intent — specialized role, clear requirements, infrastructure focus',
-  },
-  {
-    id: 6,
-    username: 'Michael Zhang',
-    handle: 'michaelzhang',
-    tweet: 'Hiring a video editor for YouTube content. Must have experience with B2B tech content and fast turnaround times.',
-    score: 55,
-    leads: 1,
-    scoreReason: 'Lower intent — niche role, budget not mentioned, engagement unclear',
-  },
-]
 
 interface leads {
   _id: string
@@ -112,7 +52,6 @@ export default function Dashboard() {
   // }
 
 
-
   const handleSearch = async(keyword: string) => {
         setIsScanning(true)
      setLeadsFoundNumber(0)
@@ -123,7 +62,7 @@ export default function Dashboard() {
    })
 
    console.log('successfully agent raned' , res.data)
-     const fetchedLeads = res.data.leads
+       const fetchedLeads = res.data.leads
     setleads(fetchedLeads)
     setLeadsFoundNumber(fetchedLeads.length)
    setCooldownEndTime(Date.now() + SIX_HOURS_MS)
