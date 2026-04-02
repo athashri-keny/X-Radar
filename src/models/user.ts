@@ -26,11 +26,11 @@ const UserSchema = new Schema<User>({
     },
     password: {
         type: String,
-        required: [true , "Passsword is requireed!"]
+        required: false
     },
     verifycode: {
         type: String,
-        required: [true , "Verifycode is required!"]
+        required: false
     },
     isVerifiedEmail: {
         type: Boolean,

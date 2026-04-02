@@ -20,12 +20,12 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
           allowDangerousEmailAccountLinking: true // This ensures users who start with credentials can later add Google sign-in, or vice versa
-
         }),
-        // TwitterProvider({
-        //     clientId: process.env.TWITER_CLIENT_ID!,
-        //     clientSecret: process.env.TWITER_CLIENT_SECRET!
-        // }),
+        TwitterProvider({
+            clientId: process.env.TWITER_CLIENT_ID!,
+            clientSecret: process.env.TWITER_CLIENT_SECRET!
+        }),
+
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -33,9 +33,11 @@ export const authOptions: NextAuthOptions = {
                 password: {label: "Password" , type: 'password' , placeholder: "Enter your password"},
                 AutoLoginToken: {label: "Auto login token" , type: 'text'}
             },
+              
+            // authorize() is ONLY for Credentials login
            async authorize(credentials: any):Promise<any> {
             await DBConnect()
-              console.log("1. authorize called", credentials?.email)
+            //   console.log("1. authorize called", credentials?.email)
             // for normal login
           try {
                 if(credentials?.email && credentials.password) {
@@ -92,7 +94,7 @@ export const authOptions: NextAuthOptions = {
 
     // callbacks are functions that run during auth
     callbacks: {
-        // if user clicks on signin 
+    // if the user directly clicks on google login in signup then this will run
         async signIn({account , profile}) {
 
             if (account?.provider === 'google') {
