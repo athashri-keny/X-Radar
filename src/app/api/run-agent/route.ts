@@ -65,7 +65,17 @@ import LeadsModel from "@/models/leads";
            qureyType: 'Latest'
          })
 
-         const items = res.data.filter((tweet: any) => tweet.type !== 'mock_tweet')
+         const items = res.data.filter((tweet: any) => {
+
+           return (
+    (tweet.likeCount ?? 0) < 100 &&          // not already viral
+    (tweet.replyCount ?? 0) < 10 &&           // low replies = less competition
+    (tweet.viewCount ?? 0) < 1000 &&          // fresh/unseen tweet
+    tweet.isReply !== true &&                 // skip reply tweets
+    (tweet.lang === 'en' || !tweet.lang)      // english only
+  )
+         })
+
 
            console.log("Query ran successfully!" , items)
 
@@ -110,7 +120,7 @@ const cleanedTweets = items.map((tweet: any) => ({
         Tweeturl: lead.tweetUrl,
         TweetText: lead.tweetText,
         Score: lead.score,             
-       suggestReplyAi: lead.suggestedReply  
+       suggestedReply: lead.suggestedReply  
        })
        await newLead.save()
         savedLeads.push(newLead)

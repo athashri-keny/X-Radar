@@ -6,7 +6,7 @@ userId: mongoose.Types.ObjectId,
 TweetText: string,
 Tweeturl: string,
 Score: Number,
-suggestReplyAi: string,
+suggestedReply: string,
 createdAt: Date
 }
 
@@ -33,7 +33,7 @@ const LeadsSchema = new Schema<Lead>({
         type: Number,
         required: [true , "Tweet Url is required"]
     },
-    suggestReplyAi: {
+    suggestedReply: {
         type: String,
       required: [true , "Suggest Ai reply required"],
       maxLength: 5000
