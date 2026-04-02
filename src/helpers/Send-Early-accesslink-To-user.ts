@@ -1,4 +1,6 @@
-import transporter from "@/lib/Emailtransporter";
+import resend from "@/lib/Emailtransporter";
+import { NextApiRequest, NextApiResponse } from "next";
+
 
 function getEmailHtml(email: string, niche: string) {
   return `
@@ -112,15 +114,19 @@ function getEmailHtml(email: string, niche: string) {
   `;
 }
 
-export async function SendAccessReadyEmail(UserEmail: string, niche: string) {
-  try {
-    await transporter.sendMail({
-      from: "X-Radar <xradar10@gmail.com>",
+export async function SendAccessReadyEmail(UserEmail: string, niche: string ) {
+  
+  const {data , error} =   await resend.emails.send({
+      from: "X-Radar <hello@xradar.in>",
       to: UserEmail,
       subject: "Your X-Radar early access is ready 🎯",
       html: getEmailHtml(UserEmail, niche),
     });
-  } catch (error) {
-    console.log("Error while sending access ready email:", error);
-  }
-}
+
+     if (error) {
+      return Response.json({ error }, { status: 500 });
+    }
+
+    return Response.json(data);
+  
+  } 

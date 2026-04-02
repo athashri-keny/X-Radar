@@ -1,4 +1,4 @@
-import transporter from "@/lib/Emailtransporter";
+import resend from "@/lib/Emailtransporter";
 
 async function EmailAboutNewSignup(
   UserEmail: string,
@@ -90,8 +90,8 @@ async function EmailAboutNewSignup(
 </html>
     `;
 
-    await transporter.sendMail({
-      from: `"X-Radar" <xradar10@gmail.com>`,
+    await resend.emails.send({
+      from: `"X-Radar" <hello@xradar.in>`,
       to: UserEmail,
       subject: `${verifycode} is your X-Radar verification code`,
       text: `Hi ${Name},\n\nYour X-Radar verification code is: ${verifycode}\n\nExpires in 10 minutes.\n\n— The X-Radar Team`,
