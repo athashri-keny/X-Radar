@@ -35,7 +35,7 @@ const LeadsSchema = new Schema<Lead>({
     },
     suggestedReply: {
         type: String,
-      required: [true , "Suggest Ai reply required"],
+      required: false,
       maxLength: 5000
     },
      createdAt: {

@@ -15,7 +15,7 @@ interface leads {
   TweetText: string,
   Tweeturl: string,
   Score: number,
-  suggestReplyAi: string,
+  suggestReply: string,
 }
 
 
@@ -160,7 +160,7 @@ if (saved) {
   <LeadCard
     key={tweet._id ?? tweet.id}
     score={tweet.Score ?? tweet.score}
-    suggestReplyAi={tweet.suggestReplyAi ?? tweet.scoreReason}
+    suggestReplyAi={tweet.suggestedReply}
     tweet={tweet.TweetText ?? tweet.tweet}
     tweetUrl={tweet.Tweeturl ?? tweet.handle}
   />

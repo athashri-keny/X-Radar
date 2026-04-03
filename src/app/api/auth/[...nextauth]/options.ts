@@ -129,7 +129,12 @@ export const authOptions: NextAuthOptions = {
 
         // adding custom user data into jwt token (It’s a secure object that stores user info after login) 
         // It lets you inject custom data into jwt token
+        
+     // Manages Token Data
+
         async jwt({token , user , account}){
+
+            console.log("Account provider = " , account?.provider)
             if (user) {
                 
                 if (account?.provider === 'credentials') {
@@ -140,18 +145,19 @@ export const authOptions: NextAuthOptions = {
                     token.email = user.email
 
                     // if the login is from google (oauth)
-                } else {
-                    await DBConnect()
+                }    if (account?.provider === 'google') {
+                     await DBConnect()
 
                     const dbuser = await UserModel.findOne({Email: user.email})
                     // creating a token for google oauth users
                     if (dbuser) {
-                        token._id = user.id.toString(),
-                        token.name = user.name,
-                        token.isVerfiedEmail = user.isVerfiedEmail || false,
-                        token.email = user.email
+                        token._id = dbuser.id.toString(),
+                        token.name = dbuser.Name,
+                        token.isVerfiedEmail = dbuser.isVerifiedEmail || false,
+                        token.email = dbuser.Email
                     }
-                }        
+                }      
+              
             }
             return token
         },
