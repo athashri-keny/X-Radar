@@ -55,6 +55,7 @@ export default function Dashboard() {
   const handleSearch = async(keyword: string) => {
         setIsScanning(true)
      setLeadsFoundNumber(0)
+     seterror("")
    try {
 
    const res =  await axios.post('/api/run-agent' , {
@@ -93,6 +94,7 @@ if (saved) {
     setleads(res.data.foundLeads)
     setLeadsFoundNumber(res.data.foundLeads.length) 
         setleadsHistory(res.data.searchruns ?? [])
+        seterror("")
     console.log(res.data)
    } catch (error) {
     console.log("Error while fetching the tweets" , error)
