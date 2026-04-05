@@ -76,14 +76,15 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
   tweet.id !== -1 && tweet.type !== 'mock_tweet'
 
            return (
-    (tweet.likeCount ?? 0) < 300 &&          // not already viral
-    (tweet.replyCount ?? 0) < 100 &&           // low replies = less competition
-    (tweet.viewCount ?? 0) < 5000 &&          // fresh/unseen tweet
+    (tweet.likeCount ?? 0) < 20 &&          // not already viral
+    (tweet.replyCount ?? 0) < 15 &&           // low replies = less competition
+    (tweet.viewCount ?? 0) < 2000 &&          // fresh/unseen tweet
     tweet.isReply !== true &&                 // skip reply tweets
     (tweet.lang === 'en' || !tweet.lang)      // english only
   )
          })
 
+        
 
            console.log("Query ran successfully!" , items)
 
