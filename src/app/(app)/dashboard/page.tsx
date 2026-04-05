@@ -32,7 +32,6 @@ export default function Dashboard() {
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0)
   const [cooldownEndTime, setCooldownEndTime] = useState(0)
   const [leads , setleads] = useState<leads[]>([])
-  const [error , seterror] = useState("")
   const [leadsHistory , setleadsHistory] = useState<leadsHistory[]>([])
 
 
@@ -55,7 +54,7 @@ export default function Dashboard() {
   const handleSearch = async(keyword: string) => {
         setIsScanning(true)
      setLeadsFoundNumber(0)
-     seterror("")
+
    try {
 
    const res =  await axios.post('/api/run-agent' , {
@@ -69,9 +68,7 @@ export default function Dashboard() {
    setCooldownEndTime(Date.now() + SIX_HOURS_MS)
   localStorage.setItem('CooldownEndTime' , String(endTime))
    } catch (error: any) {
-    console.log("Error while runnung the agent " , error)
-    seterror("No latest tweets found right now from this niche please try again later")
-    return error
+    console.error("Error while running the agent:", error.response?.data?.message || error.message)
    } finally {
     setIsScanning(false)
    }
@@ -86,19 +83,17 @@ if (saved) {
   setCooldownEndTime(Number(saved))
 }
 
-
   const fetchLeadsFrombackend = async() => {
    try {
     const res = await axios.get('/api/get-recent-leads')
-    // setleads(res.data)
     setleads(res.data.foundLeads)
     setLeadsFoundNumber(res.data.foundLeads.length) 
-        setleadsHistory(res.data.searchruns ?? [])
-        seterror("")
+    setleadsHistory(res.data.searchruns ?? [])
     console.log(res.data)
-   } catch (error) {
-    console.log("Error while fetching the tweets" , error)
-    return error
+   } catch (error: any) {
+    console.error("Error while fetching recent leads:", error.message)
+    // Don't set error for initial load - user hasn't searched yet
+    // Only log it for debugging
    }
   }
   fetchLeadsFrombackend()
@@ -179,13 +174,6 @@ if (saved) {
               )}
             </div>
 
-{error ? (
-  <div>
-   No latest Tweet found from this niche Right now please try again later
-     </div>
-): 
-null
-}
 
             {/* Sidebar */}
             <div className="lg:col-span-1">

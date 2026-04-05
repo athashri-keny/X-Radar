@@ -20,20 +20,7 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
 
  export async function POST(request: NextRequest) {
     try {
-        // Validate required environment variables
-        if (!process.env.APIFY_API_TOKEN) {
-            console.error("Missing APIFY_API_TOKEN environment variable")
-            return NextResponse.json({
-                message: "Server configuration error: Missing APIFY_API_TOKEN"
-            }, {status: 500})
-        }
 
-        if (!process.env.OPENAI_API_KEY) {
-            console.error("Missing OPENAI_API_KEY environment variable")
-            return NextResponse.json({
-                message: "Server configuration error: Missing OPENAI_API_KEY"
-            }, {status: 500})
-        }
 
         await DBConnect()
 
@@ -90,7 +77,7 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
 
            return (
     (tweet.likeCount ?? 0) < 20 &&          // not already viral
-    (tweet.replyCount ?? 0) < 15 &&           // low replies = less competition
+    (tweet.replyCount ?? 0) < 30 &&           // low replies = less competition
     (tweet.viewCount ?? 0) < 2000 &&          // fresh/unseen tweet
     tweet.isReply !== true &&                 // skip reply tweets
     (tweet.lang === 'en' || !tweet.lang)      // english only
@@ -112,20 +99,19 @@ const cleanedTweets = items.map((tweet: any) => ({
 
 
 //   // giving cleaned tweet to open ai for filtering and lead scoring 
-console.log("Calling ScorerAgent with", cleanedTweets.length, "tweets")
 
-   try {
-     const result = await run(ScorerAgent , JSON.stringify(cleanedTweets))
-     const AgentOutPut = result.finalOutput ?? ""
+   const result = await run(ScorerAgent , JSON.stringify(cleanedTweets))
 
-     console.log("raw output from agent type = " ,  typeof AgentOutPut) // string
-     console.log("Agent raw output:", AgentOutPut)
+   const AgentOutPut = result.finalOutput ?? ""
 
-     const jsonMatch = AgentOutPut.match(/\[[\s\S]*\]/) 
-     
-     if (!jsonMatch) {
-       throw new Error("Agent didn't return a valid JSON array. Raw output: " + AgentOutPut)
-     }
+
+    console.log("raw output from agent type = " ,  typeof AgentOutPut) // string
+
+       const jsonMatch = AgentOutPut.match(/\[[\s\S]*\]/) 
+       
+       if (!jsonMatch) {
+  throw new Error("Agent didn't return a valid JSON array")
+}
 
       // loop cause agent will return an array objects of leads
 
@@ -167,25 +153,14 @@ console.log("Calling ScorerAgent with", cleanedTweets.length, "tweets")
     leads: savedLeads
    } , {status: 200})
 
-   } catch (agentError) {
-      console.error("Error while running agent:", agentError instanceof Error ? agentError.message : String(agentError))
-      console.error("Full error:", agentError)
-      NewSearchRunModel.status = 'failed'
-      await NewSearchRunModel.save()
-      return NextResponse.json({
-         message: "Error while running agent: " + (agentError instanceof Error ? agentError.message : String(agentError)),
-         error: process.env.NODE_ENV === 'development' ? agentError : undefined
-      } , {status: 500})
-   }
 
-       } catch (apifyError) {
-        console.error("Error while running Apify:", apifyError instanceof Error ? apifyError.message : String(apifyError))
-        console.error("Full Apify error:", apifyError)
+       } catch (error) {
+        console.log("Error while running apfiy" , error) 
         NewSearchRunModel.status = 'failed'
         await NewSearchRunModel.save()
      return NextResponse.json({
-         message: "Error while running Apify: " + (apifyError instanceof Error ? apifyError.message : String(apifyError)),
-         error: process.env.NODE_ENV === 'development' ? apifyError : undefined
+         message: "Error while running agent",       
+      
       } , {status: 500})
        }
 
@@ -250,12 +225,9 @@ console.log("Calling ScorerAgent with", cleanedTweets.length, "tweets")
      // }
     
     } catch (error) {
-        console.error("Error in main route handler:", error instanceof Error ? error.message : String(error))
-        console.error("Full error:", error)
-        
+        console.log("Error while running the agent " , error)
         return NextResponse.json({
-            message: "Error while running the agent: " + (error instanceof Error ? error.message : String(error)),
-            error: process.env.NODE_ENV === 'development' ? error : undefined
+            message: "Error while runnung the agent"
         } , {status: 500})
     }
 }
