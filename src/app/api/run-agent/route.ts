@@ -66,7 +66,7 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
 
   const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/run-sync-get-dataset-items?token=${process.env.APIFY_API_TOKEN}`, {
            searchTerms: [...searchTermss],
-           maxItems: 80,
+           maxItems: 30,
            qureyType: 'Latest'
          })
 
