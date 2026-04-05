@@ -11,7 +11,10 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { generateQueries } from "@/helpers/NicheQuries";
 import axios from "axios";
 import LeadsModel from "@/models/leads";
+import { Client } from "@upstash/qstash"
 
+
+const client = new Client({token: process.env.QSTASH_TOKEN})
 
 
 
@@ -41,7 +44,8 @@ import LeadsModel from "@/models/leads";
        const NewSearchRunModel = new SearchRunModel({
          UserId: new mongoose.Types.ObjectId(session.user._id),
          keywords: keywords,
-         status: 'pending'
+         status: 'pending',
+         LastRun: Date.now()
        })
 
        await NewSearchRunModel.save()
@@ -50,13 +54,13 @@ import LeadsModel from "@/models/leads";
 
 
         const since = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 4 days
-        
+
          // adding since (time) in the array
           const searchTermss = generateQueries(keywords).map(
                      qurey => `${qurey} since:${since}`
                  )
              
-       try {
+    try {
         
  console.log("Searching for this quires" , searchTermss , keywords);
 
@@ -93,7 +97,8 @@ const cleanedTweets = items.map((tweet: any) => ({
   }))
 
 
-  // giving cleaned tweet to open ai for filtering and lead scoring 
+//   // giving cleaned tweet to open ai for filtering and lead scoring 
+
    const result = await run(ScorerAgent , JSON.stringify(cleanedTweets))
 
    const AgentOutPut = result.finalOutput ?? ""
@@ -134,17 +139,24 @@ const cleanedTweets = items.map((tweet: any) => ({
       await NewSearchRunModel.save()
     
 
+      // setting up the (Qstash) for Send an email when the cooldown timer ends
+         await client.publishJSON({
+            url: 'https://xradar.in/api/notify-cooldown',
+            body: {userId: session.user._id , Email: session.user.email , Name: session.user.name},
+            delay: 86400 
+        })
+        
+
    return NextResponse.json({
     message: "Agent ran successfully" , 
     leads: savedLeads
    } , {status: 200})
 
+
        } catch (error) {
-        
         console.log("Error while running apfiy" , error) 
         NewSearchRunModel.status = 'failed'
         await NewSearchRunModel.save()
-
      return NextResponse.json({
          message: "Error while running agent",       
       

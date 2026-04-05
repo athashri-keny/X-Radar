@@ -5,6 +5,7 @@ export interface SearchRun extends Document{
     UserId: mongoose.Types.ObjectId,
     keywords: string,
     status: 'pending' | 'done' | 'failed',
+    LastRun: Date
 }
 
 
@@ -24,6 +25,10 @@ const SearchRunSchema = new Schema<SearchRun>({
         enum: ['pending', 'done' , 'failed'],
         default: 'pending'
     },
+    LastRun: {
+        type: Date,
+        required: [true , "Last run date is required!"]
+    }
 } , {
 timestamps: true
 })
