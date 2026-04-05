@@ -1,268 +1,175 @@
- export const nicheQueries: Record<string, string[]> = {
+export const nicheQueries: Record<string, string[]> = {
   // ── React ──
-  "React freelance leads": [
+  "React": [
+    "need a React developer",
     "looking for a React developer",
-    "need a freelance React dev",
-    "hiring React developer",
     "need someone to build in React",
-    "need React freelancer",
-  ],
-  "React jobs": [
-    "hiring React developer",
-    "React developer job opening",
-    "looking for React engineer",
-    "React developer remote job",
-    "React dev position open",
+    "anyone know a good React developer",
+    "need a freelancer to build in React",
+    "hiring a React developer",
   ],
 
   // ── Next.js ──
-  "Next.js freelance leads": [
+  "Next.js": [
+    "need a Next.js developer",
     "looking for a Next.js developer",
-    "need a freelance Next.js dev",
-    "hiring Next.js developer",
     "need someone to build in Next.js",
-    "need Next.js freelancer",
-  ],
-  "Next.js jobs": [
-    "hiring Next.js developer",
-    "Next.js developer job opening",
-    "looking for Next.js engineer",
-    "Next.js developer remote job",
+    "anyone know a good Next.js developer",
+    "need a freelancer to build in Next.js",
+    "hiring a Next.js developer",
   ],
 
   // ── Vue ──
-  "Vue freelance leads": [
+  "Vue": [
+    "need a Vue developer",
     "looking for a Vue developer",
-    "need a Vue.js developer",
-    "hiring Vue developer",
-    "need Vue.js freelancer",
-  ],
-  "Vue jobs": [
-    "hiring Vue developer",
-    "Vue developer job opening",
-    "looking for Vue.js engineer",
-    "Vue developer remote job",
+    "need someone to build in Vue",
+    "anyone know a good Vue developer",
+    "hiring a Vue developer",
   ],
 
   // ── Angular ──
-  "Angular freelance leads": [
+  "Angular": [
+    "need an Angular developer",
     "looking for an Angular developer",
-    "need a freelance Angular dev",
-    "hiring Angular developer",
-    "need Angular freelancer",
-  ],
-  "Angular jobs": [
-    "hiring Angular developer",
-    "Angular developer job opening",
-    "looking for Angular engineer",
-    "Angular developer remote job",
+    "need someone to build in Angular",
+    "anyone know a good Angular developer",
+    "hiring an Angular developer",
   ],
 
   // ── Node.js ──
-  "Node.js freelance leads": [
+  "Node.js": [
+    "need a Node.js developer",
     "looking for a Node.js developer",
-    "need a freelance Node.js dev",
-    "hiring Node.js developer",
-    "need backend Node.js freelancer",
-  ],
-  "Node.js jobs": [
-    "hiring Node.js developer",
-    "Node.js developer job opening",
-    "looking for Node.js engineer",
-    "Node.js backend developer remote",
+    "need someone to build with Node.js",
+    "anyone know a good Node.js developer",
+    "hiring a Node.js developer",
   ],
 
   // ── Python ──
-  "Python freelance leads": [
+  "Python": [
+    "need a Python developer",
     "looking for a Python developer",
-    "need a freelance Python dev",
-    "hiring Python developer",
-    "need Python freelancer",
-    "need someone to build Python script",
-  ],
-  "Python jobs": [
-    "hiring Python developer",
-    "Python developer job opening",
-    "looking for Python engineer",
-    "Python developer remote job",
+    "need someone to build a Python script",
+    "anyone know a good Python developer",
+    "need a freelancer to build in Python",
+    "hiring a Python developer",
   ],
 
   // ── Django ──
-  "Django freelance leads": [
+  "Django": [
+    "need a Django developer",
     "looking for a Django developer",
-    "need a freelance Django dev",
-    "hiring Django developer",
-    "need Django freelancer",
-  ],
-  "Django jobs": [
-    "hiring Django developer",
-    "Django developer job opening",
-    "looking for Django engineer",
-    "Django developer remote job",
+    "need someone to build in Django",
+    "anyone know a good Django developer",
+    "hiring a Django developer",
   ],
 
   // ── Laravel ──
-  "Laravel freelance leads": [
+  "Laravel": [
+    "need a Laravel developer",
     "looking for a Laravel developer",
-    "need a freelance Laravel dev",
-    "hiring Laravel developer",
-    "need Laravel PHP freelancer",
-  ],
-  "Laravel jobs": [
-    "hiring Laravel developer",
-    "Laravel developer job opening",
-    "looking for Laravel engineer",
-    "Laravel developer remote job",
+    "need someone to build in Laravel",
+    "anyone know a good Laravel developer",
+    "hiring a Laravel developer",
   ],
 
   // ── Flutter ──
-  "Flutter freelance leads": [
+  "Flutter": [
+    "need a Flutter developer",
     "looking for a Flutter developer",
-    "need a freelance Flutter dev",
-    "hiring Flutter developer",
-    "need Flutter app developer",
-  ],
-  "Flutter jobs": [
-    "hiring Flutter developer",
-    "Flutter developer job opening",
-    "looking for Flutter engineer",
-    "Flutter mobile developer remote",
+    "need someone to build a Flutter app",
+    "anyone know a good Flutter developer",
+    "hiring a Flutter developer",
   ],
 
   // ── React Native ──
-  "React Native freelance leads": [
+  "React Native": [
+    "need a React Native developer",
     "looking for a React Native developer",
-    "need a freelance React Native dev",
-    "hiring React Native developer",
-    "need React Native app developer",
-  ],
-  "React Native jobs": [
-    "hiring React Native developer",
-    "React Native developer job opening",
-    "looking for React Native engineer",
-    "React Native developer remote job",
+    "need someone to build a React Native app",
+    "anyone know a good React Native developer",
+    "hiring a React Native developer",
   ],
 
   // ── Full Stack ──
-  "Full Stack freelance leads": [
+  "Full Stack": [
+    "need a full stack developer",
     "looking for a full stack developer",
-    "need a freelance full stack dev",
-    "hiring full stack developer",
     "need someone to build my web app",
-    "need full stack freelancer",
-  ],
-  "Full Stack jobs": [
-    "hiring full stack developer",
-    "full stack developer job opening",
-    "looking for full stack engineer",
-    "full stack developer remote job",
+    "anyone know a good full stack developer",
+    "need a freelancer to build my app",
+    "hiring a full stack developer",
   ],
 
   // ── Frontend ──
-  "Frontend freelance leads": [
+  "Frontend": [
+    "need a frontend developer",
     "looking for a frontend developer",
-    "need a freelance frontend dev",
-    "hiring frontend developer",
     "need someone to build my UI",
-    "need frontend freelancer",
-  ],
-  "Frontend jobs": [
-    "hiring frontend developer",
-    "frontend developer job opening",
-    "looking for frontend engineer",
-    "frontend developer remote job",
+    "anyone know a good frontend developer",
+    "need a freelancer to build my website",
+    "hiring a frontend developer",
   ],
 
   // ── Backend ──
-  "Backend freelance leads": [
+  "Backend": [
+    "need a backend developer",
     "looking for a backend developer",
-    "need a freelance backend dev",
-    "hiring backend developer",
     "need someone to build my API",
-    "need backend freelancer",
+    "anyone know a good backend developer",
+    "need a freelancer to build my backend",
+    "hiring a backend developer",
   ],
-  "Backend jobs": [
-    "hiring backend developer",
-    "backend developer job opening",
-    "looking for backend engineer",
-    "backend developer remote job",
-  ], 
 
-  // video editor
-   "YouTube freelance leads": [
-    "looking for a YouTube video editor",
+  // ── YouTube ──
+  "YouTube": [
+    "need a YouTube video editor",
+    "looking for a YouTube editor",
     "need someone to edit my YouTube videos",
-    "hiring YouTube editor",
+    "anyone know a good YouTube editor",
     "need a freelance YouTube editor",
-    "need video editor for my YouTube channel",
+    "hiring a YouTube video editor",
   ],
-  "YouTube jobs": [
-    "hiring YouTube video editor",
-    "YouTube editor job opening",
-    "looking for YouTube video editor",
-    "YouTube editor remote job",
-    "video editor needed for YouTube channel",
-  ],
- 
-  "Reels freelance leads": [
+
+  // ── Reels ──
+  "Reels": [
+    "need a Reels editor",
     "looking for a Reels editor",
     "need someone to edit my Instagram Reels",
-    "hiring Reels video editor",
+    "anyone know a good Reels editor",
     "need a freelance Reels editor",
-    "need editor for my Reels content",
+    "hiring a Reels editor",
   ],
-  "Reels jobs": [
-    "hiring Reels editor",
-    "Reels editor job opening",
-    "looking for Instagram Reels editor",
-    "Reels video editor remote job",
-    "social media editor needed for Reels",
-  ],
- 
-  "Shorts freelance leads": [
+
+  // ── Shorts ──
+  "Shorts": [
+    "need a Shorts editor",
     "looking for a Shorts editor",
     "need someone to edit my YouTube Shorts",
-    "hiring Shorts video editor",
-    "need a freelance Shorts editor",
-    "need editor for short form content",
+    "anyone know a good Shorts editor",
+    "need a freelance short form editor",
+    "hiring a Shorts editor",
   ],
-  "Shorts jobs": [
-    "hiring Shorts editor",
-    "Shorts editor job opening",
-    "looking for YouTube Shorts editor",
-    "Shorts video editor remote job",
-    "short form video editor needed",
-  ],
- 
-  "Podcast freelance leads": [
+
+  // ── Podcast ──
+  "Podcast": [
+    "need a podcast editor",
     "looking for a podcast editor",
     "need someone to edit my podcast",
-    "hiring podcast video editor",
+    "anyone know a good podcast editor",
     "need a freelance podcast editor",
-    "need editor for podcast episodes",
+    "hiring a podcast editor",
   ],
-  "Podcast jobs": [
-    "hiring podcast editor",
-    "podcast editor job opening",
-    "looking for podcast video editor",
-    "podcast editor remote job",
-    "audio video editor needed for podcast",
-  ],
- 
-  "Motion Graphics freelance leads": [
-    "looking for a motion graphics designer",
+
+  // ── Motion Graphics ──
+  "Motion Graphics": [
+    "need a motion graphics designer",
+    "looking for a motion graphics artist",
     "need someone to create motion graphics",
-    "hiring motion graphics editor",
-    "need a freelance motion graphics artist",
-    "need motion graphics for my videos",
-    "looking for animator for my content",
-  ],
-  "Motion Graphics jobs": [
-    "hiring motion graphics designer",
-    "motion graphics job opening",
-    "looking for motion graphics artist",
-    "motion graphics designer remote job",
-    "motion designer needed for video content",
+    "anyone know a good motion graphics designer",
+    "need a freelance animator for my videos",
+    "hiring a motion graphics designer",
   ],
 }
 

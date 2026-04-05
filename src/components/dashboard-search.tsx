@@ -57,7 +57,7 @@ export function DashboardSearch({
 const [selectedMain, setSelectedMain] = useState('')
 
 const [stack, setStack] = useState("")
-const [goal, setGoal] = useState("")
+
 
 const [localScanning, setLocalScanning] = useState(false)
   const [countdown, setCountdown] = useState('')
@@ -90,7 +90,7 @@ const [localScanning, setLocalScanning] = useState(false)
   }, [cooldownEndTime])
 
 
-      const searchQuery = `${stack} ${goal}`.trim()  as string
+      const searchQuery = `${stack}`.trim()  as string
 
   const handleSearch = async() => {
       console.log("Full query before tool call:", searchQuery)
@@ -135,7 +135,7 @@ const [localScanning, setLocalScanning] = useState(false)
     </ToggleGroup>
   </div>
 
-  <div className="space-y-1">
+  {/* <div className="space-y-1">
     <p className="text-xs text-white mt-5 mb-3">Looking for</p>
     <ToggleGroup
       type="single"
@@ -159,10 +159,12 @@ const [localScanning, setLocalScanning] = useState(false)
       </ToggleGroupItem>
      
     </ToggleGroup>
-  </div>
-  <div className='text-gray-200'>
-Your Search qurey will be I am a {stack} developer looking for {goal}
-</div>
+  </div> */}
+   {stack && (
+        <p className="text-gray-200 text-xs mt-2">
+          Your Search Qurey will be:  <span className="text-white font-bold">I am {stack} developer looking for latest hiring tweets </span>
+        </p>
+      )}
     </>
   )
 
@@ -191,7 +193,7 @@ Your Search qurey will be I am a {stack} developer looking for {goal}
         </ToggleGroup>
       </div>
  
-      <div className="space-y-1">
+      {/* <div className="space-y-1">
         <p className="text-xs text-white mt-5 mb-3">Looking for</p>
         <ToggleGroup
           type="single"
@@ -213,11 +215,11 @@ Your Search qurey will be I am a {stack} developer looking for {goal}
             Jobs
           </ToggleGroupItem>
         </ToggleGroup>
-      </div>
+      </div> */}
  
-      {stack && goal && (
+      {stack && (
         <p className="text-gray-200 text-xs mt-2">
-          Your Search Qurey will be:  <span className="text-white font-bold">I am {stack} Video Editor looking for {goal}</span>
+          Your Search Qurey will be:  <span className="text-white font-bold">I am {stack} Video Editor looking for latest hiring tweets </span>
         </p>
       )}
     </>
@@ -302,7 +304,7 @@ Your Search qurey will be I am a {stack} developer looking for {goal}
         </div>
         <Button
           onClick={handleSearch}
-          disabled={localScanning || isCooldown || !searchQuery.trim() || !stack || !goal }
+          disabled={localScanning || isCooldown || !searchQuery.trim() || !stack }
           className="px-8 py-6 bg-white text-black hover:bg-gray-100 disabled:bg-gray-700 disabled:text-gray-500 font-semibold rounded-lg flex items-center gap-2 text-base transition"
         >
           {localScanning ? (

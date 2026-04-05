@@ -48,8 +48,9 @@ import LeadsModel from "@/models/leads";
        
         console.log("KeyWords" , keywords)
 
-         const since = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0] // 48 hours        
 
+        const since = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 4 days
+        
          // adding since (time) in the array
           const searchTermss = generateQueries(keywords).map(
                      qurey => `${qurey} since:${since}`
@@ -60,17 +61,20 @@ import LeadsModel from "@/models/leads";
  console.log("Searching for this quires" , searchTermss , keywords);
 
   const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/run-sync-get-dataset-items?token=${process.env.APIFY_API_TOKEN}`, {
-           searchTerms: [...searchTermss , keywords],
+           searchTerms: [...searchTermss],
            maxItems: 80,
            qureyType: 'Latest'
          })
 
+    
          const items = res.data.filter((tweet: any) => {
+        
+  tweet.id !== -1 && tweet.type !== 'mock_tweet'
 
            return (
-    (tweet.likeCount ?? 0) < 100 &&          // not already viral
-    (tweet.replyCount ?? 0) < 10 &&           // low replies = less competition
-    (tweet.viewCount ?? 0) < 1000 &&          // fresh/unseen tweet
+    (tweet.likeCount ?? 0) < 300 &&          // not already viral
+    (tweet.replyCount ?? 0) < 100 &&           // low replies = less competition
+    (tweet.viewCount ?? 0) < 5000 &&          // fresh/unseen tweet
     tweet.isReply !== true &&                 // skip reply tweets
     (tweet.lang === 'en' || !tweet.lang)      // english only
   )

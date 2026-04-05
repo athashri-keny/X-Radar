@@ -69,6 +69,7 @@ export default function Dashboard() {
   localStorage.setItem('CooldownEndTime' , String(endTime))
    } catch (error: any) {
     console.log("Error while runnung the agent " , error)
+    seterror("No latest tweets found right now from this niche please try again later")
     return error
    } finally {
     setIsScanning(false)
@@ -176,6 +177,13 @@ if (saved) {
               )}
             </div>
 
+{error ? (
+  <div>
+   No latest Tweet found from this niche Right now please try again later
+     </div>
+): 
+null
+}
 
             {/* Sidebar */}
             <div className="lg:col-span-1">

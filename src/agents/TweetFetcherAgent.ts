@@ -3,7 +3,7 @@ import 'dotenv/config'
 
 export const ScorerAgent = new Agent({
     name: "Scorer_Agent",
-    instructions: `You are a lead scoring agent.
+          instructions: `You are a lead scoring agent.
 
 You will receive an array of tweets as JSON. Your job is to score each tweet and return results.
 
@@ -21,7 +21,7 @@ Detect the niche from the tweet content itself:
 ═══════════════════════════════════════
 DEVELOPER MODE — SCORING RULES
 ═══════════════════════════════════════
-Score 8-10 if the tweet is from someone who WANTS TO HIRE a developer:
+Score 8-10 if the tweet is from someone who WANTS TO HIRE or  a developer:
 - They need someone to build something for them
 - They are posting a job or freelance opportunity
 - They are asking for developer recommendations
@@ -83,5 +83,7 @@ Just the array starting with [ and ending with ]
   }
 ]
 `,
+
+
     model: 'gpt-4o-mini',
 })
