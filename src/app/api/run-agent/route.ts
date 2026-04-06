@@ -41,6 +41,27 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
             } , {status: 404})
         }
 
+
+        // finding the last run searched by the user.
+        const lastRun = await SearchRunModel.findOne({
+  UserId: new mongoose.Types.ObjectId(session.user._id),
+  status: 'done'
+}).sort({ LastRun: -1 }) // most recent first
+
+
+// 2. Check cooldown
+if (lastRun) {
+
+  const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
+  
+  if (hoursSinceLastRun < 24) {
+    const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
+    return NextResponse.json({
+      message: `Cooldown active. Try again in ${hoursLeft} hour(s).`
+    }, { status: 429 }) // 429 = Too Many Requests, more accurate than 404
+  }
+}
+
        const NewSearchRunModel = new SearchRunModel({
          UserId: new mongoose.Types.ObjectId(session.user._id),
          keywords: keywords,
@@ -60,6 +81,8 @@ const client = new Client({token: process.env.QSTASH_TOKEN})
                      qurey => `${qurey} since:${since}`
                  )
              
+
+              
     try {
         
  console.log("Searching for this quires" , searchTermss , keywords);

@@ -30,13 +30,14 @@ export default function Dashboard() {
 
   const [isScanning, setIsScanning] = useState(false)
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0)
+  const [cooldownMessage , setcooldownmessage] = useState('')
   const [cooldownEndTime, setCooldownEndTime] = useState(0)
   const [leads , setleads] = useState<leads[]>([])
   const [leadsHistory , setleadsHistory] = useState<leadsHistory[]>([])
 
 
-  const SIX_HOURS_MS = 24 * 60 * 60 * 1000
-  const endTime = Date.now() + SIX_HOURS_MS
+  const SIX_HOURS_MS = 24 * 60 * 60 * 1000 // 24 hours 
+  const endTime = Date.now() + SIX_HOURS_MS // calutate it 
 
 
   // const runAgent = async() => {
@@ -54,6 +55,7 @@ export default function Dashboard() {
   const handleSearch = async(keyword: string) => {
         setIsScanning(true)
      setLeadsFoundNumber(0)
+     setcooldownmessage('')
 
    try {
 
@@ -67,13 +69,16 @@ export default function Dashboard() {
     setLeadsFoundNumber(fetchedLeads.length)
    setCooldownEndTime(Date.now() + SIX_HOURS_MS)
   localStorage.setItem('CooldownEndTime' , String(endTime))
+
    } catch (error: any) {
+    if (error.response?.status === 429) {
+      setcooldownmessage(error.response.data.message) // cooldown active!
+    }
     console.error("Error while running the agent:", error.response?.data?.message || error.message)
    } finally {
     setIsScanning(false)
    }
   }
-
 
 
   useEffect(() => {
@@ -134,6 +139,12 @@ if (saved) {
             leadsFound={leadsFoundNumber}
             cooldownEndTime={cooldownEndTime}
           />
+
+          {cooldownMessage && (
+  <p className="text-red-400 text-sm text-center mt-3">
+    ⏳ {cooldownMessage}
+  </p>
+)}
 
           {/* Main content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-12">

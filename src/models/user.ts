@@ -9,7 +9,10 @@ export interface User extends Document{
     password: string,
     verifycode: string,
     verifyCodeExpiry: Date,
-    isVerifiedEmail?: boolean
+    isVerifiedEmail?: boolean,
+    // plan: 'free' | 'premium',
+    // planExpiresAt?: Date,        // when does premium expire?
+    // razorpayCustomerId?: string  // for payment tracking
      // need to add pricing 
 }
 
