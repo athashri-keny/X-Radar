@@ -167,7 +167,7 @@ const cleanedTweets = items.map((tweet: any) => ({
          await client.publishJSON({
             url: 'https://xradar.in/api/notify-cooldown',
             body: {userId: session.user._id , Email: session.user.email , Name: session.user.name},
-            delay: 86400 
+            delay: 10 
         })
         
 

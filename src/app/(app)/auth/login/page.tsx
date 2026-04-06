@@ -46,6 +46,7 @@ e.preventDefault()
     
   if (!result.success) {
     toast.error(result.error.message[0])
+
     return
   }
 
@@ -56,10 +57,15 @@ e.preventDefault()
         password,
         redirect: false
       })
+
+if (res?.error) {
+  seterror(res.error) // show this in your UI
+}
      if (res?.status == 200) {
        router.push('/dashboard')
+         toast.success("Successfully login!")
      }
-      toast.success("Successfully login!")
+
       setloading(false)
     } catch (error: any) {
       console.log("Error while login in " , error)

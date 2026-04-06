@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
         console.log("Search Record Found = " , searchRecord)
 
-        const cooldownEndsAt = searchRecord.LastRun.getTime() + (24 * 60 * 60 * 1000) // adding 24 hours to it
+        const cooldownEndsAt = searchRecord.LastRun.getTime() + (10 * 1000) // adding 24 hours to it
         const isCooldownOver = Date.now() > cooldownEndsAt
 
       if (isCooldownOver) {            

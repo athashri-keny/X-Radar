@@ -27,6 +27,13 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
+const {data: session} = useSession()
+// console.log(session?.user.email)
+// console.log(session?.user.name)
+// console.log(session?.user._id)
+
+
+
 
   const [isScanning, setIsScanning] = useState(false)
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0)

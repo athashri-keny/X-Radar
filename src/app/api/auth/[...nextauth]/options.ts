@@ -49,6 +49,11 @@ export const authOptions: NextAuthOptions = {
                     console.log("3. user not found")
                       throw new Error('Email does not exists in our database')
                   }
+
+                    if (user.password === null) {
+    throw new Error('This account was created with Google. Please use Continue With Google.')
+  }
+
                    console.log("4. isVerifiedEmail", user.isVerifiedEmail)
                   if (!user.isVerifiedEmail) {
                       throw new Error("email is not verified")
@@ -65,8 +70,8 @@ export const authOptions: NextAuthOptions = {
                   }
                 }
                 
-          } catch (error) {
-            throw new Error("Error")
+          } catch (error: any) {
+            throw new Error(error.message)
           }
           
         //  for auto logging the user after sucessfully signup and passsword
@@ -139,9 +144,9 @@ export const authOptions: NextAuthOptions = {
                 
                 if (account?.provider === 'credentials') {
                     // creating a token for user , email login users
-                    token._id = user.id?.toString(),
+                    token._id = user._id?.toString(),
                     token.name = user.name,
-                    token.isVerifiedEmail = user.isVerfiedEmail || false
+                    token.isVerifiedEmail = user.isVerifiedEmail || false
                     token.email = user.email
 
                     // if the login is from google (oauth)
@@ -153,7 +158,7 @@ export const authOptions: NextAuthOptions = {
                     if (dbuser) {
                         token._id = dbuser.id.toString(),
                         token.name = dbuser.Name,
-                        token.isVerfiedEmail = dbuser.isVerifiedEmail || false,
+                        token.isVerifiedEmail  = dbuser.isVerifiedEmail || false,
                         token.email = dbuser.Email
                     }
                 }      
@@ -172,7 +177,7 @@ export const authOptions: NextAuthOptions = {
                 session.user._id = token._id,
                 session.user.name = token.name,
                 session.user.email = token.email,
-                session.user.isVerfiedEmail = token.isVerfiedEmail
+                session.user.isVerifiedEmail  = token.isVerifiedEmail || false
             }
             return session
         }
