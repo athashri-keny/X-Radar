@@ -58,8 +58,6 @@ const [selectedMain, setSelectedMain] = useState('')
 
 const [stack, setStack] = useState("")
 
-
-const [localScanning, setLocalScanning] = useState(false)
   const [countdown, setCountdown] = useState('')
   const [isCooldown, setIsCooldown] = useState(false)
 
@@ -96,12 +94,9 @@ const [localScanning, setLocalScanning] = useState(false)
       console.log("Full query before tool call:", searchQuery)
 
   if (!searchQuery.trim()) return
-    setLocalScanning(true)
-    try {
+  
      await onSearch(searchQuery)
-    } finally {
-      setLocalScanning(false)
-    }
+  
   }
 
 
@@ -304,10 +299,10 @@ const [localScanning, setLocalScanning] = useState(false)
         </div>
         <Button
           onClick={handleSearch}
-          disabled={localScanning || isCooldown || !searchQuery.trim() || !stack }
+          disabled={isScanning || isCooldown || !searchQuery.trim() || !stack }
           className="px-8 py-6 bg-white text-black hover:bg-gray-100 disabled:bg-gray-700 disabled:text-gray-500 font-semibold rounded-lg flex items-center gap-2 text-base transition"
         >
-          {localScanning ? (
+          {isScanning ? (
             <>
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity }}>
                 <Search className="w-5 h-5" />
@@ -324,7 +319,7 @@ const [localScanning, setLocalScanning] = useState(false)
       </motion.div>
 
       {/* Scanning state message */}
-      {localScanning && (
+      {isScanning && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -355,7 +350,7 @@ const [localScanning, setLocalScanning] = useState(false)
       )}
 
       {/* Leads found message */}
-      {leadsFound > 0 && !localScanning && (
+      {leadsFound > 0 && !isScanning && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

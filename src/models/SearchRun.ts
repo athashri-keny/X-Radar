@@ -2,6 +2,7 @@ import mongoose , {Schema , Document} from "mongoose";
 
 
 export interface SearchRun extends Document{
+    ApifyRunId: string,
     UserId: mongoose.Types.ObjectId,
     keywords: string,
     status: 'pending' | 'done' | 'failed',
@@ -10,7 +11,10 @@ export interface SearchRun extends Document{
 
 
 const SearchRunSchema = new Schema<SearchRun>({
-
+    ApifyRunId: {
+        type: String,
+        required: false
+    },
     UserId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

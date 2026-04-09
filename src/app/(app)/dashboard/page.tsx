@@ -27,10 +27,10 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
-const {data: session} = useSession()
-// console.log(session?.user.email)
-// console.log(session?.user.name)
-// console.log(session?.user._id)
+// const {data: session} = useSession()
+// // console.log(session?.user.email)
+// // console.log(session?.user.name)
+// // console.log(session?.user._id)
 
 
 
@@ -57,35 +57,57 @@ const {data: session} = useSession()
       
   //   }
   // }
+const handleSearch = async (keyword: string) => {
+  setIsScanning(true)
+  setLeadsFoundNumber(0)
+  setcooldownmessage('')
 
+  try {
+    const res = await axios.post('/api/run-agent', { keywords: keyword })
+    // console.log('successfully agent fired', res.data)
 
-  const handleSearch = async(keyword: string) => {
-        setIsScanning(true)
-     setLeadsFoundNumber(0)
-     setcooldownmessage('')
+    const SearchRunId = res.data.searchRunId
 
-   try {
+    const poll = async () => {
+      try {
+        const pollRes = await axios.get(`/api/get-status?searchRunId=${SearchRunId}`)
+        const data = pollRes.data
 
-   const res =  await axios.post('/api/run-agent' , {
-    keywords: keyword
-   })
+        if (data.status === 'done') {
+          setleads(data.leads)
+          setIsScanning(false)  // ← only stops here when actually done
+          setLeadsFoundNumber(data.leads.length)
+          setCooldownEndTime(Date.now() + SIX_HOURS_MS)
+          return
+        }
 
-   console.log('successfully agent raned' , res.data)
-       const fetchedLeads = res.data.leads
-    setleads(fetchedLeads)
-    setLeadsFoundNumber(fetchedLeads.length)
-   setCooldownEndTime(Date.now() + SIX_HOURS_MS)
-  localStorage.setItem('CooldownEndTime' , String(endTime))
+        if (data.status === 'failed') {
+          setIsScanning(false)
+          console.log("Search failed")
+          return
+        }
 
-   } catch (error: any) {
-    if (error.response?.status === 429) {
-      setcooldownmessage(error.response.data.message) // cooldown active!
+        // still pending — poll again in 3s
+        setTimeout(poll, 3000)
+
+      } catch (error) {
+        console.log("Poll error", error)
+        setIsScanning(false)
+      }
     }
-    console.error("Error while running the agent:", error.response?.data?.message || error.message)
-   } finally {
-    setIsScanning(false)
-   }
+
+    poll() // fire and forget — finally runs immediately after this line
+
+  } catch (error: any) {
+    // this only catches errors from POST /api/run-agent (cooldown, auth etc)
+    if (error.response?.status === 429) {
+      setcooldownmessage(error.response.data.message)
+    }
+    console.error("Error:", error.response?.data?.message || error.message)
+    setIsScanning(false) // ← only set false here if POST itself failed
   }
+  // ← no finally block at all
+}
 
 
   useEffect(() => {
@@ -104,28 +126,10 @@ if (saved) {
     console.log(res.data)
    } catch (error: any) {
     console.error("Error while fetching recent leads:", error.message)
-    // Don't set error for initial load - user hasn't searched yet
-    // Only log it for debugging
    }
   }
   fetchLeadsFrombackend()
   } , [])
-
-// const handleSearch = (query: string) => {
-//   setIsScanning(true)
-//   setLeadsFoundNumber(0)
-  
-//   setTimeout(() => {
-//     setIsScanning(false)
-//     setleads(mockLeads as any)  // ← add this line
-//     setLeadsFoundNumber(mockLeads.length)
-//     setCooldownEndTime(Date.now() + SIX_HOURS_MS)
-//     // saving it to local storage
-//     localStorage.setItem('CooldownEndTime' , String(endTime))
-//   }, 2000)
-// }
-
-// console.log(leads)
 
 
   return (
