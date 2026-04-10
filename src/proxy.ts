@@ -25,8 +25,7 @@ export async function proxy(request: NextRequest) {
     if (token && (
     url.pathname.startsWith('/auth/login') ||
     url.pathname.startsWith('/auth/signup') ||
-    url.pathname.startsWith('/auth/verify-code') ||
-    url.pathname.startsWith('/early-access')
+    url.pathname.startsWith('/auth/verify-code')
 )) {
         return NextResponse.redirect(new URL('/dashboard' , request.url) )
     }
@@ -43,6 +42,5 @@ matcher: [
   '/',
   '/dashboard:path*',
   '/verify/:path*',
-  '/early-access'
 ]
 }
