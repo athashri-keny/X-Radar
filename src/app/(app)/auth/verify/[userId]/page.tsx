@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, RotateCcw, Radar } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { AnimatedBackground } from '@/components/animated-background'
+
 import { GradientOrbs } from '@/components/gradient-orbs'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -117,7 +117,7 @@ export default function OTPPage() {
   return (
     <div className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center">
       {/* Background effects */}
-      <AnimatedBackground />
+    
       <GradientOrbs />
 
       {/* Content */}
