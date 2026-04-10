@@ -6,7 +6,7 @@ import { Radar, ArrowRight } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { AnimatedBackground } from '@/components/animated-background'
+
 import { GradientOrbs } from '@/components/gradient-orbs'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -96,7 +96,7 @@ if (res?.error) {
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
       {/* Background effects */}
-      <AnimatedBackground />
+     
       <GradientOrbs />
 
       {/* Content */}

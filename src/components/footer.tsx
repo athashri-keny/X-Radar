@@ -1,138 +1,45 @@
-'use client'
+import { Radar } from "lucide-react";
 
-import { motion } from 'framer-motion'
-import { Zap, XIcon , Linkedin, Mail, X, Radar } from 'lucide-react'
-import Link from 'next/link'
+const Footer = () => (
+  <footer className="relative border-t border-border">
+    {/* Top gradient glow */}
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-export function Footer() {
-  const currentYear = new Date().getFullYear()
-
-  return (
-    <footer className="relative border-t border-white/10 bg-black/50 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-                <Radar className="w-4 h-4 text-black" />
-              </div>
-              <span className="text-lg font-bold text-white">X-Radar</span>
-            </div>
-            <p className="text-gray-400 text-sm">
-              AI-powered lead generation for freelancers on Twitter/X.
-            </p>
-          </motion.div>
-
-          {/* Product */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h4 className="font-semibold text-white mb-4">Product</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>
-                <a href="#features" className="hover:text-white transition">
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href="#pricing" className="hover:text-white transition">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Changelog
-                </a>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Company */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h4 className="font-semibold text-white mb-4">Company</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Legal */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h4 className="font-semibold text-white mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li className="hover:text-white transition">
-                 <Link href={'/privacy'} >
-                    Privacy Policy
-                    </Link>   
-              
-              </li>
-            </ul>
-          </motion.div>
+    <div className="container mx-auto px-4 py-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <a href="#" className="flex items-center gap-2 text-foreground font-bold text-lg mb-3">
+            <Radar className="text-primary" size={22} />
+            <span>X-Radar</span>
+          </a>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            AI-powered lead discovery for freelancers. Never miss a hiring tweet again.
+          </p>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} X-Radar. All rights reserved.
-            </p>
-
-            {/* Social icons */}
-            <div className="flex items-center gap-4">
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href="https://x.com/XRadarAI"
-                target='blank'
-                className="text-gray-400 hover:text-blue-400 transition"
-              >
-                <XIcon className="w-7 h-7" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href=""
-                className="text-gray-400 hover:text-blue-400 transition"
-              >
-                <Linkedin className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition"
-              >
-                <Mail className="w-5 h-5" />
-              </motion.a>
-            </div>
+        {[
+          { title: "Product", links: ["Features", "Pricing", "Changelog", "Roadmap"] },
+          { title: "Company", links: ["About", "Blog", "Careers", "Contact"] },
+          { title: "Legal", links: ["Privacy", "Terms", "Security"] },
+        ].map((col) => (
+          <div key={col.title}>
+            <h4 className="font-semibold text-foreground text-sm mb-3">{col.title}</h4>
+            <ul className="space-y-2">
+              {col.links.map((link) => (
+                <li key={link}>
+                  <a href="#" className="text-muted-foreground text-sm hover:text-foreground transition-colors">{link}</a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        ))}
       </div>
-    </footer>
-  )
-}
+
+      <div className="mt-10 pt-6 border-t border-border text-center text-muted-foreground text-xs">
+        © {new Date().getFullYear()} X-Radar. All rights reserved.
+      </div>
+    </div>
+  </footer>
+);
+
+export default Footer;

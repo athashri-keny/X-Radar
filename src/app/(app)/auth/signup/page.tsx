@@ -6,7 +6,7 @@ import { Radar, ArrowRight } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { AnimatedBackground } from '@/components/animated-background'
+
 import { GradientOrbs } from '@/components/gradient-orbs'
 import axios from 'axios'
 import { toast } from 'sonner'
@@ -110,7 +110,6 @@ export default function SignupPage() {
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
       {/* Background effects */}
-      <AnimatedBackground />
       <GradientOrbs />
 
       {/* Content */}

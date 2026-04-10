@@ -5,10 +5,11 @@ import { DashboardNavbar } from '@/components/dashboard-navbar'
 import { DashboardSearch } from '@/components/dashboard-search'
 import { LeadCard } from '@/components/lead-card'
 import { SearchHistorySidebar } from '@/components/search-history-sidebar'
-import { AnimatedBackground } from '@/components/animated-background'
+import AnimatedBackground from '@/components/AnimatedBackground'
 import { GradientOrbs } from '@/components/gradient-orbs'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+import Footer from "@/components/footer";
 
 interface leads {
   _id: string
@@ -211,6 +212,7 @@ if (saved) {
           </div>
         </main>
       </div>
+      <Footer/>
     </div>
   )
 }

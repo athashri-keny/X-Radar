@@ -2,27 +2,35 @@ import DBConnect from "@/lib/connectdb";
 import { UserModel } from "@/models/user";
 import { NextRequest , NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import NextAuth from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
-
 
 export async function GET(request: NextRequest) {
    try {
     
     await DBConnect()
 
-    const session = await getServerSession(authOptions)
+
     
-    const user = await UserModel.findOne({Email: session?.user.email})
+    // Validate session and email exist
+     const session = await getServerSession(authOptions)
+
+        if (!session || !session.user) {
+         return NextResponse.json({
+            message: "Error login required!"
+         } , {status: 500})   
+        }
+
+    
+    const user = await UserModel.findOne({Email: session.user.email})
 
     if (!user) {
         return NextResponse.json({
             message: "Error user not exists in our database"
-        } , {status: 500})
+        } , {status: 400})
     }
 
     return NextResponse.json({
-        message: "Sucessfully",
+        message: "Successfully",
         user
     } , {status: 200})
 
