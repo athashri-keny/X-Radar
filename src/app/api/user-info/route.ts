@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
         }
 
     
-    const user = await UserModel.findOne({Email: session.user.email})
+    const user = await UserModel.findOne({Email: session.user.email}).select("-password -verifycode -__v -updatedAt")
 
     if (!user) {
         return NextResponse.json({
