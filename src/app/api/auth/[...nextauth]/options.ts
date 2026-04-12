@@ -138,8 +138,6 @@ export const authOptions: NextAuthOptions = {
      // Manages Token Data
 
         async jwt({token , user , account}){
-
-            console.log("Account provider = " , account?.provider)
             if (user) {
                 
                 if (account?.provider === 'credentials') {

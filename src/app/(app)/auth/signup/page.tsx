@@ -61,7 +61,7 @@ export default function SignupPage() {
             email,
             Password
         })
-        console.log(res.data)
+        // console.log(res.data)
         console.log("Successfully signup!")
         toast.success("Success redirecting to Email verification!")
         setloading(false)
