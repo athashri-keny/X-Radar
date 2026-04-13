@@ -11,6 +11,7 @@ const useTypewriter = (text: string, speed = 40, delay = 800) => {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    setDisplayed("")
     let i = 0;
     const timeout = setTimeout(() => {
       const interval = setInterval(() => {
