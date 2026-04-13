@@ -4,8 +4,8 @@ import NextAuth, { DefaultSession } from "next-auth";
 declare module 'next-auth' {
     interface User {
         _id?: string;
-        name?: string,
-        email: string,
+        Name?: string,
+        Email: string,
         isVerifiedEmail?: boolean,
          createdAt: Date
   updatedAt: Date

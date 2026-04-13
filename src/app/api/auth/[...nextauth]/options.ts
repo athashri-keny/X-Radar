@@ -139,13 +139,13 @@ export const authOptions: NextAuthOptions = {
 
         async jwt({token , user , account}){
             if (user) {
-                
+                console.log('user' , user)
                 if (account?.provider === 'credentials') {
                     // creating a token for user , email login users
                     token._id = user._id?.toString(),
-                    token.name = user.name,
+                    token.name = user.Name,
                     token.isVerifiedEmail = user.isVerifiedEmail || false
-                    token.email = user.email
+                    token.email = user.Email
 
                     // if the login is from google (oauth)
                 }    if (account?.provider === 'google') {
