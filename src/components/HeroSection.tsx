@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 
 const useTypewriter = (text: string, speed = 40, delay = 800) => {
-  const [displayed, setDisplayed] = useState("");
+  const [displayed, setDisplayed] = useState(text);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 1, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
