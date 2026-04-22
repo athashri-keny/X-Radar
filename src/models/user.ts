@@ -10,6 +10,8 @@ export interface User extends Document{
     verifycode: string,
     verifyCodeExpiry: Date,
     isVerifiedEmail?: boolean,
+    Niche: string,
+    subniches: string
     // plan: 'free' | 'premium',
     // planExpiresAt?: Date,        // when does premium expire?
     // razorpayCustomerId?: string  // for payment tracking
@@ -41,6 +43,14 @@ const UserSchema = new Schema<User>({
     },
     verifyCodeExpiry: {
         type: Date
+    },
+    Niche: {
+        type: String,
+        required: false
+    },
+    subniches: {
+        type: String,
+        required: false
     }
 } , {
         timestamps: true

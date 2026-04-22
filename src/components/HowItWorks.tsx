@@ -1,11 +1,11 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { Search, Brain, Send } from "lucide-react";
+import { ListChecks, Filter, Send } from "lucide-react";
 
 const steps = [
-  { icon: Search, title: "Scan", desc: "Hit search and X-Radar instantly scans thousands of tweets for hiring signals and freelance opportunities." },
-  { icon: Brain, title: "Analyze", desc: "Our AI scores each lead based on your skills, experience, and preferences — surfacing only the best matches." },
+  { icon: ListChecks, title: "Enter Multiple Queries", desc: "Run multiple search queries at once — target every niche, skill, and keyword that matters to your freelance business in a single sweep." },
+  { icon: Filter, title: "Filtering The Noise", desc: "X-Radar filters out the noise, removing spam, irrelevant tweets, and low-quality leads so you only see real hiring opportunities." },
   { icon: Send, title: "Reply", desc: "Get AI-crafted reply suggestions tailored to each opportunity. One click to engage and land the gig." },
 ];
 

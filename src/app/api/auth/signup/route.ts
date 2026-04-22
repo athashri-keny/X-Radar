@@ -10,9 +10,9 @@ export async function POST(request: NextRequest) {
     try {
         await DBConnect()
 
-        const {Name , email , Password} = await request.json()
+        const {Name , email , Password , niche} = await request.json()
 
-        if (!Name || !email || !Password) {
+        if (!Name || !email || !Password ) {
             return NextResponse.json({
                 message: "Error all fields are required!"
             } , {status: 500})
@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
             password: hashpassword,
             verifycode: verifycode,
             verifyCodeExpiry: verifycodeExpiry,
-            isVerifiedEmail: false
+            isVerifiedEmail: false,
+            Niche: niche
         })
         await newUser.save()
 

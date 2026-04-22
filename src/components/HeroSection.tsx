@@ -33,7 +33,7 @@ const useTypewriter = (text: string, speed = 40, delay = 800) => {
 const HeroSection = () => {
   const heading1 = "Hunt clients on X. ";
   const heading2 = "In seconds.";
-  const subtitle = "X-Radar scans Twitter/X in real-time, finds hiring tweets that match your skills, and crafts the perfect reply so you land leads faster";
+   const subtitle = "Run multiple queries at once and X-Radar filters out the noise surfacing only real hiring tweets that match your skills, with AI-crafted replies ready to send.";
 
   const { displayed: h1Text, done: h1Done } = useTypewriter(heading1, 50, 400);
   const { displayed: h2Text, done: h2Done } = useTypewriter(heading2, 50, 400 + heading1.length * 50 + 200);

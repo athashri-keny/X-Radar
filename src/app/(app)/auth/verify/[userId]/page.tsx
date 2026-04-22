@@ -41,8 +41,9 @@ export default function OTPPage() {
           redirect: false,
           AutoLoginToken // // passes it to NextAuth
         })
+        
         toast.success("Successfully Email verified")
-        router.push('/dashboard')
+        router.push('/auth/set-niche')
         setloading(false)
     } catch (error: any) {
         console.log("Error while verifying code" , error)

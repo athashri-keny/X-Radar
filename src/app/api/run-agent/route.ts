@@ -26,11 +26,11 @@ import axios from "axios";
             } , {status: 404})
         }
 
-        const {keywords} = await request.json()
+        const {keywords , TimePeriod} = await request.json()
 
-        console.log( "keywords" , keywords)
+        console.log( "keywords" , keywords , "Timeperiod"  , TimePeriod)
         
-        if (!keywords) {
+        if (!keywords || !TimePeriod) {
             return NextResponse.json({
                 message: "Error keywords required!"
             } , {status: 404})
@@ -44,18 +44,18 @@ import axios from "axios";
 }).sort({ LastRun: -1 }) // most recent first
 
 
-// 2. Check cooldown
-if (lastRun) {
+// // 2. Check cooldown
+// if (lastRun) {
 
-  const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
+//   const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
   
-  if (hoursSinceLastRun < 24) {
-    const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
-    return NextResponse.json({
-      message: `Cooldown active. Try again in ${hoursLeft} hour(s).`
-    }, { status: 429 }) // 429 = Too Many Requests, more accurate than 404
-  }
-}
+//   if (hoursSinceLastRun < 24) {
+//     const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
+//     return NextResponse.json({
+//       message: `Cooldown active. Try again in ${hoursLeft} hour(s).`
+//     }, { status: 429 }) // 429 = Too Many Requests, more accurate than 404
+//   }
+// }
 
      // Creating a new Search Model with status 'pending' for (fire and poll method)
        const NewSearchRunModel = new SearchRunModel({
@@ -70,15 +70,31 @@ if (lastRun) {
         console.log("KeyWords" , keywords)
 
       
-        const since = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 4 days
+        // const since = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 6 days
+      
+        const now = Math.floor(Date.now() / 1000)
+const oneDaySeconds = 24 * 60 * 60
+  
+          const since = now - (7 * oneDaySeconds)
+    const until = now - (2 * oneDaySeconds)
+ 
 
-         // adding since (time) in the array
-          const searchTermss = generateQueries(keywords).map(
-                     qurey => `${qurey} since:${since}`
-                 )
-             
+         const timeFilter = "within_time:7d"; // its return all 7days tweets including 24hrs too (paid plan)
 
-              
+const searchTermss = keywords.map( (singleQurey: any) => {
+    if (TimePeriod == '24') {
+        return `${singleQurey} ${timeFilter} -filter:retweets lang:en`
+    } else {
+      return `${singleQurey} since_time:${since} until_time:${until} -filter:retweets lang:en`
+    }
+})
+
+// console.log("SearchTerms returnd" , searchTermss)
+// return NextResponse.json({
+//     message: "returned",
+//     searchTermss
+// } , {status: 200})
+
     try {
         
  console.log("Searching for this quires" , searchTermss , keywords);
@@ -106,8 +122,7 @@ if (lastRun) {
       { status: 200 }
     );
 
-
-       } catch (error) {
+  } catch (error) {
         console.log("Error while running apfiy" , error) 
         NewSearchRunModel.status = 'failed'
         await NewSearchRunModel.save()
@@ -116,71 +131,9 @@ if (lastRun) {
       
       } , {status: 500})
        }
-
-       // running the agent with the keyworrd
-
-//    try {
-//     // agent (not quires)
-//       const result =  await run(ScorerAgent , keywords)
- 
-//       // array of object
-//        const rawOutput = result.finalOutput ?? ""
-
-//        console.log("raw output from agent type = " ,  typeof rawOutput) // string
-
-//        const jsonMatch = rawOutput.match(/\[[\s\S]*\]/) 
-       
-//        if (!jsonMatch) {
-//   throw new Error("Agent didn't return a valid JSON array")
-// }
-
-//       // loop cause agent will return an array objects of leads
-
-//       // changing the string which contains arrray of objects to real array of object to store in db
-//       const leads = JSON.parse(jsonMatch[0])
-
-//       // creating an array for saving the leads
-//       const savedLeads: any[] = []
-
-//       for(const lead of leads) {
-
-//        const newLead = new LeadsModel({
-//         SearchRunId: NewSearchRunModel._id,
-//         userId: new mongoose.Types.ObjectId(session.user._id),
-//         Tweeturl: lead.tweetUrl,
-//         TweetText: lead.tweetText,
-//         Score: lead.score,             
-//        suggestReplyAi: lead.suggestedReply  
-//        })
-//        await newLead.save()
-//         savedLeads.push(newLead)
-//       }
-
-//       NewSearchRunModel.status = 'done'
-//       await NewSearchRunModel.save()
-    
-//      return NextResponse.json({
-//         message: "your agent run successfully!",
-//        leads: savedLeads
-//      } , {status: 200})
-
-//    } catch (error) {
-
-//      console.log("error while running the agent" , error)
-//     NewSearchRunModel.status = 'failed'
-
-//     await NewSearchRunModel.save()
-
-//       return NextResponse.json({
-//         message: "Error while running agent",       
-      
-//      } , {status: 500})
-     // }
-    
-    } catch (error) {
-        console.log("Error while running the agent " , error)
-        return NextResponse.json({
-            message: "Error while runnung the agent"
-        } , {status: 500})
-    }
+}
+  catch (error) {        // ← add this outer catch
+    console.log("Outer error", error)
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+  }
 }

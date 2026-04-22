@@ -32,7 +32,7 @@ Score 1 immediately if the tweet contains ANY of these:
 INSTANT SCORE 1 — BOT ACCOUNTS
 ═══════════════════════════════════════
 Score 1 if the account is clearly a job board bot:
-- Username has: jobs, hiring, talent, recruit, HR, remote, careers
+- Username has: jobs  , hiring, talent, recruit, HR, remote, careers
 - Tweet has structured format: Role, Location, Pay, Apply link
 - Copy-paste template style with excessive emojis
 
@@ -58,6 +58,7 @@ Score 4-6:
 Score 1-3:
 - Spam signals, scam patterns, unrealistic pay claims
 (Do NOT return these in output)
+Return ONLY tweets with score 7 or above.
 
 ═══════════════════════════════════════
 SUGGESTED REPLY RULES
@@ -81,7 +82,6 @@ The reply must:
 OUTPUT — RAW JSON ONLY
 ═══════════════════════════════════════
 
-Return ONLY tweets with score 7 or above.
 
 
 You MUST respond with ONLY a raw JSON array.

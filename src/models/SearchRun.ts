@@ -1,10 +1,11 @@
 import mongoose , {Schema , Document} from "mongoose";
+import { arrayOutputType } from "zod/v3";
 
 
 export interface SearchRun extends Document{
     ApifyRunId: string,
     UserId: mongoose.Types.ObjectId,
-    keywords: string,
+    keywords: Array<string>,
     status: 'pending' | 'done' | 'failed',
     LastRun: Date
 }
@@ -21,7 +22,7 @@ const SearchRunSchema = new Schema<SearchRun>({
        required: [true , "User id is required!"]
     },
     keywords: {
-        type: String,
+        type: [String],
         required: [true , "keyword is required!" ]
     },
     status: {

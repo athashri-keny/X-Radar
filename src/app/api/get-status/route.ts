@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     // 4. Check the current status of the run id 
     const ApifyStatus = await axios.get(`https://api.apify.com/v2/actor-runs/${SearchRun.ApifyRunId}?token=${process.env.APIFY_API_TOKEN}`)
 
-    console.log("Apify Status = " , ApifyStatus.data)
+    // console.log("Apify Status = " , ApifyStatus.data)
 
     // TODO: might be error in this 
         const runStatus = ApifyStatus.data.data.status;
@@ -58,19 +58,8 @@ export async function GET(request: NextRequest) {
     
      const items = res.data.filter((tweet: any) => {
 
-  tweet.id !== -1 && tweet.type !== 'mock_tweet'
-
-           return (
-    (tweet.likeCount ?? 0) < 20 &&          // not already viral
-    (tweet.replyCount ?? 0) < 30 &&           // low replies = less competition
-    (tweet.viewCount ?? 0) < 2000 &&          // fresh/unseen tweet
-    tweet.isReply !== true &&                 // skip reply tweets
-    (tweet.lang === 'en' || !tweet.lang)      // english only
-  )
-         })
-
-        
-
+ return tweet.id !== -1 && tweet.type !== 'mock_tweet'
+         })        
            console.log("Query ran successfully!" , items)
 
 

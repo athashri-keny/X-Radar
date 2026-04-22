@@ -13,7 +13,33 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import signupSchema from '@/Schemas/SignupSchema'
 import { signIn } from 'next-auth/react'
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxValue,
+  ComboboxEmpty,
+} from '@/components/ui/combobox'
 
+const NICHES = [
+  'Developer',
+  'Video Editor',
+  'Ghostwriter',
+  'Graphic Designer',
+  'Social Media Manager',
+  'Content Writer',
+  'Digital Marketer',
+  'UI/UX Designer',
+  'Data Analyst',
+  'Copywriter',
+  'Web Developer',
+  'Mobile Developer',
+  'Freelance Consultant',
+  'Virtual Assistant',
+  'Project Manager',
+]
 
 export default function SignupPage() {
 
@@ -21,6 +47,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [Password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [niche, setNiche] = useState('')
   const [loading , setloading ] = useState(false)
   const [error , seterror] = useState('')
 
@@ -59,7 +86,8 @@ export default function SignupPage() {
         const res = await axios.post('/api/auth/signup' , {
             Name,
             email,
-            Password
+            Password,
+            niche
         })
         // console.log(res.data)
         console.log("Successfully signup!")
@@ -84,7 +112,7 @@ export default function SignupPage() {
     
     try {
        setloading(true)
-      await signIn('google' , {callbackUrl: '/dashboard'})
+      await signIn('google' , {callbackUrl: '/auth/set-niche'})
       toast.success("Successfully login with google!")
     } catch (error) {
       console.log("Error while loggin in with google " , error)
@@ -138,8 +166,8 @@ export default function SignupPage() {
           >
             {/* Heading */}
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold text-white">Create Account</h1>
-              <p className="text-gray-400 text-sm">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">Create Account</h1>
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Start hunting leads on Twitter/X today
               </p>
             </div>
@@ -148,7 +176,7 @@ export default function SignupPage() {
             <form className="space-y-4" onSubmit={(e) => {e.preventDefault(); signup()}}>
 
                 <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                    Name
                  </label>
                 <Input
@@ -156,13 +184,13 @@ export default function SignupPage() {
                   placeholder="Joe Don"
                   value={Name}
                   onChange={(e) => setname(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition"
+                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
                 />
               </motion.div>
 
               {/* Email Input */}
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Email Address
                 </label>
                 <Input
@@ -170,13 +198,13 @@ export default function SignupPage() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition"
+                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
                 />
               </motion.div>
 
               {/* Password Input */}
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Password
                 </label>
                 <Input
@@ -184,7 +212,7 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   value={Password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition"
+                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
                 />
               </motion.div>
 
@@ -207,7 +235,7 @@ export default function SignupPage() {
                 <Button
                 disabled={loading}
                 type='submit'
-                  className="w-full py-2 bg-white text-black hover:bg-gray-100 font-semibold rounded-lg flex items-center justify-center gap-2 transition"
+                  className="w-full py-2 sm:py-2.5 bg-white text-black hover:bg-gray-100 font-semibold rounded-lg flex items-center justify-center gap-2 text-sm sm:text-base transition"
                 >
 
                      {loading ? "Creating account..." : "Sign Up"}
@@ -222,7 +250,7 @@ export default function SignupPage() {
   type="button"
   onClick={handleGoogleLogin}
   disabled={loading}
-  className='w-full py-2 bg-white text-black hover:bg-gray-100 font-semibold rounded-lg flex items-center justify-center gap-2 transition'
+  className='w-full py-2 sm:py-2.5 bg-white text-black hover:bg-gray-100 font-semibold rounded-lg flex items-center justify-center gap-2 text-sm sm:text-base transition'
 >
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -239,7 +267,7 @@ export default function SignupPage() {
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/10" />
               </div>
-              <div className="relative flex justify-center text-sm">
+              <div className="relative flex justify-center text-xs sm:text-sm">
                 <span className="px-2 bg-black text-gray-600">or</span>
               </div>
               
@@ -248,7 +276,7 @@ export default function SignupPage() {
  
             {/* Login Link */}
             <motion.div variants={itemVariants} className="text-center">
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-xs sm:text-sm">
                 Already have an account?{' '}
                 <Link
                   href="/auth/login"
@@ -268,7 +296,7 @@ export default function SignupPage() {
             {/* Terms */}
             <motion.p
               variants={itemVariants}
-              className="text-xs text-gray-600 text-center"
+              className="text-xs sm:text-xs text-gray-600 text-center leading-relaxed"
             >
               By signing up, you agree to our{' '}
               <a href="#" className="text-gray-400 hover:text-gray-300 transition">

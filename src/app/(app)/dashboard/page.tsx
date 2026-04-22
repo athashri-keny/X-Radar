@@ -57,15 +57,19 @@ export default function Dashboard() {
   //     return error
       
   //   }
-  // }
-const handleSearch = async (keyword: string) => {
+  // }'
+
+const handleSearch = async (keyword: String[], selectedDays: string) => {
   setIsScanning(true)
   setLeadsFoundNumber(0)
   setcooldownmessage('')
 
+  console.log("From handle search = " , keyword , selectedDays)
+
   try {
-    const res = await axios.post('/api/run-agent', { keywords: keyword })
-    // console.log('successfully agent fired', res.data)
+    const res = await axios.post('/api/run-agent', { keywords: keyword, TimePeriod: selectedDays })
+    
+    console.log('successfully agent fired', res.data)
 
     const SearchRunId = res.data.searchRunId
 
@@ -113,6 +117,7 @@ const handleSearch = async (keyword: string) => {
 
   useEffect(() => {
 const saved = localStorage.getItem('CooldownEndTime')
+
 
 if (saved) {
   setCooldownEndTime(Number(saved))
