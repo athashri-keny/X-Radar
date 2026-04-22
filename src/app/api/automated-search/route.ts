@@ -4,7 +4,7 @@ import SearchRun from "@/models/SearchRun"; // your SearchRun model
 import { UserModel } from "@/models/user";
 
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
     
 try {
     
