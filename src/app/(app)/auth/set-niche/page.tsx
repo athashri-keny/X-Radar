@@ -45,21 +45,21 @@ const NICHES_WITH_SUBNICHES: Record<string, string[]> = {
     'Long-form Articles', 'eBooks', 'Sales Emails', 'Cold Outreach',
     'YouTube Scripts', 'Podcast Scripts'
   ],
-  'Graphic Designer': [
-    'Logo Design', 'Brand Identity', 'Social Media Graphics',
-    'Infographics', 'Pitch Deck Design', 'Packaging Design',
-    'Print Design', 'Thumbnail Design', 'NFT Art', 'Illustration'
-  ],
+  // 'Graphic Designer': [
+  //   'Logo Design', 'Brand Identity', 'Social Media Graphics',
+  //   'Infographics', 'Pitch Deck Design', 'Packaging Design',
+  //   'Print Design', 'Thumbnail Design', 'NFT Art', 'Illustration'
+  // ],
   'UI/UX Designer': [
     'Figma', 'Mobile App Design', 'Web App Design', 'Wireframing',
     'Prototyping', 'Design Systems', 'SaaS Product Design',
     'Landing Page Design', 'User Research', 'Accessibility (a11y)'
   ],
-  'Copywriter': [
-    'Sales Pages', 'Email Sequences', 'Ad Copy', 'Product Descriptions',
-    'Landing Pages', 'VSL Scripts', 'SaaS Copy', 'SEO Copy',
-    'Cold Email', 'Social Media Copy'
-  ],
+  // 'Copywriter': [
+  //   'Sales Pages', 'Email Sequences', 'Ad Copy', 'Product Descriptions',
+  //   'Landing Pages', 'VSL Scripts', 'SaaS Copy', 'SEO Copy',
+  //   'Cold Email', 'Social Media Copy'
+  // ],
   'App Developer': [
     'iOS / Swift', 'Android / Kotlin', 'React Native', 'Flutter',
     'Cross-platform', 'Firebase', 'Supabase', 'SaaS Apps',
@@ -149,7 +149,7 @@ function SetNiche() {
               </h1>
               <p className="text-gray-200 text-center mb-6 sm:mb-8 text-xs sm:text-sm leading-relaxed">
                 Choose the niche and a subniche it will help XRadar to optimize and search leads  for you 
-              </p>
+              </p>  
             </motion.div>
 
             {/* Combobox Section */}

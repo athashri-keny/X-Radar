@@ -60,10 +60,10 @@ export const authOptions: NextAuthOptions = {
                   }
                   // check password 
                   const Ispassswordcorrect = await bycrpt.compare(credentials.password, user.password)
-                  console.log("5. password correct?", Ispassswordcorrect)
+                //   console.log("5. password correct?", Ispassswordcorrect)
 
                   if (Ispassswordcorrect) {
-                    console.log("user = " , user)
+                    // console.log("user = " , user)
                       return user;
                   } else {
                       return new Error("Error password is incorrect!")
@@ -113,10 +113,11 @@ export const authOptions: NextAuthOptions = {
                         Name: profile?.name,
                         password: null,
                         verifycode: null,
-                        isVerifiedEmail: true
+                        isVerifiedEmail: true,
+                        plan: 'free'
                     })
                     await newUser.save()
-                    console.log("New User from google " , newUser)
+                    // console.log("New User from google " , newUser)
                    }
                 } catch (error) {
                     console.log("Error while sigining with google" , error)
@@ -139,13 +140,14 @@ export const authOptions: NextAuthOptions = {
 
         async jwt({token , user , account}){
             if (user) {
-                console.log('user' , user)
+                // console.log('user' , user)
                 if (account?.provider === 'credentials') {
                     // creating a token for user , email login users
                     token._id = user._id?.toString(),
                     token.name = user.Name,
                     token.isVerifiedEmail = user.isVerifiedEmail || false
                     token.email = user.Email
+                    token.plan = user.plan
 
                     // if the login is from google (oauth)
                 }    if (account?.provider === 'google') {
@@ -158,6 +160,7 @@ export const authOptions: NextAuthOptions = {
                         token.name = dbuser.Name,
                         token.isVerifiedEmail  = dbuser.isVerifiedEmail || false,
                         token.email = dbuser.Email
+                        token.plan = dbuser.plan
                     }
                 }      
               
@@ -176,6 +179,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.name = token.name,
                 session.user.email = token.email,
                 session.user.isVerifiedEmail  = token.isVerifiedEmail || false
+                session.user.plan = token.plan
             }
             return session
         }

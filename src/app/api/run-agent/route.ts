@@ -11,7 +11,7 @@ import axios from "axios";
 
 
 
-// THIS ROUTE GIVES SEARCHID TO FRONTEND FOR POLLLING
+// THIS ROUTE GI  VES SEARCHID TO FRONTEND FOR POLLLING
 
  export async function POST(request: NextRequest) {
     try {
@@ -28,7 +28,8 @@ import axios from "axios";
 
         const {keywords , TimePeriod} = await request.json()
 
-        console.log( "keywords" , keywords , "Timeperiod"  , TimePeriod)
+
+        // console.log( "keywords" , keywords , "Timeperiod"  , TimePeriod)
         
         if (!keywords || !TimePeriod) {
             return NextResponse.json({
@@ -37,6 +38,8 @@ import axios from "axios";
         }
 
 
+        // TODO: uncommit this when depolying to prod
+
         // finding the last run searched by the user.
         const lastRun = await SearchRunModel.findOne({
   UserId: new mongoose.Types.ObjectId(session.user._id),
@@ -44,49 +47,65 @@ import axios from "axios";
 }).sort({ LastRun: -1 }) // most recent first
 
 
-// // 2. Check cooldown
-// if (lastRun) {
 
-//   const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
-  
-//   if (hoursSinceLastRun < 24) {
-//     const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
-//     return NextResponse.json({
-//       message: `Cooldown active. Try again in ${hoursLeft} hour(s).`
-//     }, { status: 429 }) // 429 = Too Many Requests, more accurate than 404
-//   }
-// }
+
+// for Free user hitting the paywall after first run 
+if (lastRun && session.user.plan === 'free') {
+return NextResponse.json({
+  message: "Error! YOu have reached Maximun of your limit Uprade to Pro to keep using Xradar"
+} , {status: 403})
+}
+
+
+// for paid user hiting the cooldown timer 
+
+const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
+if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
+
+   const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
+
+  return NextResponse.json({
+    messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
+  } , {status: 429})
+}
+    
 
      // Creating a new Search Model with status 'pending' for (fire and poll method)
        const NewSearchRunModel = new SearchRunModel({
          UserId: new mongoose.Types.ObjectId(session.user._id),
          keywords: keywords,
          status: 'pending', // PENDING
-         LastRun: Date.now()
+         LastRun: Date.now(),
+         TotalTweetsScraped: 0,
+         TotalLeadsFound: 0,
        })
 
        await NewSearchRunModel.save()
        
+
         console.log("KeyWords" , keywords)
 
       
-        // const since = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 6 days
-      
         const now = Math.floor(Date.now() / 1000)
-const oneDaySeconds = 24 * 60 * 60
-  
-          const since = now - (7 * oneDaySeconds)
-    const until = now - (2 * oneDaySeconds)
- 
 
-         const timeFilter = "within_time:7d"; // its return all 7days tweets including 24hrs too (paid plan)
 
-const searchTermss = keywords.map( (singleQurey: any) => {
-    if (TimePeriod == '24') {
-        return `${singleQurey} ${timeFilter} -filter:retweets lang:en`
-    } else {
-      return `${singleQurey} since_time:${since} until_time:${until} -filter:retweets lang:en`
-    }
+        
+const searchTermss = generateQueries(keywords).map((singleQurey: any) => {
+
+
+    if (TimePeriod === '24') {
+  return `${singleQurey} within_time:24h -filter:retweets lang:en`
+
+} else if (TimePeriod === '6') {
+  return `${singleQurey} within_time:6d -filter:retweets lang:en`
+
+} else {
+  // free: 8 days window
+ const since = new Date(now * 1000 - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 10 days
+const until = new Date(now * 1000 - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 7 days 
+
+return `${singleQurey} since:${since} until:${until} -filter:retweets lang:en`
+}
 })
 
 // console.log("SearchTerms returnd" , searchTermss)
@@ -95,6 +114,8 @@ const searchTermss = keywords.map( (singleQurey: any) => {
 //     searchTermss
 // } , {status: 200})
 
+
+
     try {
         
  console.log("Searching for this quires" , searchTermss , keywords);
@@ -102,13 +123,12 @@ const searchTermss = keywords.map( (singleQurey: any) => {
  // fires async dont wait for the result
   const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/runs?token=${process.env.APIFY_API_TOKEN}`, {
            searchTerms: [...searchTermss],
-           maxItems: 80,
-           qureyType: 'Latest'
+           maxItems: 15,
+          queryType: 'Latest',
          })
 
-         console.log("Apify  =" , res.data)
+        //  console.log("Apify  =" , res.data)
            
-         // TODO: check this might be error 
          // for tracking (finiesh or not)
          const apifyRunId = res.data?.data?.id 
 

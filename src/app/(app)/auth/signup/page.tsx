@@ -13,40 +13,31 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import signupSchema from '@/Schemas/SignupSchema'
 import { signIn } from 'next-auth/react'
+import { Checkbox } from "@/components/ui/checkbox"
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxList,
-  ComboboxItem,
-  ComboboxValue,
-  ComboboxEmpty,
-} from '@/components/ui/combobox'
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/field"
+import { Label } from '@/components/ui/label'
+import * as z from "zod"
 
-const NICHES = [
-  'Developer',
-  'Video Editor',
-  'Ghostwriter',
-  'Graphic Designer',
-  'Social Media Manager',
-  'Content Writer',
-  'Digital Marketer',
-  'UI/UX Designer',
-  'Data Analyst',
-  'Copywriter',
-  'Web Developer',
-  'Mobile Developer',
-  'Freelance Consultant',
-  'Virtual Assistant',
-  'Project Manager',
-]
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { Controller , useForm } from 'react-hook-form'
+
+
+
 
 export default function SignupPage() {
 
   const [Name , setname] = useState('')
   const [email, setEmail] = useState('')
   const [Password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [niche, setNiche] = useState('')
   const [loading , setloading ] = useState(false)
   const [error , seterror] = useState('')
@@ -66,18 +57,29 @@ export default function SignupPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   }
 
-  // main function
-  const signup = async() => {
 
+  const form = useForm<z.input<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      Name: '',
+      Email: '',
+      password: '',
+      aggrements: false
+    }
+  })
+
+  // main function
+  const handleSignup = async(data: z.input<typeof signupSchema>) => {
 
     const result = signupSchema.safeParse({ 
     Name: Name, 
     Email: email,
     password: Password, 
+  aggrements: false
   })
 
   if (!result.success) {
-    toast.error(result.error.message[0])
+    seterror(result.error.message)
     return
   }
 
@@ -108,8 +110,11 @@ export default function SignupPage() {
 
 
   const handleGoogleLogin = async() => {
-    console.log("Clicked!!");
     
+     const isValid = await form.trigger("aggrements")
+  
+  if (!isValid) return  // return 
+
     try {
        setloading(true)
       await signIn('google' , {callbackUrl: '/auth/set-niche'})
@@ -122,18 +127,18 @@ export default function SignupPage() {
     }
   }
 
-  const handleXLogin = async () => {
-  try {
-    setloading(true)
-    await signIn('twitter', { callbackUrl: '/dashboard' })
-    toast.success("Successfully logged in with X!")
-  } catch (error) {
-    console.log("Error while logging in with X", error)
-    setloading(false)
-  } finally {
-    setloading(false)
-  }
-}
+//   const handleXLogin = async () => {
+//   try {
+//     setloading(true)
+//     await signIn('twitter', { callbackUrl: '/dashboard' })
+//     toast.success("Successfully logged in with X!")
+//   } catch (error) {
+//     console.log("Error while logging in with X", error)
+//     setloading(false)
+//   } finally {
+//     setloading(false)
+//   }
+// }
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
@@ -173,63 +178,128 @@ export default function SignupPage() {
             </div>
 
             {/* Form */}
-            <form className="space-y-4" onSubmit={(e) => {e.preventDefault(); signup()}}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(handleSignup)}>
 
-                <motion.div variants={itemVariants}>
-                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-                   Name
-                 </label>
-                <Input
-                  type="name"
-                  placeholder="Joe Don"
-                  value={Name}
-                  onChange={(e) => setname(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
-                />
-              </motion.div>
+             <Controller
+              name="Name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-title">
+                    Name
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="Name"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter your Name"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+               
 
               {/* Email Input */}
               <motion.div variants={itemVariants}>
-                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
-                />
+              
+   <Controller
+              name="Email"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-title">
+                    Email
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="Email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter your Email"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
               </motion.div>
+            
 
               {/* Password Input */}
               <motion.div variants={itemVariants}>
-                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-                  Password
-                </label>
-                <Input
-                  type="password"
-                  placeholder="••••••••"
-                  value={Password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition text-sm"
-                />
+
+                 <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-title">
+                    Password
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="Password"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter your Password"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
               </motion.div>
 
-              {/* Confirm Password Input */}
-              {/* <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Confirm Password
-                </label>
-                <Input
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition"
-                />
-              </motion.div> */}
 
+
+              <motion.div variants={itemVariants}>
+
+                <Controller
+              name="aggrements"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+ <Field 
+ {...field}
+ orientation="horizontal" className="flex items-start gap-3 group cursor-pointer">
+  <Checkbox
+    id="agreements-checkbox"
+    name="aggrements"
+    className="mt-0.5 h-4 w-4 rounded border border-slate-700 bg-slate-900"
+  
+  />
+  <Label
+    htmlFor="agreements-checkbox"
+    className="text-xs text-slate-400 leading-snug cursor-pointer 
+               group-hover:text-slate-400 transition-colors duration-150"
+  >
+    I agree to the{" "}
+    <a href="/terms" className="text-white hover:text-slate-300 underline underline-offset-2 transition-colors">
+      Terms & Conditions
+    </a>
+    {" "}and I have read the{" "}
+     {" "}
+    <a href="/privacy" className="text-white hover:text-slate-300 underline underline-offset-2 transition-colors">
+      Privacy Policy 
+    </a>
+  </Label>
+</Field>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+             
+              </motion.div>
+
+             
               {/* Submit Button */}
               <motion.div variants={itemVariants} className="pt-2">
                 <Button
@@ -294,19 +364,7 @@ export default function SignupPage() {
            )}
 
             {/* Terms */}
-            <motion.p
-              variants={itemVariants}
-              className="text-xs sm:text-xs text-gray-600 text-center leading-relaxed"
-            >
-              By signing up, you agree to our{' '}
-              <a href="#" className="text-gray-400 hover:text-gray-300 transition">
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <a href="#" className="text-gray-400 hover:text-gray-300 transition">
-                Privacy Policy
-              </a>
-            </motion.p>
+         
           </motion.div>
         </motion.div>
       </div>

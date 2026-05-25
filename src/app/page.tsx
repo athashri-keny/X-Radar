@@ -8,17 +8,20 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/footer";
 
-
 const Index = () => (
-  <div className="min-h-screen bg-background relative px-6 md:px-12 lg:px-20">
+  <div className="min-h-screen bg-background relative">
     <AnimatedBackground />
-    <Navbar />
-    <HeroSection />
-    <LiveTicker />
-    <HowItWorks />
-    <FeaturesGrid />
-    {/* <PricingSection /> */}
-    <FAQSection />
+    {/* Padded content wrapper — footer excluded so it spans full width */}
+    <div className="px-6 md:px-12 lg:px-20">
+      <Navbar />
+      <HeroSection />
+      <LiveTicker />
+      <HowItWorks />
+      <FeaturesGrid />
+      <PricingSection />
+      <FAQSection />
+    </div>
+    {/* Footer sits outside the padded wrapper and handles its own spacing */}
     <Footer />
   </div>
 );

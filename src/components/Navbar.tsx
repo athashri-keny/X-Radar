@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const navLinks = ["How It Works", "Features", "Pricing", "FAQ"];
 
-const Navbar = () => {
+const  Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const scrollTo = (id: string) => {

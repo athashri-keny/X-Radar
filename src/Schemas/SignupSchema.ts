@@ -12,6 +12,11 @@ const signupSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters"),
 
+    // refine checks if the values is always true if not then throw error
+  aggrements: z.boolean().default(false).refine(val => val === true, {
+  message: "You must accept the terms to continue"
+})
+
 })
 
 export default signupSchema

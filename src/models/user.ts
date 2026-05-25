@@ -11,11 +11,15 @@ export interface User extends Document{
     verifyCodeExpiry: Date,
     isVerifiedEmail?: boolean,
     Niche: string,
-    subniches: string
-    // plan: 'free' | 'premium',
-    // planExpiresAt?: Date,        // when does premium expire?
-    // razorpayCustomerId?: string  // for payment tracking
-     // need to add pricing 
+    subniches: string,
+    LastRun: Date,
+  plan: "free" | "pro";                  // "premium" → "pro" to match Dodo naming
+  planActivatedAt?: Date;                // when did they go pro?
+  planExpiresAt?: Date;                  // if you want expiry-based gating
+
+  // ── dodo payments ────────────────────────────────
+  dodoCustomerId?: string;               // e.g. "cust_abc123" — Dodo's internal ID
+  subscriptionId?: string;   
 }
 
 
@@ -51,7 +55,35 @@ const UserSchema = new Schema<User>({
     subniches: {
         type: String,
         required: false
-    }
+    },
+    // plan fields
+    plan: { 
+        type: String, 
+        enum: ["free", "pro"], 
+        default: "free" 
+    },
+    planActivatedAt: {
+         type: Date,
+          default: null 
+        },
+    planExpiresAt: {
+         type: Date,
+          default: null 
+        },
+// dodo fields
+    dodoCustomerId: {
+         type: String,
+         default: null
+        },
+    subscriptionId: { 
+        type: String,
+         default: null
+     },
+     LastRun: {
+        type: mongoose.Schema.Types.Date,
+        ref: 'searchruns',
+        default: null
+     }
 } , {
         timestamps: true
     })

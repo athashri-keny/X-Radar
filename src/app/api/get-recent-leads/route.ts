@@ -11,7 +11,6 @@ import SearchRunModel from '@/models/SearchRun'
         await DBConnect()
 
         const session = await getServerSession(authOptions)
-        console.log("get recent leads session" , session)
 
         if (!session || !session.user) {
          return NextResponse.json({

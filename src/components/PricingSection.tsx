@@ -16,26 +16,29 @@ const plans = [
       { text: "All time tweets only (last 7-30 days)", included: true },
       { text: "5 leads max", included: true },
       { text: "AI reply suggestions", included: true },
+       { text: "Automated 2 Search quries as per your niche", included: true },
     ],
   },
   {
     name: "Pro",
-    price: "$19.99",
+    price: "$4.99",
     period: "/ month",
-    desc: "For serious freelancers",
+    desc: "For serious freelancers and job seekers",
     popular: true,
     features: [
-      { text: "12 hour cooldown", included: true },
-      { text: "Select Latest tweets option (24hrs/7days/30days)", included: true },
-      { text: "Email + push notifications", included: true },
-      { text: "AI reply suggestions", included: true },
-      { text: "Contact Info Extracted from Bio (email/website)", included: true },
-      { text: "Beta Users Get every new feature first free of charge until stable", included: true },
+      { text: "6 hour cooldown", included: true },
+      { text: "Get lastest tweets (24hr)", included: true },
+       { text: "Unlimited leads (as per result)", included: true },
+      { text: " AI replies suggestions ", included: true },
+      { text: "Automated 5 Search quries as per your niche", included: true },
+         { text: "Get personalized leads via Email", included: true },
+      { text: "Users Get every new feature first free of charge until stable", included: true },
     ],
   },
 ];
 
 const PricingSection = () => (
+  
   <section id="pricing" className="py-24 relative">
     <div className="absolute inset-0 dot-pattern opacity-20" />
     <div className="container mx-auto px-4 relative z-10">

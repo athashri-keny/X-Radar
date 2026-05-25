@@ -7,6 +7,7 @@ declare module 'next-auth' {
         Name?: string,
         Email: string,
         isVerifiedEmail?: boolean,
+        plan: string
          createdAt: Date
   updatedAt: Date
     }
@@ -16,6 +17,7 @@ declare module 'next-auth' {
             name?: string,
             email?: string,
             isVerifiedEmail: boolean,
+            plan: string
         } & DefaultSession['user']
     }
 }
@@ -26,5 +28,6 @@ declare module 'next-auth/jwt' {
             name?: string,
             email?: string,
             isVerifiedEmail: boolean,
+            plan: string
     }
 }

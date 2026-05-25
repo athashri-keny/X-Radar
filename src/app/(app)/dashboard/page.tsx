@@ -10,6 +10,8 @@ import { GradientOrbs } from '@/components/gradient-orbs'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import Footer from "@/components/footer";
+import PricingSectionDialog from '@/components/pricingSectionDialog'
+import { LeadPipelineLoader } from '@/components/SpinnerLoader'
 
 interface leads {
   _id: string
@@ -28,12 +30,7 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
-// const {data: session} = useSession()
-// // console.log(session?.user.email)
-// // console.log(session?.user.name)
-// // console.log(session?.user._id)
-
-
+const {data: session} = useSession()
 
 
   const [isScanning, setIsScanning] = useState(false)
@@ -42,29 +39,21 @@ export default function Dashboard() {
   const [cooldownEndTime, setCooldownEndTime] = useState(0)
   const [leads , setleads] = useState<leads[]>([])
   const [leadsHistory , setleadsHistory] = useState<leadsHistory[]>([])
+  const [message , setmesssage] = useState('')
+  const [apifyStatus , setApifyStatus] = useState('')
 
 
-  const SIX_HOURS_MS = 24 * 60 * 60 * 1000 // 24 hours 
-  const endTime = Date.now() + SIX_HOURS_MS // calutate it 
+  const TWEETYFOURHOURS_MS = 24 * 60 * 60 * 1000 // 24 hours 
+  const SIXHOURCOOLDOWN = 6 * 60 * 60 * 1000 // 6 hours
 
+  const endTime = Date.now() + (session?.user?.plan === 'free'  ? TWEETYFOURHOURS_MS : SIXHOURCOOLDOWN)  // calutate it 
 
-  // const runAgent = async() => {
-  //   try {
-  //     await axios.post('/api/run-agent')
-  //   } catch (error: any) {
-  //     console.log("Error while erroring the agent" , error)
-  //      seterror(error)
-  //     return error
-      
-  //   }
-  // }'
-
-const handleSearch = async (keyword: String[], selectedDays: string) => {
+const handleSearch = async (keyword: string, selectedDays: string) => {
   setIsScanning(true)
   setLeadsFoundNumber(0)
   setcooldownmessage('')
 
-  console.log("From handle search = " , keyword , selectedDays)
+  // console.log("From handle search = " , keyword , selectedDays)
 
   try {
     const res = await axios.post('/api/run-agent', { keywords: keyword, TimePeriod: selectedDays })
@@ -78,17 +67,33 @@ const handleSearch = async (keyword: String[], selectedDays: string) => {
         const pollRes = await axios.get(`/api/get-status?searchRunId=${SearchRunId}`)
         const data = pollRes.data
 
+        console.log("Data from recived from frontend " , data)
+
+        if (data.status === 'pending') {
+          setApifyStatus('running')
+        }
+
         if (data.status === 'done') {
-          setleads(data.leads)
-          setIsScanning(false)  // ← only stops here when actually done
-          setLeadsFoundNumber(data.leads.length)
-          setCooldownEndTime(Date.now() + SIX_HOURS_MS)
-          return
+          setIsScanning(false) // ← only stops here when actually done
+          
+
+         if (data.leads.length > 0) {
+           setLeadsFoundNumber(data.leads.length)
+           setleads(data.leads || [])
+           setCooldownEndTime(endTime)
+           localStorage.setItem('CooldownEndTime', JSON.stringify(endTime))
+    
+         } else {
+          console.log("No current lastest leads in your niche")
+          setmesssage("No Lastest leads found in your niche right now. Check back in a few hours for fresh results.")
+          setApifyStatus('done')
+          
+         }
+         return ;
         }
 
         if (data.status === 'failed') {
           setIsScanning(false)
-          console.log("Search failed")
           return
         }
 
@@ -105,23 +110,26 @@ const handleSearch = async (keyword: String[], selectedDays: string) => {
 
   } catch (error: any) {
     // this only catches errors from POST /api/run-agent (cooldown, auth etc)
+     console.log(error)
     if (error.response?.status === 429) {
+      setcooldownmessage(error.response.data.messsage)
+     
+    } 
+    if (error.response.status === 403) {
       setcooldownmessage(error.response.data.message)
     }
-    console.error("Error:", error.response?.data?.message || error.message)
+    console.log("Error:", error.response)
     setIsScanning(false) // ← only set false here if POST itself failed
   }
-  // ← no finally block at all
 }
-
 
   useEffect(() => {
-const saved = localStorage.getItem('CooldownEndTime')
-
-
+    const saved = localStorage.getItem('CooldownEndTime')
 if (saved) {
   setCooldownEndTime(Number(saved))
-}
+  // console.log('Cooldown setted succcessfully')
+} 
+
 
   const fetchLeadsFrombackend = async() => {
    try {
@@ -148,7 +156,7 @@ if (saved) {
       <div className="relative z-10">
         <DashboardNavbar />
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 mb-55">
           {/* Search section */}
           <DashboardSearch
             onSearch={handleSearch}
@@ -177,22 +185,41 @@ if (saved) {
 
               {isScanning ? (
   <div className="flex flex-col items-center justify-center py-16 gap-4">
-    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+   <LeadPipelineLoader apifyStatus={apifyStatus} />
     <p className="text-gray-400 text-sm">Hunting leads for you...</p>
   </div>
 ) : leadsFoundNumber > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               {leads.map((tweet: any) => (
+              {leads.map((tweet: any) => (
   <LeadCard
-    key={tweet._id ?? tweet.id}
-    score={tweet.Score ?? tweet.score}
-    suggestReplyAi={tweet.suggestedReply}
-    tweet={tweet.TweetText ?? tweet.tweet}
-    tweetUrl={tweet.Tweeturl ?? tweet.handle}
+    key={tweet.tweetId || tweet._id}              
+    score={tweet.score || tweet.Score }               
+    suggestReplyAi={tweet.suggestedReply || tweet.suggestedReply}  
+    tweet={tweet.tweetText || tweet.TweetText}           
+    tweetUrl={tweet.tweetUrl || tweet.Tweeturl}         
   />
 ))}
 
                 </div>
+              ) : message ? (
+                <div className="flex justify-center py-16">
+  <div className="relative flex items-start gap-3 bg-red-950/40 border border-red-500/50 text-red-300 rounded-xl px-5 py-4 max-w-md w-full shadow-lg shadow-red-900/20 animate-in fade-in slide-in-from-bottom-3 duration-500">
+    
+    {/* Pulsing dot */}
+    <span className="mt-1 flex-shrink-0 relative flex h-3 w-3">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+    </span>
+
+    <div>
+      <p className="font-semibold text-red-300 text-sm">No Leads Found !!</p>
+      <p className="text-red-400/80 text-sm mt-0.5">
+       {message}
+      </p>
+    </div>
+
+  </div>
+</div>
               ) : (
                 <div className="text-center py-16">
                   <p className="text-gray-500 text-lg">
