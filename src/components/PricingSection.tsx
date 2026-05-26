@@ -13,7 +13,8 @@ const plans = [
     popular: false,
     features: [
       { text: "24 hour cooldown", included: true },
-      { text: "All time tweets only (last 7-30 days)", included: true },
+      { text: "Only last 6 days tweets (no 24 hrs)", included: true },
+        { text: "Only 3 free searches", included: true },
       { text: "5 leads max", included: true },
       { text: "AI reply suggestions", included: true },
        { text: "Automated 2 Search quries as per your niche", included: true },
@@ -28,6 +29,7 @@ const plans = [
     features: [
       { text: "6 hour cooldown", included: true },
       { text: "Get lastest tweets (24hr)", included: true },
+       { text: "Unlimited Searches", included: true },
        { text: "Unlimited leads (as per result)", included: true },
       { text: " AI replies suggestions ", included: true },
       { text: "Automated 5 Search quries as per your niche", included: true },

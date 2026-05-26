@@ -15,6 +15,8 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group'
 import { useSession } from 'next-auth/react'
 import PricingSectionDialog from './pricingSectionDialog'
+import PaywallOverlay from './pricingsectionpaywall'
+
 
 const SubNiches: Record<string, string[]> = {
   "Developer": [
@@ -192,8 +194,8 @@ export function DashboardSearch({
       type="single"
       value={selectedDays}
       onValueChange={(val) => {
-        if ((val === '24' || val === '6') && session?.user.plan === 'free') {
-          setOpen(true)
+        if ((val === '24') && session?.user.plan === 'free') {
+        setOpen(true)
         } else {
           setSelectedDays(val)
           setShowRecommendation(val === '24')
@@ -215,26 +217,19 @@ export function DashboardSearch({
           {session?.user.plan === 'free' && (
             <span className="ml-1.5 text-[10px]">🔒</span>
           )}
-        
+          
         </ToggleGroupItem>
           <ToggleGroupItem
           value="6"
          className="px-3 sm:px-4 py-1.5 rounded-full border border-white/10 text-xs sm:text-sm 
     data-[state=on]:bg-white data-[state=on]:text-black 
     text-gray-400 hover:text-white hover:border-white/30 transition
-    aria-disabled:opacity-40 aria-disabled"
-  aria-disabled={session?.user.plan === 'free'}
+"
 >
           Last 6 days 
-          {session?.user.plan === 'free' && (
-            <span className="ml-1.5 text-[10px]">🔒</span>
-          )}
-        
         </ToggleGroupItem>
-
-
+    <PricingSectionDialog isopen={open} onClose={() => setOpen(false)}/> 
         {/* Tooltip on hover */}
-          <PricingSectionDialog isopen={open} onClose={() => setOpen(false)}/>
       </div>
 
     </ToggleGroup>

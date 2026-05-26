@@ -16,7 +16,6 @@ import { Button } from '@base-ui/react'
 
 function PricingSectionDialog({ isopen, onClose }: { isopen: boolean, onClose: () => void }) {
 
-
     
 //   const {data: session} = useSession()
 
@@ -43,7 +42,7 @@ function PricingSectionDialog({ isopen, onClose }: { isopen: boolean, onClose: (
       popular: false,
       features: [
         { text: "24 hour cooldown", included: true },
-        { text: "Tweets from last 7–30 days", included: true },
+        { text: "Tweets from last 6 days tweets", included: true },
         { text: "5 leads max", included: true },
         { text: "2 AI-generated search queries", included: true },
       ],

@@ -12,6 +12,7 @@ import axios from 'axios'
 import Footer from "@/components/footer";
 import PricingSectionDialog from '@/components/pricingSectionDialog'
 import { LeadPipelineLoader } from '@/components/SpinnerLoader'
+import PaywallOverlay from '@/components/pricingsectionpaywall'
 
 interface leads {
   _id: string
@@ -41,6 +42,8 @@ const {data: session} = useSession()
   const [leadsHistory , setleadsHistory] = useState<leadsHistory[]>([])
   const [message , setmesssage] = useState('')
   const [apifyStatus , setApifyStatus] = useState('')
+    const [open, setOpen] = useState(false)
+
 
 
   const TWEETYFOURHOURS_MS = 24 * 60 * 60 * 1000 // 24 hours 
@@ -111,12 +114,15 @@ const handleSearch = async (keyword: string, selectedDays: string) => {
   } catch (error: any) {
     // this only catches errors from POST /api/run-agent (cooldown, auth etc)
      console.log(error)
+     // for 
     if (error.response?.status === 429) {
       setcooldownmessage(error.response.data.messsage)
-     
     } 
+
+    // for free users hiting the paywall
     if (error.response.status === 403) {
       setcooldownmessage(error.response.data.message)
+           setOpen(true)
     }
     console.log("Error:", error.response)
     setIsScanning(false) // ← only set false here if POST itself failed
@@ -130,6 +136,7 @@ if (saved) {
   // console.log('Cooldown setted succcessfully')
 } 
 
+console.log("Open val = " , open)
 
   const fetchLeadsFrombackend = async() => {
    try {
@@ -170,6 +177,9 @@ if (saved) {
     ⏳ {cooldownMessage}
   </p>
 )}
+
+   <PaywallOverlay isOpen={open} onClose={() => setOpen(false)}/>
+
 
           {/* Main content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-12">

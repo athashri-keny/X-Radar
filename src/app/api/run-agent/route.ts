@@ -38,8 +38,6 @@ import axios from "axios";
         }
 
 
-        // TODO: uncommit this when depolying to prod
-
         // finding the last run searched by the user.
         const lastRun = await SearchRunModel.findOne({
   UserId: new mongoose.Types.ObjectId(session.user._id),
@@ -47,19 +45,27 @@ import axios from "axios";
 }).sort({ LastRun: -1 }) // most recent first
 
 
+// getting the total runs done by users 
+const totalRuns = await SearchRunModel.countDocuments({
+  UserId: new mongoose.Types.ObjectId(session.user._id),
+  status: 'done'
+});
 
 
 // for Free user hitting the paywall after first run 
-if (lastRun && session.user.plan === 'free') {
+if (totalRuns >= 1 && session.user.plan === 'free') {
 return NextResponse.json({
-  message: "Error! YOu have reached Maximun of your limit Uprade to Pro to keep using Xradar"
+  message: "You've used all 3 free searches. Upgrade to Pro to keep using X-Radar"
 } , {status: 403})
 }
 
 
 // for paid user hiting the cooldown timer 
 
-const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
+// getting the last run of the user and converting it to normal time
+const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60) 
+
+// if the the normal time is greater than 6 
 if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
 
    const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
@@ -85,27 +91,19 @@ if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
 
         console.log("KeyWords" , keywords)
 
-      
-        const now = Math.floor(Date.now() / 1000)
-
-
         
 const searchTermss = generateQueries(keywords).map((singleQurey: any) => {
 
-
     if (TimePeriod === '24') {
-  return `${singleQurey} within_time:24h -filter:retweets lang:en`
+        return `${singleQurey} within_time:24h -filter:retweets lang:en`
 
-} else if (TimePeriod === '6') {
-  return `${singleQurey} within_time:6d -filter:retweets lang:en`
-
-} else {
-  // free: 8 days window
- const since = new Date(now * 1000 - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 10 days
-const until = new Date(now * 1000 - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 7 days 
-
-return `${singleQurey} since:${since} until:${until} -filter:retweets lang:en`
-}
+    } else if (TimePeriod === '6') {
+        // Free: 1 day ago → 6 days ago (excludes last 24hrs)
+        const now = Date.now();
+        const oneDayAgo = Math.floor((now - 1 * 24 * 60 * 60 * 1000) / 1000);
+        const sixDaysAgo = Math.floor((now - 6 * 24 * 60 * 60 * 1000) / 1000);
+        return `${singleQurey} since_time:${sixDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en`
+    }
 })
 
 // console.log("SearchTerms returnd" , searchTermss)
