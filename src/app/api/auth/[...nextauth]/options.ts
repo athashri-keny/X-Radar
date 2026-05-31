@@ -105,6 +105,7 @@ export const authOptions: NextAuthOptions = {
             if (account?.provider === 'google') {
                 try {
                     await DBConnect()
+                    
                    const existingUser = await UserModel.findOne({Email: profile?.email})
                    
                    if (!existingUser) {
@@ -138,7 +139,7 @@ export const authOptions: NextAuthOptions = {
         
      // Manages Token Data
 
-        async jwt({token , user , account}){
+        async jwt({token , user , account , trigger , session}){
             if (user) {
                 // console.log('user' , user)
                 if (account?.provider === 'credentials') {
@@ -163,8 +164,16 @@ export const authOptions: NextAuthOptions = {
                         token.plan = dbuser.plan
                     }
                 }      
-              
             }
+            
+              if (trigger === 'update' && session.plan) {
+                    await DBConnect()
+                  
+                    console.log("Update !! trixggeed")
+                    // finding the user
+                    token.plan = session.plan
+                    
+                }
             return token
         },
 

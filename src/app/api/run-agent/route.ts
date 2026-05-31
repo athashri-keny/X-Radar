@@ -53,7 +53,7 @@ const totalRuns = await SearchRunModel.countDocuments({
 
 
 // for Free user hitting the paywall after first run 
-if (totalRuns >= 1 && session.user.plan === 'free') {
+if (totalRuns >= 3 && session.user.plan === 'free') {
 return NextResponse.json({
   message: "You've used all 3 free searches. Upgrade to Pro to keep using X-Radar"
 } , {status: 403})

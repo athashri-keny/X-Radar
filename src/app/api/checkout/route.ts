@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+
   // create a payment
       const payment = await client.checkoutSessions.create({
         product_cart: [
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
     //   },
       
     // TODO: remove this and add prod 
-    return_url: 'http://localhost:3000/dashboard',
+    return_url: 'http://localhost:3000/payment-page',
 
     
       // custom data for webhook

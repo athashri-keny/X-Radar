@@ -8,7 +8,6 @@ export const POST = Webhooks({
     
     webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY!,
     onSubscriptionActive: async (payload) => {
-  
 
       console.log("payload data = " , payload.data)
 
@@ -39,7 +38,7 @@ export const POST = Webhooks({
 
 
 
-  // 5 if the user scans the subscriptions this web hook handler will run 
+  // 5 if the user Cancell the subscriptions this web hook handler will run 
 
   onSubscriptionCancelled: async (payload) => {
     await UserModel.findOneAndUpdate(

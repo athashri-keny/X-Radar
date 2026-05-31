@@ -215,9 +215,7 @@ useEffect(() => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
-        >
-          <LogOut className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Sign out</span>
+        >         
         </motion.button>
       </div>
     </div>

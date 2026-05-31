@@ -6,14 +6,14 @@ import { Check } from "lucide-react";
 
 const freeFeatures = [
   { text: "24-hour cooldown", upgradesTo: "6-hour cooldown" },
-  { text: "Tweets from last 7–30 days", upgradesTo: "Within 24 hrs leads" },
+  { text: "Tweets from last 6-days", upgradesTo: "Within 24 hrs" },
   { text: "5 leads max per search", upgradesTo: "Unlimited leads" },
   { text: "AI reply suggestions", upgradesTo: null },
   { text: "2 search queries", upgradesTo: "5 smart queries" },
 ];
 
 const proOnlyFeatures = [
-  "Leads delivered to your inbox",
+  "Get personalized leads via Email",
   "Every new feature free until stable",
 ];
 
@@ -87,7 +87,7 @@ export default function PricingSection() {
             <p className="text-2xl font-black text-[#e2e8f0]">X-Radar Pro</p>
           </div>
           <div className="text-right">
-            <p className="text-xl font-black text-white mt-3 ">$4.99</p>
+            <p className="text-xl font-black text-white mt-3 ">$9.99</p>
             <p className="text-[10px] text-white">/month</p>
           </div>
         </div>
@@ -112,7 +112,6 @@ export default function PricingSection() {
               </span>
 
               {f.upgradesTo ? (
-                /* stacked: old (struck) on top, new value below */
                 <span className="flex flex-col gap-0">
                   <span className="relative w-fit text-[10px] text-white opacity-50 line-through decoration-gray-900">
                     {f.text}
@@ -151,9 +150,9 @@ export default function PricingSection() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
           onClick={() => handleRedicrectOfPayment()}
-          className="mt-5 w-full rounded-lg bg-[#818cf8] py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90"
+          className="mt-5 w-full rounded-lg bg-[#818cf8] py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 cursor-pointer"
         >
-          Upgrade to Pro — $4.99/mo
+          Upgrade to Pro
         </motion.button>
 
         <p className="mt-2 text-center text-[10px] text-white">

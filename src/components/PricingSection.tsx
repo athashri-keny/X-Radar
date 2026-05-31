@@ -22,7 +22,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$4.99",
+    price: "$9.99",
     period: "/ month",
     desc: "For serious freelancers and job seekers",
     popular: true,

@@ -32,39 +32,41 @@ function PricingSectionDialog({ isopen, onClose }: { isopen: boolean, onClose: (
   }
 
 
-    
-    const plans = [
-    {
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      desc: "Perfect for getting started",
-      popular: false,
-      features: [
-        { text: "24 hour cooldown", included: true },
-        { text: "Tweets from last 6 days tweets", included: true },
-        { text: "5 leads max", included: true },
-        { text: "2 AI-generated search queries", included: true },
-      ],
-    },
-    {
-      name: "Pro",
-      price: "$4.99",
-      period: "/ month",
-      desc: "For serious freelancers and job seekers",
-      popular: true,
-      features: [
-        { text: "6 hour cooldown", included: true },
-        { text: "Get latest tweets (24hr)", included: true },
-        { text: "Unlimited leads (as per result)", included: true },
-        { text: "AI reply suggestions", included: true },
-        { text: "5 AI-generated search queries", included: true },
-        { text: "Get personalized leads via Email", included: true },
-        { text: "Every new feature free until stable", included: true },
-      ],
-    },
-  ]
 
+const plans = [
+  {
+    name: "Free",
+    price: "$0",
+    period: "forever",
+    desc: "Perfect for getting started",
+    popular: false,
+    features: [
+      { text: "24 hour cooldown", included: true },
+      { text: "Only last 6 days tweets (no 24 hrs)", included: true },
+        { text: "Only 3 free searches", included: true },
+      { text: "5 leads max", included: true },
+      { text: "AI reply suggestions", included: true },
+       { text: "Automated 2 Search quries as per your niche", included: true },
+    ],
+  },
+  {
+    name: "Pro",
+    price: "$9.99",
+    period: "/ month",
+    desc: "For serious freelancers and job seekers",
+    popular: true,
+    features: [
+      { text: "6 hour cooldown", included: true },
+      { text: "Get lastest tweets (24hr)", included: true },
+       { text: "Unlimited Searches", included: true },
+       { text: "Unlimited leads (as per result)", included: true },
+      { text: " AI replies suggestions ", included: true },
+      { text: "Automated 5 Search quries as per your niche", included: true },
+         { text: "Get persona lized leads via Email", included: true },
+      { text: "Users Get every new feature first free of charge until stable", included: true },
+    ],
+  },
+];
     return (
      <div>
   <Dialog open={isopen} onOpenChange={(open) =>  {if(!open) onClose()}}>

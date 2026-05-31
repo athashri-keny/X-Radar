@@ -65,7 +65,7 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
             Current Plan
           </p>
           <p className="text-2xl font-black text-white">
-            $4.99
+            $9.99
             <span className="ml-1 text-xs font-normal text-white">/mo</span>
           </p>
         </div>

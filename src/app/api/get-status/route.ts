@@ -157,10 +157,10 @@ CATEGORIES:
 
 MAJORITY VOTE RULE:
 - Each tweet comes with 3 reference examples from the database
+- NEVER skip a tweet, classify every single one
 - Count the labels: [hiring_tweet, hiring_tweet, not_hiring] → HIRING
 - Count the labels: [not_hiring, not_hiring, hiring_tweet] → NOT HIRING
 - If tie → use your own judgment based on tweet content
-- NEVER skip a tweet, classify every single one
 
 SUGGESTED REPLY RULES:
 - ONLY generate a suggestedReply for HIRING tweets

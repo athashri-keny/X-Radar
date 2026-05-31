@@ -13,7 +13,7 @@ import Footer from "@/components/footer";
 import PricingSectionDialog from '@/components/pricingSectionDialog'
 import { LeadPipelineLoader } from '@/components/SpinnerLoader'
 import PaywallOverlay from '@/components/pricingsectionpaywall'
-
+import { useSearchParams } from 'next/navigation'
 interface leads {
   _id: string
   TweetText: string,
@@ -31,8 +31,8 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
-const {data: session} = useSession()
-
+const {data: session , update} = useSession()
+const usesearchparams = useSearchParams()
 
   const [isScanning, setIsScanning] = useState(false)
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0)
@@ -134,9 +134,10 @@ const handleSearch = async (keyword: string, selectedDays: string) => {
 if (saved) {
   setCooldownEndTime(Number(saved))
   // console.log('Cooldown setted succcessfully')
+
+  // if the search has uprade in it then upddate the token from free to paid
 } 
 
-console.log("Open val = " , open)
 
   const fetchLeadsFrombackend = async() => {
    try {
@@ -151,6 +152,17 @@ console.log("Open val = " , open)
   }
   fetchLeadsFrombackend()
   } , [])
+
+
+
+const updateSession = async() => {
+try {
+  const rres = await update({plan: 'pro'})
+  console.log( "seession updated  =" , rres)
+} catch (error) {
+  console.log("Error" , error)
+}
+}
 
 
   return (
@@ -254,6 +266,9 @@ console.log("Open val = " , open)
           </div>
         </main>
       </div>
+      <button onClick={updateSession}>
+        CLICK
+      </button>
       <Footer/>
     </div>
   )
