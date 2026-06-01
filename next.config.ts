@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
     'got', 
     'got-scraping',
     'chromadb',
-    '@chroma-core/ai-embeddings-common'
+    '@chroma-core/ai-embeddings-common',
+    '@chroma-core/default-embed',
   ],
 
   outputFileTracingIncludes: {
