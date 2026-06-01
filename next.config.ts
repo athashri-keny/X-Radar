@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['apify-client', 'proxy-agent', 'got', 'got-scraping'],
+  serverExternalPackages: [
+    'apify-client', 
+    'proxy-agent', 
+    'got', 
+    'got-scraping',
+    'chromadb',
+    '@chroma-core/ai-embeddings-common'
+  ],
 
   outputFileTracingIncludes: {
     '/api/agents/run': [
