@@ -13,7 +13,8 @@ import Footer from "@/components/footer";
 import PricingSectionDialog from '@/components/pricingSectionDialog'
 import { LeadPipelineLoader } from '@/components/SpinnerLoader'
 import PaywallOverlay from '@/components/pricingsectionpaywall'
-import { useSearchParams } from 'next/navigation'
+
+
 interface leads {
   _id: string
   TweetText: string,
@@ -32,7 +33,7 @@ interface leadsHistory {
 export default function Dashboard() {
 
 const {data: session , update} = useSession()
-const usesearchparams = useSearchParams()
+
 
   const [isScanning, setIsScanning] = useState(false)
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0)
