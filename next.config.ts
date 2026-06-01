@@ -9,7 +9,21 @@ const nextConfig: NextConfig = {
     'chromadb',
     '@chroma-core/ai-embeddings-common',
     '@chroma-core/default-embed',
+    '@chroma-core/openai',
   ],
+
+  webpack: (config) => {
+    config.externals = [
+      ...(Array.isArray(config.externals) ? config.externals : [config.externals]),
+      ({ request }: { request: string }, callback: Function) => {
+        if (request?.startsWith('@chroma-core/')) {
+          return callback(null, `commonjs ${request}`);
+        }
+        callback();
+      }
+    ];
+    return config;
+  },
 
   outputFileTracingIncludes: {
     '/api/agents/run': [
