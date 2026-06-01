@@ -3,8 +3,9 @@
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Radar, CheckCircle2, RefreshCw, Zap, Mail, Target, Clock, AlertTriangle, Info } from 'lucide-react';
+import { Radar, CheckCircle2, RefreshCw, Zap, Mail, Target, Clock, AlertTriangle, Info, X } from 'lucide-react';
 import axios from 'axios';
+import { toast } from '@/hooks/use-toast';
 
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -213,7 +214,7 @@ function SuccessView() {
 }
 
 // ─── Failed view
-function FailedView({ onRetry }: { onRetry: () => void }) {
+function FailedView({ onRetry, loading }: { onRetry: () => void; loading: boolean }) {
   return (
     <motion.div
       key="failed"
@@ -230,24 +231,23 @@ function FailedView({ onRetry }: { onRetry: () => void }) {
 
       {/* Heading */}
       <div>
-        <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-white/25 mb-1.5">
+        <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-white mb-1.5">
           Payment issue
         </p>
         <p className="text-white text-lg font-bold tracking-tight mb-2">
           Activation failed
         </p>
-        <p className="text-white/35 text-xs leading-relaxed max-w-[220px]">
-          Your payment may have been processed but your account wasn't upgraded.
-          Don't worry — you won't be charged twice.
+        <p className="text-white text-xs leading-relaxed max-w-[220px]">
+      Your payment wasn't processed on our end. You won't be charged.
         </p>
       </div>
 
       {/* Refund notice */}
-      <div className="w-full bg-yellow-500/[0.06] border border-yellow-500/15 rounded-xl px-3.5 py-2.5 text-left flex gap-2">
+      <div className="w-full bg-yellow-500/6 border border-yellow-500/15 rounded-xl px-3.5 py-2.5 text-left flex gap-2">
         <Info size={14} className="text-yellow-400/70 mt-0.5 shrink-0" />
-        <p className="text-white/40 text-[11px] leading-relaxed">
+        <p className="text-white text-[11px] leading-relaxed">
           If money was debited, it will be refunded within{" "}
-          <span className="text-white/55 font-semibold">5–7 business days</span>{" "}
+          <span className="text-white font-semibold">5–7 business days</span>{" "}
           to your original payment method.
         </p>
       </div>
@@ -256,20 +256,51 @@ function FailedView({ onRetry }: { onRetry: () => void }) {
       <div className="flex flex-col gap-2 w-full">
         <motion.button
           onClick={onRetry}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="bg-white text-black font-bold text-xs py-2.5 rounded-xl cursor-pointer"
+          disabled={loading}
+          whileHover={{ scale: !loading ? 1.03 : 1 }}
+          whileTap={{ scale: !loading ? 0.97 : 1 }}
+          className={`flex items-center justify-center gap-2 font-bold text-xs py-2.5 rounded-xl ${
+            loading
+              ? 'bg-white/50 text-black/50 cursor-not-allowed'
+              : 'bg-white text-black cursor-pointer'
+          }`}
         >
-          Try Again
+          {loading ? (
+            <>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                className="w-4 h-4 rounded-full border-2 border-black/20 border-t-black/40"
+              />
+              Retrying…
+            </>
+          ) : (
+            'Try Again'
+          )}
         </motion.button>
         <motion.a
-          href="mailto:support@xradar.in"
+          href="/dashboard"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-1.5 bg-transparent border border-white/8 text-white/40 text-[11px] py-2 rounded-xl cursor-pointer no-underline"
+          className="flex items-center justify-center gap-1.5 w-full bg-transparent border border-white/8 hover:border-white/15 text-white hover:text-white/60 text-[11px] py-2 rounded-xl cursor-pointer no-underline transition-colors"
         >
-          <Mail size={12} /> Contact support
+          Back to Dashboard
         </motion.a>
+
+
+   <div className="flex flex-col items-center gap-1.5 w-full">
+  <p className="text-white font-bold text-[10px] tracking-wide mt-3">Still having issues?</p>
+  <motion.a
+    href="https://x.com/Athashri_k"
+    target="_blank"
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.97 }}
+    className="flex items-center justify-center gap-1.5 w-full bg-transparent border border-white/8 hover:border-white/15 text-white hover:text-white/60 text-[11px] py-2 rounded-xl cursor-pointer no-underline transition-colors"
+  >
+    <X size={11} strokeWidth={2} />
+    DM the founder on X
+  </motion.a>
+</div>
       </div>
     </motion.div>
   );
@@ -284,6 +315,8 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
   const { data: session ,     update } = useSession();
   const [status, setStatus] = useState<Status>(initialStatus);
   const [hasRun , setRun] = useState(false)
+  const [loading , setloading] = useState(false)
+  const [error , seterror] = useState("")
 
   console.log("Session from the client side" , session?.user )
 
@@ -301,7 +334,7 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
 
     // already confirmed pro on server — just sync client JWT
     if (initialStatus === 'done') {
-      // console.log("triggred!!! ")
+      console.log("triggred!!! ")
     await update({ plan: 'pro' });
       console.log('Updated successfully session' )
       return;
@@ -309,7 +342,7 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
 
     // webhook hasn't fired yet — start polling
     const interval = setInterval(async () => {
-      // console.log("Polling triggedd!! ")
+      console.log("Polling triggedd!! ")
       try {
         const res = await axios.get('/api/payment-sucess');
         if (res.data.upgraded === true) {
@@ -337,6 +370,7 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
   } , [session?.user])
 
 async function check() {
+  setloading(true)
   try {
     const res = await axios.get(`/api/payment-sucess`)
     if (res.data.upgraded === true) {
@@ -344,11 +378,27 @@ async function check() {
         console.log("session updated =", rres?.user);
         setStatus('done');
       } else {
-        setStatus('failed');
+        const errorMessage = "Payment verification timed out. Please try again.";
+        setStatus('failed')
+        seterror(errorMessage);
+        toast({
+          variant: 'destructive',
+          title: 'Payment Verification Failed',
+          description: errorMessage,
+        });
+        setloading(false);
       }
   } catch (error) {
     console.log("Error while checking " , error)
+    const errorMessage = "Error you are still fetching as free user in your database try again in 3 sec"
     setStatus('failed');
+    seterror(errorMessage)
+    toast({
+      variant: 'destructive',
+      title: 'Payment Check Failed',
+      description: errorMessage,
+    });
+    setloading(false)
   }
 }
 
@@ -384,7 +434,7 @@ async function check() {
         <AnimatePresence mode="wait">
           {status === 'checking' && <CheckingView key="checking" />}
           {status === 'done'     && <SuccessView  key="done" />}
-          {status === 'failed'   && <FailedView   key="failed" onRetry={check} />}
+          {status === 'failed'   && <FailedView   key="failed" onRetry={check} loading={loading} />}
         </AnimatePresence>
       </motion.div>
     </div>
