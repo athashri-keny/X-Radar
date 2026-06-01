@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {},
+  turbopack: {
+    resolveAlias: {
+      '@chroma-core/default-embed': './chroma-stubs.js',
+      '@chroma-core/openai': './chroma-stubs.js',
+    },
+  },
   serverExternalPackages: [
     'apify-client', 
     'proxy-agent', 
