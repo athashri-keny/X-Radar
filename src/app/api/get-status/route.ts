@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 import { Client } from "@upstash/qstash"
 import { AgentBuilder } from "@/agents/TweetClassfierAgent";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import { CloudClient } from "chromadb";
+;
 
 const client = new Client({token: process.env.QSTASH_TOKEN})
 
@@ -148,7 +148,7 @@ export async function GET(request: NextRequest) {
     messages: [new SystemMessage(`
        You are an expert tweet classifier agent for a lead generation platform.
 
-You will receive a list of tweets WITH their RAG reference examples and labels from ChromaDB.
+You will receive a list of tweets WITH their RAG reference examples and labels from A Vector Database.
 
 CATEGORIES:
 - HIRING: A company or recruiter is OFFERING a job, role, or position

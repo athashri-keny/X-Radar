@@ -1,6 +1,5 @@
 
 import 'dotenv/config'
-import { ChromaClient } from "chromadb"; // for custom server (via docker)
 import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 import { nanoid } from "nanoid";
 

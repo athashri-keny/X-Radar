@@ -113,7 +113,6 @@
 import "dotenv/config"
 import OpenAI from "openai"
 import { ChatOpenAI } from "@langchain/openai"  
-import { ChromaClient, CloudClient } from "chromadb";
 import { tool } from "@langchain/core/tools";
 import z from "zod";
 import { AIMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
@@ -122,11 +121,6 @@ import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 import { Pinecone } from '@pinecone-database/pinecone';
 import { getEmgbedding } from "@/lib/EmbeddingFunction";
 
-const client = new ChromaClient({
-  host: 'chroma-02b5.onrender.com',
-  port: 443,
-  ssl: true
-});
 
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 

@@ -1,19 +1,11 @@
 import 'dotenv/config'
-import { ChromaClient } from "chromadb";
+
 
 import { Pinecone } from '@pinecone-database/pinecone';
 import { getEmgbedding } from '@/lib/EmbeddingFunction';
 
 
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-
-// const client = new ChromaClient({
-//     host: "chroma-02b5.onrender.com",
-//     port: 443,
-//     ssl: true
-// });
-
-
 
 
 // const collection = await client.getCollection({ name: "hiring_tweets" })
