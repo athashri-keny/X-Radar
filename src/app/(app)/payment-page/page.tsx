@@ -14,7 +14,7 @@ export default async function Page() {
 
   const session = await getServerSession(authOptions);
 
-  console.log("session revied from the sever" , session)
+  // console.log("session revied from the sever" , session)
 
   if (!session) {
     return
@@ -24,7 +24,7 @@ export default async function Page() {
   
   const user = await UserModel.findOne({Email: session.user.email});
 
-  console.log("User" , user)
+  // console.log("User" , user)
 
   // already upgraded — just show success immediately
   if (user?.plan === 'pro') {

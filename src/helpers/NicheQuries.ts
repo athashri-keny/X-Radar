@@ -162,6 +162,6 @@ export function generateQueries(niche: string): string[] {
     return []
   }
 
-  console.log("Generating queries for:", niche, queries)
+  // console.log("Generating queries for:", niche, queries)
   return queries
 }

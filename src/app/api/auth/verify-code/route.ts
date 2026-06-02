@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken'
 
         const {verifycode , userId } = await request.json()
 
-        console.log(verifycode , userId)
+        // console.log(verifycode , userId)
 
         if (!verifycode || !userId) {
             return NextResponse.json({

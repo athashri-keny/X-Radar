@@ -32,7 +32,7 @@ Building a property marketplace MVP and looking for a React Native developer to 
     includeMetadata: true      // ← include text and label in results
   })
 
-  console.log(results.matches)
+  // console.log(results.matches)
 
 // console.log(result.documents);    // what examples are being retrieved
 // console.log(result.metadatas);    // what labels they have

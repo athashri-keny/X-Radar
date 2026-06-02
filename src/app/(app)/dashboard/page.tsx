@@ -62,7 +62,7 @@ const handleSearch = async (keyword: string, selectedDays: string) => {
   try {
     const res = await axios.post('/api/run-agent', { keywords: keyword, TimePeriod: selectedDays })
     
-    console.log('successfully agent fired', res.data)
+    // console.log('successfully agent fired', res.data)
 
     const SearchRunId = res.data.searchRunId
 
@@ -71,7 +71,7 @@ const handleSearch = async (keyword: string, selectedDays: string) => {
         const pollRes = await axios.get(`/api/get-status?searchRunId=${SearchRunId}`)
         const data = pollRes.data
 
-        console.log("Data from recived from frontend " , data)
+        // console.log("Data from recived from frontend " , data)
 
         if (data.status === 'pending') {
           setApifyStatus('running')
@@ -146,7 +146,7 @@ if (saved) {
     setleads(res.data.foundLeads)
     setLeadsFoundNumber(res.data.foundLeads.length) 
     setleadsHistory(res.data.searchruns ?? [])
-    console.log(res.data)
+    // console.log(res.data)
    } catch (error: any) {
     console.error("Error while fetching recent leads:", error.message)
    }
@@ -156,14 +156,6 @@ if (saved) {
 
 
 
-const updateSession = async() => {
-try {
-  const rres = await update({plan: 'pro'})
-  console.log( "seession updated  =" , rres)
-} catch (error) {
-  console.log("Error" , error)
-}
-}
 
 
   return (
@@ -267,9 +259,6 @@ try {
           </div>
         </main>
       </div>
-      <button onClick={updateSession}>
-        CLICK
-      </button>
       <Footer/>
     </div>
   )

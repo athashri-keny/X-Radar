@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     // 4. Check the current status of the run id 
     const ApifyStatus = await axios.get(`https://api.apify.com/v2/actor-runs/${SearchRun.ApifyRunId}?token=${process.env.APIFY_API_TOKEN}`)
 
-    console.log("Apify Status = " , ApifyStatus.data)
+    // console.log("Apify Status = " , ApifyStatus.data)
 
         const runStatus = ApifyStatus.data.data.status;
 
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
 
     // FROM THIS THE SCRAPER HAS DONE IT JOB AND NOW THIS POINT ITS TIME FOR FILTERING!!!
    
-    console.log("Tweets returned from the res.data" , tweets)
+    // console.log("Tweets returned from the res.data" , tweets)
   
 
     // All tweets 
@@ -118,13 +118,13 @@ export async function GET(request: NextRequest) {
      // 2. Filtering issue not going thorugh every tweet
 
 
-           console.log("Query ran successfully!" , items)
+          //  console.log("Query ran successfully!" , items)
 
            // filtering the tweets giving only the nessccary value 
 
            const stringifyTweets = JSON.stringify(items)
 
-           console.log("Stringfy tweets types" , typeof items)
+          //  console.log("Stringfy tweets types" , typeof items)
       
 
            // ADD A AGENT TO FILTER OUT THE DUPLICATE TWEET
@@ -192,8 +192,8 @@ SUGGESTED REPLY RULES:
       const leads = result.structuredResults // MAIN OUTPUT FROM OPENAI Agent
 
 
-      console.log("Output from the openai" , leads.structuredResults)
-      console.log("Type of ouput from the agent" , typeof leads)
+      // console.log("Output from the openai" , leads.structuredResults)
+      // console.log("Type of ouput from the agent" , typeof leads)
 
       // const uniqueLeads = [...new Set(leads.TweetId)]
 
@@ -204,12 +204,12 @@ SUGGESTED REPLY RULES:
     status: 'done'
   }).sort({ createdAt: -1 }).select("seenTweetIds") // most recent first
 
-  console.log("lastrun of user found" , lastRun)
+  // console.log("lastrun of user found" , lastRun)
 
   // filtering the duplicate leads by ids 
      const seenIds: string[] = lastRun?.seenTweetIds || []
     const newLeads: any[] = leads.filter((tweet: any) => !seenIds.includes(tweet.tweetId))
-    console.log("newleads = " , newLeads)
+    // console.log("newleads = " , newLeads)
 
 
     // if there are no new leads and filtering then update the search run model 
@@ -276,7 +276,7 @@ SUGGESTED REPLY RULES:
 
 
     // else
-   console.log("Else runned")
+  //  console.log("Else runned")
     // if there are no new leads and last run does not exists for the user 
     const savedLeads: any[] = []
 

@@ -39,7 +39,7 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
     seterror("")
     try {
      const res =  await axios.post('/api/cancel-subscription')
-     console.log(res.data)
+    //  console.log(res.data)
       console.log("Successfully cancelled the subscription")
       toast.success("Successfully cancelled the subscription")
       setIsOpen(false)

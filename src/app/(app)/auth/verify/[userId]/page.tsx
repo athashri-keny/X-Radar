@@ -23,7 +23,7 @@ export default function OTPPage() {
   const router = useRouter()
 
   const userId = params.userId
-  console.log("Userid" ,  userId)
+  // console.log("Userid" ,  userId)
 
   const verifyCode = async() => {
     try {
@@ -35,7 +35,7 @@ export default function OTPPage() {
 
         const AutoLoginToken = res.data.AutoLoginToken
 
-        console.log("Autologin token" , AutoLoginToken)
+        // console.log("Autologin token" , AutoLoginToken)
 
         await signIn('credentials' , {
           redirect: false,

@@ -282,7 +282,7 @@ export function generateQueries(niche: string): string[] {
     return []
   }
 
-  console.log("Generating queries", queries)
+  // console.log("Generating queries", queries)
   return queries  
 }
 
@@ -334,7 +334,7 @@ const FetchNEws = tool({
 
 
         // Request the APi
-       console.log("Searching for this quires" , searchTermss , keywords);
+      //  console.log("Searching for this quires" , searchTermss , keywords);
 
 
         const res = await axios.post(`https://api.apify.com/v2/acts/kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest/run-sync-get-dataset-items?token=${process.env.APIFY_API_TOKEN}`, {
@@ -350,7 +350,7 @@ const items = res.data.filter((tweet: any) => tweet.type !== 'mock_tweet')
   console.log("No real tweets found");
   return [];
 }
-        console.log("Query ran successfully!" , items)
+        // console.log("Query ran successfully!" , items)
 
 // removing all the other fields
 const cleanedTweets = items.map((tweet: any) => ({

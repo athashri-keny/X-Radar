@@ -312,7 +312,7 @@ const outputSchema = z.object({
         const structuredOutput = llm.withStructuredOutput(outputSchema)
         // invoking llm with all the recent messages
       const res =  await structuredOutput.invoke(state.messages)
-      console.log("StructruedOutput" , res)
+    //   console.log("StructruedOutput" , res)
        // returning all the state.messages
         return {
             messages: state.messages , 

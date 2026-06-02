@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     // Validate session and email exist
      const session = await getServerSession(authOptions)
-     console.log("session = " , session)
+    //  console.log("session = " , session)
 
         if (!session || !session.user) {
          return NextResponse.json({
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     
     const user = await UserModel.findOne({Email: session.user.email}).select("-password -verifycode -__v -updatedAt  -dodoCustomerId")
 
-    console.log(user)
+    // console.log(user)
 
 
     const newStats = await SearchRunModel.aggregate([

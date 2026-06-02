@@ -123,7 +123,7 @@ export default function AccountPage() {
   const getuserDetails = async () => {
     try {
       const res = await axios.get('/api/user-info')
-      console.log(res.data)
+      // console.log(res.data)
       
        if (res.data.newStats?.length > 0) {
             settotalRuns(res.data.newStats[0].totalRuns)
@@ -147,7 +147,7 @@ useEffect(() => {
    try {
     const res = await axios.get('/api/get-recent-leads')
     setleadsHistory(res.data.searchruns ?? [])
-    console.log(res.data)
+    // console.log(res.data)
    } catch (error: any) {
     console.error("Error while fetching recent leads:", error.message)
    }

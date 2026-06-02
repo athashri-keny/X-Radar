@@ -318,7 +318,7 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
   const [loading , setloading] = useState(false)
   const [error , seterror] = useState("")
 
-  console.log("Session from the client side" , session?.user )
+  // console.log("Session from the client side" , session?.user )
 
 
   const checksession = async() => {
@@ -334,9 +334,9 @@ export default function PaymentSuccessClient({ initialStatus }: { initialStatus:
 
     // already confirmed pro on server — just sync client JWT
     if (initialStatus === 'done') {
-      console.log("triggred!!! ")
+      // console.log("triggred!!! ")
     await update({ plan: 'pro' });
-      console.log('Updated successfully session' )
+      // console.log('Updated successfully session' )
       return;
     }
 
@@ -375,7 +375,7 @@ async function check() {
     const res = await axios.get(`/api/payment-sucess`)
     if (res.data.upgraded === true) {
         const rres = await update({ plan: 'pro' });
-        console.log("session updated =", rres?.user);
+        // console.log("session updated =", rres?.user);
         setStatus('done');
       } else {
         const errorMessage = "Payment verification timed out. Please try again.";

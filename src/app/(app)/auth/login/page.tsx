@@ -79,7 +79,7 @@ if (res?.error) {
 
 
   const handleGoogleLogin = async() => {
-    console.log("Clicked!!");
+    // console.log("Clicked!!");
     
     try {
        setloading(true)

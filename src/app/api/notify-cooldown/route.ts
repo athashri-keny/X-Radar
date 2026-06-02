@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         // guard 
         const searchRecord = await SearchRunModel.findOne({UserId: userId}).sort({ createdAt: -1 }) 
 
-        console.log("Search Record Found = " , searchRecord)
+        // console.log("Search Record Found = " , searchRecord)
 
         const cooldownEndsAt = searchRecord.LastRun.getTime() + (24 * 60 * 60 * 1000) // adding 24 hours to it
         const isCooldownOver = Date.now() > cooldownEndsAt

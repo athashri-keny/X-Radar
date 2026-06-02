@@ -9,10 +9,10 @@ export const POST = Webhooks({
     webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY!,
     onSubscriptionActive: async (payload) => {
 
-      console.log("payload data = " , payload.data)
+      // console.log("payload data = " , payload.data)
 
         const email = payload.data.customer.email
-        console.log("Email "  , email)
+        // console.log("Email "  , email)
 
         await UserModel.findOneAndUpdate(
             {Email: email},

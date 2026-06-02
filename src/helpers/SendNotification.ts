@@ -142,7 +142,7 @@ export async function SendV2AnnouncementEmail(UserEmail: string, UserName: strin
       return { success: false, error }
     }
 
-    console.log("Email sent successfully:", data)
+    // console.log("Email sent successfully:", data)
     return { success: true, data }
 
   } catch (error) {
