@@ -10,9 +10,8 @@ import { UserModel } from "@/models/user";
 // Initialize the Dodo Payments client
 const client = new DodoPayments({
   bearerToken: process.env.DODO_PAYMENTS_API_KEY,
-  environment: 'test_mode', // defaults to 'live_mode'
+  environment: 'live_mode', // defaults to 'live_mode'
 });
-
 
 
  export  async function POST(_req: NextRequest) {
