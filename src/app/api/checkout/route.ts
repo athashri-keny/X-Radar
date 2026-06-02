@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       const payment = await client.checkoutSessions.create({
         product_cart: [
             {
-                product_id: 'pdt_0NdNc1lbF1UroSFjMeIhQ',
+                product_id: 'pdt_0NgBrWwfszTLhKkBTQLjc',
                 quantity: 1,
             }
         ],
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     //   },
       
     // TODO: remove this and add prod 
-    return_url: 'http://localhost:3000/payment-page',
+    return_url: process.env.DODO_PAYMENTS_RETURN_URL,
 
     
       // custom data for webhook
