@@ -119,14 +119,16 @@ import z from "zod";
 import { AIMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { Annotation, END, MessagesAnnotation, MessagesValue, ReducedValue, START, StateGraph, StateSchema } from "@langchain/langgraph";
 import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
-
-
+import { Pinecone } from '@pinecone-database/pinecone';
+import { getEmgbedding } from "@/lib/EmbeddingFunction";
 
 const client = new ChromaClient({
   host: 'chroma-02b5.onrender.com',
   port: 443,
   ssl: true
 });
+
+const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 
 
 const llm = new ChatOpenAI({
@@ -138,19 +140,31 @@ const llm = new ChatOpenAI({
     const classify_Tweets = tool(
         async({tweets}) => {
 
-             const collection = await client.getOrCreateCollection({
-        name: "hiring_tweets",
-        embeddingFunction: new OpenAIEmbeddingFunction({
-            apiKey: process.env.OPENAI_API_KEY!,
-            modelName: 'text-embedding-3-small'
-        })
-    })
+    //          const collection = await client.getOrCreateCollection({
+    //     name: "hiring_tweets",
+    //     embeddingFunction: new OpenAIEmbeddingFunction({
+    //         apiKey: process.env.OPENAI_API_KEY!,
+    //         modelName: 'text-embedding-3-small'
+    //     })
+    // })
+
+
+    const collection = await getEmgbedding(tweets)
+
+     const index = pc.index("tweets-ref")
+  
+     for(let i = 0; i < tweets.length; i++) {
+     const results = await index.namespace("tweets").query({
+     vector: collection[i], // grab the vector according to index current incoming tweet
+    topK: 3,                   // ← return top 5 most similar tweets
+    includeMetadata: true      // ← include text and label in results
+  })
+
+return results
+     }
    
-    const results = await collection.query({
-    queryTexts: tweets,
-    nResults: 3,
-    })
-    return results
+
+
         }, {
             name: 'Classify_Tweets',
             description: 'Classify the tweets into SCAM TWEETS , HIRING TWEETS , AND SELF PROMORION BY LOOKING AT THE REFERENCE TWEETS FROM CHROMA DB. CLASSIFY THEM AND SCORE BASED ON CLOSED EMBEDDINGS YOU GET',

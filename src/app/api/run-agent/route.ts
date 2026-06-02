@@ -59,22 +59,18 @@ return NextResponse.json({
 } , {status: 403})
 }
 
-
 // for paid user hiting the cooldown timer 
-
 // getting the last run of the user and converting it to normal time
-const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60) 
-
+if (lastRun) {
+  const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60) 
 // if the the normal time is greater than 6 
 if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
-
    const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
-
   return NextResponse.json({
     messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
   } , {status: 429})
 }
-    
+}
 
      // Creating a new Search Model with status 'pending' for (fire and poll method)
        const NewSearchRunModel = new SearchRunModel({
@@ -95,16 +91,16 @@ if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
 const searchTermss = generateQueries(keywords).map((singleQurey: any) => {
 
     if (TimePeriod === '24') {
-        return `${singleQurey} within_time:24h -filter:retweets lang:en`
+        return `${singleQurey} within_time:24h -filter:retweets lang:en -filter:replies`
 
     } else if (TimePeriod === '6') {
         // Free: 1 day ago → 6 days ago (excludes last 24hrs)
         const now = Date.now();
         const oneDayAgo = Math.floor((now - 1 * 24 * 60 * 60 * 1000) / 1000);
         const sixDaysAgo = Math.floor((now - 6 * 24 * 60 * 60 * 1000) / 1000);
-        return `${singleQurey} since_time:${sixDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en`
+        return `${singleQurey} since_time:${sixDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en -filter:replies`
     }
-})
+}).slice(0 , session.user.plan === 'free' ? 2 : 5)
 
 // console.log("SearchTerms returnd" , searchTermss)
 // return NextResponse.json({

@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    resolveAlias: {
-      '@chroma-core/default-embed': './chroma-stubs.js',
-      '@chroma-core/openai': './chroma-stubs.js',
-    },
-  },
   serverExternalPackages: [
     'apify-client', 
     'proxy-agent', 
@@ -18,18 +12,7 @@ const nextConfig: NextConfig = {
     '@chroma-core/openai',
   ],
 
-  webpack: (config) => {
-    config.externals = [
-      ...(Array.isArray(config.externals) ? config.externals : [config.externals]),
-      ({ request }: { request: string }, callback: Function) => {
-        if (request?.startsWith('@chroma-core/')) {
-          return callback(null, `commonjs ${request}`);
-        }
-        callback();
-      }
-    ];
-    return config;
-  },
+  
 
   outputFileTracingIncludes: {
     '/api/agents/run': [

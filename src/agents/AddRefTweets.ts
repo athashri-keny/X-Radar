@@ -5,19 +5,94 @@ import { OpenAIEmbeddingFunction } from "@chroma-core/openai";
 import { nanoid } from "nanoid";
 
 
-const client = new ChromaClient({
-  host: 'chroma-02b5.onrender.com',
-  port: 443,
-  ssl: true
+import { Pinecone } from '@pinecone-database/pinecone'
+import OpenAI from 'openai';
+
+
+const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
-const collections = await client.getOrCreateCollection({
-  name: 'hiring_tweets',
-  embeddingFunction: new OpenAIEmbeddingFunction({
-    apiKey: process.env.OPENAI_API_KEY,
-    modelName: 'text-embedding-3-small'
-  })
-});
+
+
+const indexName = "tweets-ref";
+
+// 
+// // creating a db (which is called index herer)
+// await pc.createIndex({
+//   name: indexName,
+//   dimension: 1536,
+//   metric: "cosine",
+//   spec: {
+//     serverless: {
+//       cloud: "aws",
+//       region: "us-east-1",
+//     },
+//   },
+// });
+
+// console.log("Index created");
+
+
+
+// creating the embedding function of the openai to store the tweets (each tweet) 
+ export async function getEmbedding(texts: any[]) {
+    const res = await openai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: texts,
+    });
+
+    //  // Extract the raw embedding array from every item in OpenAI's response
+//   return res.data.map(item => item.embedding); 
+    return (res.data.map(item => item.embedding))
+  }
+
+
+  
+
+  // perparing records to each tweet 
+  async function PrepareRecords(tweets: any[]) {
+
+    // extracting texts from each tweet for to make embeddings 
+    const texts = tweets.map(t => t.tweet_text)
+
+    // console.log(texts)
+
+    // embeddings created for each tweet
+    const embeddings = await getEmbedding(texts)
+
+    // console.log(typeof embeddings)
+
+    // console.log("Embedding tweets texts " , embeddings)
+
+    // returned the tweets with embeddings to store it in the index (database)
+    return tweets.map((tweet, i) => ({
+      id: nanoid(),
+      values: embeddings[i],
+      metadata: {
+        text: tweet.tweet_text,
+        label: tweet.label,
+      },
+    }))
+    
+  }
+
+
+// const client = new ChromaClient({
+//   host: 'chroma-02b5.onrender.com',
+//   port: 443,
+//   ssl: true
+// });
+
+// const collections = await client.getOrCreateCollection({
+//   name: 'hiring_tweets',
+//   embeddingFunction: new OpenAIEmbeddingFunction({
+//     apiKey: process.env.OPENAI_API_KEY,
+//     modelName: 'text-embedding-3-small'
+//   })
+// });
 
 const AllTweets = [
 
@@ -76,17 +151,40 @@ Bengaluru · ₹15L–₹20L PA
 
 ]
 
-
-const ids = AllTweets.map(() => nanoid())
-
-
 try {
- await collections.add({
-      ids: ids,
-      documents: AllTweets.map((tweet: any) => tweet.text),
-      metadatas: AllTweets.map((tweet: any) => ({label: tweet.label}))
-    })
-      console.log("successfully saved to db collections"  )
+//  await collections.add({
+//       ids: ids,
+//       documents: AllTweets.map((tweet: any) => tweet.text),
+//       metadatas: AllTweets.map((tweet: any) => ({label: tweet.label}))
+//     })
+//       console.log("successfully saved to db collections"  )
+
+
+
+const index = pc.index(indexName).namespace("tweets");
+
+
+const records = AllTweets.map((tweet) => ({
+  tweet_text: tweet.text,  
+  label: tweet.label,
+}));
+
+// console.log("Tweets" , records)
+
+// 2. Prepare the records using your function
+const res = await PrepareRecords(records) // passing the array of tweets in to the prepare records funcion
+
+
+// Pinecone upsert expects an object with a 'records' (or 'vectors') property
+// 3. Upsert them into Pinecone
+await index.upsert({
+  records: res
+});
+
+
+console.log("SUcccessfully saved to db")
+
+
 } catch (error) {
     console.log("Error while saving to db" , error)
 }

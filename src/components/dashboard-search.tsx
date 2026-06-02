@@ -333,7 +333,7 @@ export function DashboardSearch({
       {/* Leads found */}
       {leadsFound > 0 && !localScanning && (
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs sm:text-sm text-green-500/80 font-medium">
-          ✅ {leadsFound} leads found
+          {leadsFound} leads found!!
         </motion.p>
       )}
     </div>

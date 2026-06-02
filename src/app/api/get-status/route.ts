@@ -157,7 +157,7 @@ CATEGORIES:
 
 MAJORITY VOTE RULE:
 - Each tweet comes with 3 reference examples from the database
-- NEVER skip a tweet, classify every single one
+- NEVER EVER SKIP A TWEET GO THROUGH EACH TWEET AND CLASSIFY IT
 - Count the labels: [hiring_tweet, hiring_tweet, not_hiring] → HIRING
 - Count the labels: [not_hiring, not_hiring, hiring_tweet] → NOT HIRING
 - If tie → use your own judgment based on tweet content
@@ -167,6 +167,7 @@ SUGGESTED REPLY RULES:
 - ONLY return tweets classified as HIRING
 - Replies should be casual, friendly and show genuine interest
 - Never write formal or robotic replies
+- SCORE based on Cordorniates came from the Vector Db
         `),
     new HumanMessage(
         `
