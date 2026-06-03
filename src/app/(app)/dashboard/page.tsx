@@ -13,7 +13,7 @@ import Footer from "@/components/footer";
 import PricingSectionDialog from '@/components/pricingSectionDialog'
 import { LeadPipelineLoader } from '@/components/SpinnerLoader'
 import PaywallOverlay from '@/components/pricingsectionpaywall'
-
+import UpgradePopover from '@/components/updrade-popover'
 
 interface leads {
   _id: string
@@ -205,6 +205,7 @@ if (saved) {
   </div>
 ) : leadsFoundNumber > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {session?.user?.plan === 'free' ? <UpgradePopover/> : null}
               {leads.map((tweet: any) => (
   <LeadCard
     key={tweet.tweetId || tweet._id}              
@@ -213,7 +214,9 @@ if (saved) {
     tweet={tweet.tweetText || tweet.TweetText}           
     tweetUrl={tweet.tweetUrl || tweet.Tweeturl}         
   />
-))}
+))
+}
+
 
                 </div>
               ) : message ? (
@@ -257,6 +260,7 @@ if (saved) {
               />
             </div>
           </div>
+          {/* {session?.user?.plan === 'free' ? <UpgradePopover/> : null} */}
         </main>
       </div>
       <Footer/>
