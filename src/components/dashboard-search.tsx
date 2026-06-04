@@ -21,7 +21,7 @@ import PaywallOverlay from './pricingsectionpaywall'
 const SubNiches: Record<string, string[]> = {
   "Developer": [
     "React", "Next.js", "Vue", "Node.js", 
-    "Python", "Django", "Laravel", "Flutter"
+    "Python", "Django", "Laravel", "Flutter" , "Full Stack"
   ],
   "VideoEditor": [
     "YouTube", "Reels", "Shorts", "Podcast", "Motion Graphics",
@@ -60,7 +60,7 @@ export function DashboardSearch({
   const [localScanning, setLocalScanning] = useState(false)
   const [countdown, setCountdown] = useState('')
   const [isCooldown, setIsCooldown] = useState(false)
-  const [showRecommendation, setShowRecommendation] = useState(false) // message
+
 
 
 
@@ -198,7 +198,6 @@ export function DashboardSearch({
         setOpen(true)
         } else {
           setSelectedDays(val)
-          setShowRecommendation(val === '24')
         }
       }}
       disabled={localScanning || isCooldown}
@@ -236,40 +235,6 @@ export function DashboardSearch({
   </div>
 )}
 
-{showRecommendation && (
-  <motion.div
-    initial={{ opacity: 0, y: -6 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -6 }}
-    className="flex items-start gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl px-4 py-3 text-sm text-indigo-300"
-  >
-    <Zap className="w-4 h-4 flex-shrink-0 mt-0.5 text-indigo-400" />
-    <div>
-  <p className="font-medium text-indigo-300 mb-0.5 font-xl">For best results, select  <span className='font-bold text-white'>Last 6 days</span></p>
-  <p className="text-white text-xs leading-relaxed "> 
-    Last 6 days also includes all 24hr tweets so you won't miss a single lead in last 6 days time period. <br></br>
-   <span className='font-bold'> Only pick 24hr If you need</span> <span className="text-white font-bold">strictly today's posts</span>.
-  </p>
-  <div className="flex items-center gap-2 mt-2.5">
-    <button
-      onClick={() => { setSelectedDays('6'); setShowRecommendation(false) }}
-      className="text-xs bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/30 text-indigo-300 font-semibold px-3 py-1 rounded-full transition"
-    >
-      Switch to Last 6 days
-    </button>
-    <button
-      onClick={() => setShowRecommendation(false)}
-      className="text-xs text-white/30 hover:text-white/50 transition"
-    >
-      Keep 24 hours
-    </button>
-  </div>
-</div>
-    <button onClick={() => setShowRecommendation(false)} className="ml-auto text-white/30 hover:text-white/60 transition">
-      <X className="w-3.5 h-3.5" />
-    </button>
-  </motion.div>
-)}
 
           {/* Query preview */}
           {canSearch && (

@@ -21,7 +21,8 @@ export const POST = Webhooks({
                 planActivatedAt: payload.data.created_at,
                 planExpiresAt: payload.data.expires_at,
                 dodoCustomerId: payload.data.customer.customer_id,
-                subscriptionId: payload.data.subscription_id
+                subscriptionId: payload.data.subscription_id,
+                LastRun: null
             }
         )
     },

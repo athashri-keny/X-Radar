@@ -72,8 +72,8 @@ export const nicheQueries: Record<string, string[]> = {
   ],
   "Full Stack": [
     "looking for a full stack developer",
-    "need a freelance full stack dev",
     "hiring full stack developer",
+    "need a freelance full stack dev",
     "full stack developer job opening",
     "full stack developer remote job",
   ],

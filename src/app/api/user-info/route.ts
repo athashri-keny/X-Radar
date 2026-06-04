@@ -10,7 +10,7 @@ import DodoPayments from "dodopayments";
 // Initialize the Dodo Payments client
 const client = new DodoPayments({
   bearerToken: process.env.DODO_PAYMENTS_API_KEY,
-  environment: 'live_mode', // defaults to 'live_mode'
+  environment: 'test_mode', // defaults to 'live_mode'
 });
 
 
@@ -60,10 +60,13 @@ export async function GET(request: NextRequest) {
 
 
     let next_billing_date = null
-    if (user.subscriptionId && user.plan == 'pro') {
-        const subDetails  = await client.subscriptions.retrieve(user?.subscriptionId || "")
+
+      const subDetails  = await client.subscriptions.retrieve(user?.subscriptionId || "")
         next_billing_date = subDetails.next_billing_date
-    }
+        console.log("Subdetails " , subDetails)
+    // if (user.subscriptionId && user.plan == 'pro') {
+      
+    // }
 
     const userObj = user.toObject()
     delete userObj.subscriptionId

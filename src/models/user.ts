@@ -81,7 +81,6 @@ const UserSchema = new Schema<User>({
      },
      LastRun: {
         type: mongoose.Schema.Types.Date,
-        ref: 'searchruns',
         default: null
      }
 } , {

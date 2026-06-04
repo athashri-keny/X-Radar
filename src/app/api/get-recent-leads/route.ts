@@ -4,6 +4,7 @@ import LeadsModel from "@/models/leads";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import SearchRunModel from '@/models/SearchRun'
+import { UserModel } from "@/models/user";
 
  export  async function GET(request: NextRequest) {
     try {
@@ -22,6 +23,8 @@ import SearchRunModel from '@/models/SearchRun'
         
         const searchruns = await SearchRunModel.find({UserId: session.user._id})
 
+        const user = await UserModel.findById(session.user._id)
+
 
         if (!foundLeads) {
             return NextResponse.json({
@@ -32,7 +35,8 @@ import SearchRunModel from '@/models/SearchRun'
         return NextResponse.json({
             message: "Successfully founds leads",
             foundLeads,
-            searchruns
+            searchruns,
+            lastSearchAt: user?.LastRun // ← add this
         } , {status: 200})
 
 

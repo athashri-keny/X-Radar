@@ -2,7 +2,7 @@ import { NextResponse , NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 
-const protectedRoutes = ['/dashboard']
+const protectedRoutes = ['/dashboard'  , '/user-info' , '/payment-status'  , '/payment-page']
 
 export async function proxy(request: NextRequest) {
 
@@ -25,7 +25,8 @@ export async function proxy(request: NextRequest) {
     if (token && (
     url.pathname.startsWith('/auth/login') ||
     url.pathname.startsWith('/auth/signup') ||
-    url.pathname.startsWith('/auth/verify-code')
+    url.pathname.startsWith('/auth/verify-code') ||
+    url.pathname.startsWith('/auth/set-niche')
 )) {
         return NextResponse.redirect(new URL('/dashboard' , request.url) )
     }

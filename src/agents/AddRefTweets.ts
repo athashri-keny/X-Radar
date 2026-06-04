@@ -20,6 +20,8 @@ const indexName = "tweets-ref";
 
 // 
 // // creating a db (which is called index herer)
+
+
 // await pc.createIndex({
 //   name: indexName,
 //   dimension: 1536,
@@ -79,20 +81,6 @@ const indexName = "tweets-ref";
   }
 
 
-// const client = new ChromaClient({
-//   host: 'chroma-02b5.onrender.com',
-//   port: 443,
-//   ssl: true
-// });
-
-// const collections = await client.getOrCreateCollection({
-//   name: 'hiring_tweets',
-//   embeddingFunction: new OpenAIEmbeddingFunction({
-//     apiKey: process.env.OPENAI_API_KEY,
-//     modelName: 'text-embedding-3-small'
-//   })
-// });
-
 const AllTweets = [
 
 // hiring tweets 
@@ -151,17 +139,8 @@ Bengaluru · ₹15L–₹20L PA
 ]
 
 try {
-//  await collections.add({
-//       ids: ids,
-//       documents: AllTweets.map((tweet: any) => tweet.text),
-//       metadatas: AllTweets.map((tweet: any) => ({label: tweet.label}))
-//     })
-//       console.log("successfully saved to db collections"  )
-
-
 
 const index = pc.index(indexName).namespace("tweets");
-
 
 const records = AllTweets.map((tweet) => ({
   tweet_text: tweet.text,  
@@ -179,7 +158,6 @@ const res = await PrepareRecords(records) // passing the array of tweets in to t
 await index.upsert({
   records: res
 });
-
 
 console.log("SUcccessfully saved to db")
 

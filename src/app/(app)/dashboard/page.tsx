@@ -32,7 +32,7 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
-const {data: session , update} = useSession()
+const {data: session} = useSession()
 
 
   const [isScanning, setIsScanning] = useState(false)
@@ -137,21 +137,28 @@ if (saved) {
   // console.log('Cooldown setted succcessfully')
 
   // if the search has uprade in it then upddate the token from free to paid
+  
 } 
-
-
   const fetchLeadsFrombackend = async() => {
    try {
     const res = await axios.get('/api/get-recent-leads')
     setleads(res.data.foundLeads)
     setLeadsFoundNumber(res.data.foundLeads.length) 
     setleadsHistory(res.data.searchruns ?? [])
+     if (res.data.lastSearchAt === null) {
+    setCooldownEndTime(0)
+    localStorage.removeItem('CooldownEndTime') 
+  }
     // console.log(res.data)
    } catch (error: any) {
     console.error("Error while fetching recent leads:", error.message)
    }
   }
   fetchLeadsFrombackend()
+  } , [])
+
+  useEffect(() => {
+
   } , [])
 
 

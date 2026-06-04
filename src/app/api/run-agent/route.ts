@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { generateQueries } from "@/helpers/NicheQuries";
 import axios from "axios";
+import { UserModel } from "@/models/user";
 
 
 
@@ -39,10 +40,7 @@ import axios from "axios";
 
 
         // finding the last run searched by the user.
-        const lastRun = await SearchRunModel.findOne({
-  UserId: new mongoose.Types.ObjectId(session.user._id),
-  status: 'done'
-}).sort({ LastRun: -1 }) // most recent first
+        const lastRun = await UserModel.findById(session.user._id)
 
 
 // getting the total runs done by users 
@@ -61,12 +59,17 @@ return NextResponse.json({
 
 // for paid user hiting the cooldown timer 
 // getting the last run of the user and converting it to normal time
-if (lastRun) {
+if (lastRun?.LastRun) {
   const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60) 
 // if the the normal time is greater than 6 
 if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
    const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
   return NextResponse.json({
+    messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
+  } , {status: 429})
+} else {
+  const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
+   return NextResponse.json({
     messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
   } , {status: 429})
 }
@@ -84,6 +87,11 @@ if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
 
        await NewSearchRunModel.save()
        
+      const user =  await UserModel.findByIdAndUpdate(session.user._id, {
+  LastRun: new Date() 
+})
+
+console.log(user , "Updated successfully")
 
         console.log("KeyWords" , keywords)
 

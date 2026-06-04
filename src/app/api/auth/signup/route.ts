@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     try {
         await DBConnect()
 
-        const {Name , email , Password , niche} = await request.json()
+        const {Name , email , Password} = await request.json()
 
         if (!Name || !email || !Password ) {
             return NextResponse.json({
@@ -41,7 +41,6 @@ export async function POST(request: NextRequest) {
             verifycode: verifycode,
             verifyCodeExpiry: verifycodeExpiry,
             isVerifiedEmail: false,
-            Niche: niche
         })
         await newUser.save()
 

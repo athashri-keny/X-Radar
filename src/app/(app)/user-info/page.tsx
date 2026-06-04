@@ -129,9 +129,9 @@ export default function AccountPage() {
             settotalRuns(res.data.newStats[0].totalRuns)
             setTotalTweetsScraped(res.data.newStats[0].TotalTweetsScraped)
             settotalleadsFounds(res.data.newStats[0].TotalLeadsFound) 
-            setnextbillingdate(res.data.next_billing_date)
         }
         
+          setnextbillingdate(res.data.next_billing_date)
       setdata(res.data.user)
     } catch (error) {
       console.error('Error while fetching the user info', error)

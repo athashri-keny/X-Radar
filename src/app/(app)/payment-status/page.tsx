@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Radar, CheckCircle2, RefreshCw, Zap, Mail, Target, Clock, AlertTriangle, Info, X } from 'lucide-react';
 import axios from 'axios';
 import { toast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -199,7 +200,10 @@ function SuccessView() {
 
       {/* CTA */}
       <motion.a
-        href="/dashboard"
+      onClick={(e) => {
+    e.preventDefault();
+    window.location.href = '/dashboard';
+  }}
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.85, duration: 0.4 }}
@@ -209,6 +213,7 @@ function SuccessView() {
       >
         Start Hunting Leads →
       </motion.a>
+      
     </motion.div>
   );
 }
