@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "X-Radar",
-  description: "X-Radar",
+  description: "X-Radar scans Twitter/X in real-time, finds hiring tweets, scores leads with AI, and crafts perfect reply suggestions. Find your next client today.",
 };
 
 export default function RootLayout({
