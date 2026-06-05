@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         product_cart: [
             {
                 // PROD: 
-                product_id: 'pdt_0NgBrWwfszTLhKkBTQLjc',  
+                product_id: 'pdt_0NgN6URzSXMAIqZzpdHuv',  
                 // product_id: 'pdt_0NdNc1lbF1UroSFjMeIhQ',
                 quantity: 1,
             }

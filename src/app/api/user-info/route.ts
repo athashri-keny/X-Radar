@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     // Validate session and email exist
      const session = await getServerSession(authOptions)
-    //  console.log("session = " , session)
+     console.log("session = " , session)
 
         if (!session || !session.user) {
          return NextResponse.json({
@@ -34,6 +34,10 @@ export async function GET(request: NextRequest) {
     const user = await UserModel.findOne({Email: session.user.email}).select("-password -verifycode -__v -updatedAt  -dodoCustomerId")
 
     // console.log(user)
+
+    if (!user) {  // ← this check should be BEFORE the aggregate
+  return NextResponse.json({ message: "User not found" }, { status: 400 })
+}
 
 
     const newStats = await SearchRunModel.aggregate([
@@ -52,18 +56,20 @@ export async function GET(request: NextRequest) {
         }
     ])
 
-    if (!user) {
-        return NextResponse.json({
-            message: "Error user not exists in our database"
-        } , {status: 400})
-    }
 
 
     let next_billing_date = null
 
-      const subDetails  = await client.subscriptions.retrieve(user?.subscriptionId || "")
-        next_billing_date = subDetails.next_billing_date
-        console.log("Subdetails " , subDetails)
+    if (user.plan === "pro" && user.subscriptionId) {
+  try {
+    const subDetails = await client.subscriptions.retrieve(user.subscriptionId)
+    next_billing_date = subDetails.next_billing_date
+    console.log("Subdetails", subDetails)
+  } catch (subError) {
+    // Don't crash the whole route if Dodo fails
+    console.log("Failed to fetch sub details", subError)
+  }
+}
     // if (user.subscriptionId && user.plan == 'pro') {
       
     // }
