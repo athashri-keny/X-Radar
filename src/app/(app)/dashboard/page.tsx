@@ -32,7 +32,12 @@ interface leadsHistory {
 
 export default function Dashboard() {
 
-const {data: session} = useSession()
+const {data: session , status} = useSession()
+
+
+// console.log("Session " , session)
+
+// console.log("stats" , status)
 
 
   const [isScanning, setIsScanning] = useState(false)
@@ -162,7 +167,9 @@ if (saved) {
   } , [])
 
 
-
+if (status === "loading") return (
+  <div className="w-24 h-9 rounded-full bg-white/10 animate-pulse" />
+)
 
 
   return (

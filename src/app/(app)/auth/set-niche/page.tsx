@@ -107,7 +107,7 @@ function SetNiche() {
       })
       console.log("Successfully set the niche")
       toast.success("Successfully setted the niche")
-      router.push('/dashboard')
+        window.location.href = '/dashboard'
     } catch (error) {
       console.log("Error while sending niche to backend " , error)
       toast.error("Failed to set niche")

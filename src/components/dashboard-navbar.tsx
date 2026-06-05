@@ -28,7 +28,8 @@ import axios from 'axios'
 
 export function DashboardNavbar() {
 
-  const {data: session} = useSession()
+  const {data: session , status} = useSession()
+
 
   const [open, setOpen] = useState(false)
 
@@ -76,6 +77,13 @@ const plans = [
     ],
   },
 ];
+
+
+if (status === "loading") return (
+  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 animate-pulse border border-white/10" />
+)
+
+
   return (
     <>
       <motion.nav

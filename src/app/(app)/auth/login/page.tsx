@@ -68,7 +68,7 @@ if (res?.error) {
   seterror(res.error) // show this in your UI
 }
      if (res?.status == 200) {
-       router.push('/dashboard')
+       window.location.href = '/dashboard'
          toast.success("Successfully login!")
      }
 

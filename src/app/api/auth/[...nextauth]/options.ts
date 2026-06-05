@@ -144,11 +144,11 @@ export const authOptions: NextAuthOptions = {
                 // console.log('user' , user)
                 if (account?.provider === 'credentials') {
                     // creating a token for user , email login users
-                    token._id = user._id?.toString(),
-                    token.name = user.Name,
+                    token._id = user._id?.toString()
+                    token.name = user.Name
                     token.isVerifiedEmail = user.isVerifiedEmail || false
                     token.email = user.Email
-                    token.plan = user.plan
+                    token.plan = user.plan || 'free'
 
                     // if the login is from google (oauth)
                 }    if (account?.provider === 'google') {
@@ -157,9 +157,9 @@ export const authOptions: NextAuthOptions = {
                     const dbuser = await UserModel.findOne({Email: user.email})
                     // creating a token for google oauth users
                     if (dbuser) {
-                        token._id = dbuser.id.toString(),
-                        token.name = dbuser.Name,
-                        token.isVerifiedEmail  = dbuser.isVerifiedEmail || false,
+                        token._id = dbuser.id.toString()
+                        token.name = dbuser.Name
+                        token.isVerifiedEmail  = dbuser.isVerifiedEmail || false
                         token.email = dbuser.Email
                         token.plan = dbuser.plan
                     }
