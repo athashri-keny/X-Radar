@@ -174,7 +174,7 @@ export default function SignupPage() {
 
   // main function
   const handleSignup = async(data: z.input<typeof signupSchema>) => {
-
+    setloading(true)
     try {
         const res = await axios.post('/api/auth/signup' , {
             Name: data.Name,

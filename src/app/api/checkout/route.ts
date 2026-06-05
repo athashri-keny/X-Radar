@@ -8,7 +8,7 @@ import DodoPayments from 'dodopayments';
 // Initialize the Dodo Payments client
 const client = new DodoPayments({
   bearerToken: process.env.DODO_PAYMENTS_API_KEY,
-  environment: 'test_mode', // defaults to 'live_mode'
+  environment: 'live_mode', // defaults to 'live_mode'
 });
 
 
@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
         product_cart: [
             {
                 // PROD: 
-                // product_id: 'pdt_0NgBrWwfszTLhKkBTQLjc',  
-                product_id: 'pdt_0NdNc1lbF1UroSFjMeIhQ',
+                product_id: 'pdt_0NgBrWwfszTLhKkBTQLjc',  
+                // product_id: 'pdt_0NdNc1lbF1UroSFjMeIhQ',
                 quantity: 1,
             }
         ],
