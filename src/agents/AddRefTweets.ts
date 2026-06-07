@@ -64,7 +64,7 @@ const indexName = "tweets-ref";
     // embeddings created for each tweet
     const embeddings = await getEmbedding(texts)
 
-    // console.log(typeof embeddings)
+    // console.log(typeof embeddings) // ARRAY
 
     // console.log("Embedding tweets texts " , embeddings)
 
@@ -114,6 +114,37 @@ https://revexuptime.com
  {text: `Hiring on Sunday! Sr React Native Developer
 Bengaluru · ₹15L–₹20L PA
 ` , label: 'hiring_tweet'},
+{text: `🚀 New Job Alert! Lead Java Full Stack Developer at Infosys 📍 Calgary, CA Apply here 👉 ` , label: 'hiring_tweet'} ,
+{text: `Hiring a Full-Stack Developer for a fully custom web platform. Need user/admin/employee portals, authentication, dashboards, automations, database, and custom functionality. DM portfolio & experience.` , label: 'hiring_tweet'},
+{text: `#Hiring Senior Full Stack Developer – React / Node / AWS | Hybrid Northampton £60,000–£70,000 + Bonus and Benefits ` , label: 'hiring_tweet'},
+{text: `WE ARE HIRING 🗣️🗣️  We are looking for an experienced Full Stack Developer  Experience Level: 4-5 Years with banking experience Click Here to apply: ` , label: 'hiring_tweet'},
+{text: `Hiring: Specialist System Engineer | Full Stack Developer (Python) | Bangalore 📌 Position: Specialist System Engineer – Full Stack Developer 📍 Location: Bangalore` , label: 'hiring_tweet'},
+{text: `Hiring | Full Stack Developer Remote | Full Stack Development & System Design` , label: 'hiring_tweet'},
+{text: `Hiring: Headspin - Full Stack Developer Location: Remote - United States` , label: 'hiring_tweet'},
+{text: `WebCreek is hiring a Senior Full Stack Developer with strong React & NestJS experience for an on-site role in Houston, TX. Relocation candidates encouraged.` , label: 'hiring_tweet'},
+{text: `Booz Allen: Full Stack Developer Booz Allen is hiring for a Full Stack Developer` , label: 'hiring_tweet'},
+{text: `We are looking for a Full Stack Developer & Web Designer to work with us` , label: 'hiring_tweet'},
+{text: `We’re Hiring: Full Stack Java Developer Location: Pune Experience: 3–7 Years` , label: 'hiring_tweet'},
+{text: `We’re looking for a Mid-Level Full Stack Developer with strong SQL skills and a passion for creating reliable, data-driven applications.` , label: 'hiring_tweet'},
+{text: `Looking for a full-stack developer to help build the future of intelligent commerce.` , label: 'hiring_tweet'},
+{text: `Looking for a Full-Stack Developer Intern! If you’re a fresher who loves building things, ships side projects, and can figure things out independently, I’d love to talk.` , label: 'hiring_tweet'},
+{text: `We're looking for an experienced Full Stack Developer to join a short-term project focused on building, optimizing, and maintaining modern web applications.` , label: 'hiring_tweet'},
+{text: `looking for a full stack developer for a remote-first startup / agency working closely with global clients (hiring via)` , label: 'hiring_tweet'},
+{text: `We are looking for a highly skilled Full Stack SaaS Developer with a strong eye for UI/UX and deep experience with AI-driven development workflows.` , label: 'hiring_tweet'},
+{text: `We’re Hiring: Full-Stack Software Developer (Frontend / Backend) with AI (Nigeria). Are you a highly skilled Full-Stack Developer with experience across frontend, backend, and AI/ML integration? This opportunity may be for you ` , label: 'hiring_tweet'},
+{text: `Looking for the full stack developer who can work on project basis paid but depends on the project and number of hour if you are interested then comment and dm me ` , label: 'hiring_tweet'},
+{text: `We’re hiring 📣Looking for a genuine logo designer Full stack developer ` , label: 'hiring_tweet'},
+{text: `We are looking for a serious Full-Stack Developer.  Work includes: web apps, dashboards, APIs,AI integrations Model: profit-sharing (no salary at start) at kozaexchange ` , label: 'hiring_tweet'},
+{text: `I got a call from HR regarding a Full Stack Developer opening. They’re specifically looking for someone based in Kolkata since the interview process is inoffice.` , label: 'hiring_tweet'},
+{text: `Looking for a full stack developer + designer able to launch a web app / website. DM me with your portfolio and I'll share the info.` , label: 'hiring_tweet'},
+{text: `We are looking for a serious Full-Stack Developer.  Work includes: web apps, dashboards, APIs,AI integrations  Model: profit-sharing (no salary at start) You will work on real client projects and real systems, ` , label: 'hiring_tweet'},
+{text: `We're hiring a Full Stack Developer at Humanity Founders. We're looking for someone based in the US or Europe with 3 to 5 years of experience, strong ownership, and a solid engineering mindset` , label: 'hiring_tweet'},
+{text: `HIRING | Freelance Full-Stack Developer | Remote at Outlier AI` , label: 'hiring_tweet'},
+
+
+
+
+
 
 
 
@@ -124,7 +155,6 @@ Bengaluru · ₹15L–₹20L PA
   { text: "Hiring a React Native developer in 2026? Are they New Architecture (JSI + Turbo Modules) or Expo-only? Different skill set, different comp, different sourcing channel. Worth 10 minutes before the JD goes live", label: "not_hiring" },
   { text: "available for freelance work I help startups and businesses build Tech Stack: React, Next.js, Node.js, Express, MongoDB Open for freelance projects, remote work, and collaborations. If you need a developer or know someone who does, let's connect DM opem", label: "not_hiring" },
   {text: `Don't feel satisfied with my current work, feels like it won't exist in next 5 years. Looking for new opportunities as a Backend Software Engineer in Product based companies.` , label: 'not_hiring'},
-  // job seeker tweets (not hiring)
 
   { text: "Open to work. React developer seeking new opportunities. DM me.", label: "not_hiring" },
   { text: "Seeking job change as a Frontend developer. Currently in MNC.", label: "not_hiring" },
@@ -132,10 +162,28 @@ Bengaluru · ₹15L–₹20L PA
   {text: `'ll build your small business a free website — looking for 2-3 people I'm not a professional web developer but I know how to build clean, functional websites and I enjoy doing it. I want to take on a few small projects to sharpen my skills and actually help someone in the…` , label: "not_hiring"},
      {text: `If anyone is looking for anyone who can build a website for their company/portfolio/ecommerce, dont hesitate to hire me. I'm a freelance web developer with 2 years experience &amp; have degree in IT from ukm. Can dm me for price negotiation and my previous project links🫶🏻 Rt pls💕` , label: "not_hiring"},     
   {text: `Built real products with React, Next.js &amp; Node.js. Self-taught, eager to grow with a solid team that values quality.` , label: 'not_hiring'},
+ {text: `I'm a full-stack developer in a company, but I want to leave for something that I own.` , label: 'not_hiring'},
+{text: ` I'm a Full Stack Web Developer with 5 years of experience and I'm interested in working with you` , label: 'not_hiring'},
+{text: `I’m a fresher passionate about Full Stack Development and Problem Solving.` , label: 'not_hiring'},
+{text: `Full Stack Developer for  IT/job opportunities 
+Skilled in React.js, Node.js, MongoDB, Laravel, WordPress, Shopify, and scalable web development.Open to remote opportunities, internships, freelance projects, and collaborations ` , label: 'not_hiring'},
+{text: ` I am a full stack developer free for Freelance/full time/part time/long term/short term` , label: 'not_hiring'},
+{text: `final year grad Searching  for internship or placement opportunities Interested in SDE, Software Developer, Software Engineer, Full Stack Development, Frontend, Backend` , label: 'not_hiring'},
+{text: `Full Stack Developer searching for IT/job opportunities Skilled in React.js, Node.js, MongoDB, Laravel, WordPress, Shopify, and scalable web development.` , label: 'not_hiring'},
+{text: `My name is Frank. I’m a full-stack developer with a specialization in building user-friendly web applications, websites, and mobile applications for iOS and Android Currently open to collaborating with early-stage startups, creators, and businesses looking to improve their products and services.` , label: 'not_hiring'},
+{text: `just finished my 1st year and i'm officially available for freelance & internship work!` , label: 'not_hiring'},
+{text: `Hello, I’m a http://B.Tech (AI) student and a Full-Stack Developer. I’m currently searching for a Full-Stack / AI-ML Internship opportunity.` , label: 'not_hiring'},
+{text: `I’m a full-stack web developer who builds highly convertible landing pages and web apps for brands and startups looking to scale. I’m open to new projects and gigs.` , label: 'not_hiring'},
+{text: `Dear recruiters, If you are looking for someone with : Java, Python, PHP; React, Angular, Next.js; PostgreSQL, Redis, MongoDB; AWS (S3, EC2, ECS, EKS);Unix system administration; Git & CI with TDD; Docker & Kubernetesyou’re not hiring a Full Stack Developer. zou’re hiring an entire IT department.` , label: 'not_hiring'},
+{text: `🚀 4+ Years of Software Engineering experience is now on Fiverr! searching for  a reliable Backend or Full Stack Developer? ` , label: 'not_hiring'},
+{text: `I am backend and full stack developer with key skills like: Whether looking for a freelancer or a full time role. I am open to both type of opportunities.` , label: 'not_hiring'},
+{text: `devs who actually love building If that's you — let's connect 🤝` , label: 'not_hiring'},
+{text: `looking for long-term dev work I just want to code and work with serious people` , label: 'not_hiring'},
+{text: `Hello everyone 👋 Are you looking for a full-stack developer for just $19/hour with of : If yes, feel free to DM me or reply to this tweet — I’d love to connect!` , label: 'not_hiring'},
+{text: `Sir, As a fresher full stack developer who is searching for a internship from non-tech background, what would be your suggestions for him?` , label: 'not_hiring'},
 
 // scam tweets
-{ text: "Make $500/day working from home DM me NOW 🔥🔥", label: "scam" },
-
+{text: `Earn 500 !! rupppes from home!! ` , label: 'scam'} 
 ]
 
 try {

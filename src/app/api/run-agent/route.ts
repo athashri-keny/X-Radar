@@ -51,9 +51,9 @@ const totalRuns = await SearchRunModel.countDocuments({
 
 
 // for Free user hitting the paywall after first run 
-if (totalRuns >= 3 && session.user.plan === 'free') {
+if (totalRuns >= 2 && session.user.plan === 'free') {
 return NextResponse.json({
-  message: "You've used all 3 free searches. Upgrade to Pro to keep using X-Radar"
+  message: "You've used all 2 free searches. Upgrade to Pro to keep using X-Radar"
 } , {status: 403})
 }
 
@@ -91,7 +91,7 @@ if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
   LastRun: new Date() 
 })
 
-console.log(user , "Updated successfully")
+// console.log(user , "Updated successfully")
 
         console.log("KeyWords" , keywords)
 
@@ -101,12 +101,14 @@ const searchTermss = generateQueries(keywords).map((singleQurey: any) => {
     if (TimePeriod === '24') {
         return `${singleQurey} within_time:24h -filter:retweets lang:en -filter:replies`
 
-    } else if (TimePeriod === '6') {
-        // Free: 1 day ago → 6 days ago (excludes last 24hrs)
-        const now = Date.now();
-        const oneDayAgo = Math.floor((now - 1 * 24 * 60 * 60 * 1000) / 1000);
-        const sixDaysAgo = Math.floor((now - 6 * 24 * 60 * 60 * 1000) / 1000);
-        return `${singleQurey} since_time:${sixDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en -filter:replies`
+    } else if (TimePeriod === '48') {
+      
+const now = Date.now();
+
+const oneDayAgo = Math.floor((now - 1 * 24 * 60 * 60 * 1000) / 1000);   // 24h ago
+const threeDaysAgo = Math.floor((now - 3 * 24 * 60 * 60 * 1000) / 1000); // 72h ago
+
+return `${singleQurey} since_time:${threeDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en -filter:replies`
     }
 }).slice(0 , session.user.plan === 'free' ? 2 : 5)
 

@@ -124,7 +124,7 @@ export default function PaywallOverlay({ isOpen, onClose }: PaywallOverlayProps)
                 </motion.div>
 
                 <h3 className="text-white text-base font-bold tracking-tight leading-snug mb-4 m-3">
-                  You've used all 3 free searches!
+                  You've used all 2 free searches!
                 </h3>
                 <p className="text-white font-semibold text-xs leading-relaxed mb-4">
                   Upgrade to Xradar Pro to get Latest leads

@@ -151,6 +151,10 @@ export function LeadPipelineLoader({ apifyStatus }: any) {
           />
         ))}
       </div>
+
+      <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center max-w-[300px] mt-4">
+        Lead results are based on real-time data and will vary depending on hiring activity at the time of your search.
+      </p>
     </div>
   );
 }

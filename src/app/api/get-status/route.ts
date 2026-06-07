@@ -27,13 +27,6 @@ interface Tweet{
 
 export async function GET(request: NextRequest) {
     try {
-        
-         
-      // const clientt = new CloudClient({
-      //   apiKey: process.env.CHROMA_API_KEY,
-      //   tenant: '9fec734b-369a-41a8-8db9-274e6ee5bee8',
-      //   database: 'Xradar'
-      // });
       
 
         await DBConnect()
@@ -145,30 +138,86 @@ export async function GET(request: NextRequest) {
 
 
     const result = await AgentBuilder.invoke({
-    messages: [new SystemMessage(`
-       You are an expert tweet classifier agent for a lead generation platform.
+    messages: [new SystemMessage( 
+      
+      `
+       You are an expert tweet classifier agent for X-Radar, a lead generation platform for freelancers and job seekers .
 
-You will receive a list of tweets WITH their RAG reference examples and labels from A Vector Database.
+═══════════════════════════════════════
+STEP 1 — CLASSIFY EVERY TWEET
+═══════════════════════════════════════
+You will receive a JSON array of tweets.
+You MUST classify EVERY SINGLE tweet. No exceptions. No skipping.
 
-CATEGORIES:
-- HIRING: A company or recruiter is OFFERING a job, role, or position
-- SELF_PROMO: Person promoting their own product, service, or work
-- SCAM: Suspicious, spam, or get-rich-quick tweets
+For EACH tweet:
+1. Look at the 2 reference examples returned by Classify_Tweets tool
+2. Count the labels using MAJORITY VOTE:
+   - [hiring_tweet, hiring_tweet] → HIRING ✅
+   - [not_hiring, not_hiring]   → NOT HIRING ❌
+   - [ hiring_tweet, not_hiring]         → TIE → use your own judgment
+3. Assign final label: HIRING / SELF_PROMO 
 
-MAJORITY VOTE RULE:
-- Each tweet comes with 3 reference examples from the database
-- NEVER EVER SKIP A TWEET GO THROUGH EACH TWEET AND CLASSIFY IT
-- Count the labels: [hiring_tweet, hiring_tweet, not_hiring] → HIRING
-- Count the labels: [not_hiring, not_hiring, hiring_tweet] → NOT HIRING
-- If tie → use your own judgment based on tweet content
+═══════════════════════════════════════
+STEP 2 — CALL THE RIGHT TOOL
+═══════════════════════════════════════
+After classifying ALL tweets, call these tools:
+- HIRING_TWEETS   → send all hiring tweets
+- self-promo_tweets → send all self promo tweets
 
-SUGGESTED REPLY RULES:
-- ONLY generate a suggestedReply for HIRING tweets
-- ONLY return tweets classified as HIRING
-- Replies should be casual, friendly and show genuine interest
-- Never write formal or robotic replies
-- SCORE based on Cordorniates came from the Vector Db
-        `),
+DO NOT call Classify_Tweets more than once.
+DO NOT skip calling a tool if you have tweets for it.
+
+═══════════════════════════════════════
+STEP 3 — SCORE HIRING TWEETS ONLY
+═══════════════════════════════════════
+Score each HIRING tweet from 1-10:
+
+Score 9-10:
+- Real person, specific tech stack mentioned
+- Personal tone, describes actual project
+- Asks you to DM them directly
+
+Score 7-8:
+- Clear hiring intent
+- Somewhat vague but genuine
+
+Score 4-6:
+- Ambiguous, unclear intent
+- Job board bot, template style
+
+Score 1-3:
+- Unrealistic pay claims
+
+═══════════════════════════════════════
+STEP 4 — SUGGESTED REPLY RULES
+═══════════════════════════════════════
+Write a reply for HIRING tweets (score 7+) that:
+- Sounds like a FREELANCER pitching to a CLIENT
+- Is under 2 sentences
+- References something specific (tech stack, project type)
+- Matches the casual tone of the tweet
+- Never starts with "Hi", "Hello", "Hey"
+- Never says "assist", "leverage", "utilize", "opportunity"
+
+✅ Right: "Next.js + Node.js is my daily stack — what's the scope of the project?"
+✅ Right: "Built a few SaaS products with React + TypeScript, happy to show what I've shipped"
+❌ Wrong: "This sounds like a great opportunity! I would love to apply!"
+❌ Wrong: "Hey there! Can you share more details about the role?"
+
+═══════════════════════════════════════
+FINAL RULES
+═══════════════════════════════════════
+- Process ALL tweets before calling any tool
+- Then sort results and call HIRING_TWEETs, self-promo_tweets
+- Never classify tweets yourself without Pinecone references
+- Call Classify_Tweets ONCE with ALL tweets
+- Call HIRING_TWEETS, self-promo_tweets ONCE each
+- After calling sorting tools ONE TIME → STOP calling tools
+- DO NOT INCLUDE SCAM , OR SELF_PROMO TWEETS IN THE OUTPUT ONLY MENTION THOSE WHO ARE CLASSIFIED AS HIRING_TWEETS
+- DO NOT call any tool more than once
+- DO NOT repeat tool calls
+- After sorting tweets into tools → immediately go to final output
+      `),
     new HumanMessage(
         `
           Classify these tweets: ${stringifyTweets}
@@ -276,7 +325,7 @@ SUGGESTED REPLY RULES:
 
 
     // else
-  //  console.log("Else runned")
+   console.log("Else runned")
     // if there are no new leads and last run does not exists for the user 
     const savedLeads: any[] = []
 

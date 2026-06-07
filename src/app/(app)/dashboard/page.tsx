@@ -49,6 +49,7 @@ const {data: session , status} = useSession()
   const [message , setmesssage] = useState('')
   const [apifyStatus , setApifyStatus] = useState('')
     const [open, setOpen] = useState(false)
+    
 
 
 
@@ -131,6 +132,7 @@ const handleSearch = async (keyword: string, selectedDays: string) => {
            setOpen(true)
     }
     console.log("Error:", error.response)
+          setcooldownmessage(error.response.data.messsage)
     setIsScanning(false) // ← only set false here if POST itself failed
   }
 }

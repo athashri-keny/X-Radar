@@ -61,6 +61,12 @@ export function DashboardSearch({
   const [countdown, setCountdown] = useState('')
   const [isCooldown, setIsCooldown] = useState(false)
 
+  // put this above the component or in a separate file
+const SUBTITLES = [
+  "Fresh leads are waiting — start hunting.",
+  "Your next client is one tweet away.",
+  "Leads refresh daily. Strike while it's hot.",
+];
 
 
 
@@ -141,12 +147,32 @@ export function DashboardSearch({
 
   return (
     <div className="space-y-4">
+
+      {session?.user?.name && (
+  <div className="flex flex-col gap-1 mb-2">
+    <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="text-xl sm:text-2xl md:text-xl font-bold text-white"
+    >
+      Welcome,{" "}
+      <span className="text-white font-semibold">
+        {session.user.name.split(" ")[0]}
+      </span>{" "}
+      
+    </motion.p>
+
+  </div>
+)}
+   
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-2">Hunt Leads</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-4 mt-5">Hunt Leads</h2>
       </motion.div>
 
       <motion.div
@@ -219,13 +245,13 @@ export function DashboardSearch({
           
         </ToggleGroupItem>
           <ToggleGroupItem
-          value="6"
+          value="48"
          className="px-3 sm:px-4 py-1.5 rounded-full border border-white/10 text-xs sm:text-sm 
     data-[state=on]:bg-white data-[state=on]:text-black 
     text-gray-400 hover:text-white hover:border-white/30 transition
 "
 >
-          Last 6 days 
+          Last 48 hours 
         </ToggleGroupItem>
     <PricingSectionDialog isopen={open} onClose={() => setOpen(false)}/> 
         {/* Tooltip on hover */}
