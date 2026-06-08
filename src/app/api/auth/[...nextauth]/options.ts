@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
             // authorize() is ONLY for Credentials login
            async authorize(credentials: any):Promise<any> {
             await DBConnect()
-              console.log("1. authorize called", credentials?.email)
+            //   console.log("1. authorize called", credentials?.email)
             // for normal login
           try {
                 if(credentials?.email && credentials.password) {
@@ -54,16 +54,16 @@ export const authOptions: NextAuthOptions = {
     throw new Error('This account was created with Google. Please use Continue With Google.')
   }
 
-                   console.log("4. isVerifiedEmail", user.isVerifiedEmail)
+                //    console.log("4. isVerifiedEmail", user.isVerifiedEmail)
                   if (!user.isVerifiedEmail) {
                       throw new Error("email is not verified")
                   }
                   // check password 
                   const Ispassswordcorrect = await bycrpt.compare(credentials.password, user.password)
-                  console.log("5. password correct?", Ispassswordcorrect)
+                //   console.log("5. password correct?", Ispassswordcorrect)
 
                   if (Ispassswordcorrect) {
-                    console.log("user = " , user)
+                    // console.log("user = " , user)
                       return user;
                   } else {
                       return new Error("Error password is incorrect!")

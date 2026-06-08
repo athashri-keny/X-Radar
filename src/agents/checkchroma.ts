@@ -10,15 +10,12 @@ const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 
 // const collection = await client.getCollection({ name: "hiring_tweets" })
 
-const res = await getEmgbedding([`Dear recruiters,
-If you are looking for someone with :
-Java, Python, PHP;
-React, Angular, Next.js;
-PostgreSQL, Redis, MongoDB;
-AWS (S3, EC2, ECS, EKS);
-Unix system administration;
-Git & CI with TDD;
-Docker & Kubernetes
+const res = await getEmgbedding([` Hey 
+@X
+ Algorithm
+Connect me with recruiters, founders, and developers looking to hire a Full Stack Developer.
+Experienced with AI tools and creator of http://GlobalMarketTimes.in. Open to work and available for opportunities.
+
 
 `])
 
@@ -28,7 +25,7 @@ Docker & Kubernetes
   
     const results = await index.namespace("tweets").query({
      vector: res[0], // ← grab first (only) embedding
-    topK: 3,                   // ← return top 5 most similar tweets
+    topK: 2,                   // ← return top 5 most similar tweets
     includeMetadata: true      // ← include text and label in results
   })
 

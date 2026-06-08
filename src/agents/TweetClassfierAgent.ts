@@ -132,7 +132,7 @@ const llm = new ChatOpenAI({
     const classify_Tweets = tool(
         async({tweets}) => {
 
-            console.log("Tweets recived " , tweets.length)
+            // console.log("Tweets recived " , tweets.length)
 
     const collection = await getEmgbedding(tweets)
 

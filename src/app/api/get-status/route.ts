@@ -72,8 +72,10 @@ export async function GET(request: NextRequest) {
       `https://api.apify.com/v2/actor-runs/${SearchRun.ApifyRunId}/dataset/items?token=${process.env.APIFY_API_TOKEN}`
     );
     
+
     const tweets: Tweet[] = res.data
  .filter((raw: any) => raw.type === 'tweet' && raw.id !== -1)
+
 
     const TotalTweetsScraped = tweets.length;
 
@@ -97,6 +99,35 @@ export async function GET(request: NextRequest) {
     text: singleTweet.text.slice(0 , 300)
    }))
 
+
+
+   // — after map, before stringify
+function deduplicateTweets(tweets: any[]) {
+  const seen = new Set();
+
+
+
+  return tweets.filter(tweet => {
+    const author = tweet.twitterUrl.split('/')[3];
+
+    // console.log("Author Name "  , author)
+
+    if (seen.has(author)) return false;
+    seen.add(author);
+
+    // console.log("Set at last" , seen)
+
+
+    return true;
+
+
+
+  });
+}
+
+
+const cleanedItems = deduplicateTweets(items);
+
        // filtering the tweets giving only the nessccary value 
 
     //  const items = tweets.filter((tweet: any) => (
@@ -115,7 +146,9 @@ export async function GET(request: NextRequest) {
 
            // filtering the tweets giving only the nessccary value 
 
-           const stringifyTweets = JSON.stringify(items)
+           const stringifyTweets = JSON.stringify(cleanedItems)
+
+           
 
           //  console.log("Stringfy tweets types" , typeof items)
       

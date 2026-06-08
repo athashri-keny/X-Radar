@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     // Validate session and email exist
      const session = await getServerSession(authOptions)
-     console.log("session = " , session)
+    //  console.log("session = " , session)
 
         if (!session || !session.user) {
          return NextResponse.json({

@@ -154,8 +154,8 @@ export default function UpgradePopover({
 
             {/* body */}
            <p style={{ margin: "0 0 16px", fontSize: 13, color: "black", fontWeight: 500 }}>
-  You're seeing results from the <span style={{ color: "#a78bfa" }}> <br></br>last 6 days</span>. <br />
-  Upgrade to Pro and get fresh leads from the <span style={{ color: "#a78bfa" }}>last 24 hours</span> every morning.
+  You're seeing results from the <span style={{ color: "#a78bfa" }}> <br></br>last 48 hours</span>. <br />
+  Upgrade to Pro and get fresh leads from the <span style={{ color: "#a78bfa" }}>last 24 hours</span>.
 </p>
 
         {/* CTA */}

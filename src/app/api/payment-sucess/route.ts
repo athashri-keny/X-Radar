@@ -25,7 +25,7 @@ export async function GET(_request: NextRequest) {
   }
 
 
-  console.log("db user" , dbUser)
+//   console.log("db user" , dbUser)
 
   if (dbUser.plan === 'pro') {
         return NextResponse.json({
