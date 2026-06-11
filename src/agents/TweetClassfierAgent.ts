@@ -305,15 +305,15 @@ const outputSchema = z.object({
         return END;
     } 
 
-      /// ADD THIS — count completed tool calls
-    const toolMessages = state.messages.filter((m: any) => 
-        m._getType?.() === "tool"
-    )
+    //   /// ADD THIS — count completed tool calls
+    // const toolMessages = state.messages.filter((m: any) => 
+    //     m._getType?.() === "tool"
+    // )
 
-    // 4 tools total: Classify_Tweets + HIRING + SCAM + SELF_PROMO
-    if (toolMessages.length >= 3) {
-        return "structuredOutputNode"  // force stop 
-    }
+    // // 4 tools total: Classify_Tweets + HIRING + SCAM + SELF_PROMO
+    // if (toolMessages.length >= 3) {
+    //     return "structuredOutputNode"  // force stop 
+    // }
 
 
     // If the LLM makes a tool call, then perform an action
