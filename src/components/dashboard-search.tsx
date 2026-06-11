@@ -271,7 +271,7 @@ const SUBTITLES = [
   </span>{' '}
   from the{' '}
   <span className="text-white font-bold">
-    last {selectedDays} { selectedDays === '24' ? 'hours' : 'days'}
+    last {selectedDays} { selectedDays === '24' ? 'hours' : 'hours'}
 
   </span>
 </p>

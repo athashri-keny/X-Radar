@@ -10,11 +10,9 @@ const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 
 // const collection = await client.getCollection({ name: "hiring_tweets" })
 
-const res = await getEmgbedding([` Hey 
-@X
- Algorithm
-Connect me with recruiters, founders, and developers looking to hire a Full Stack Developer.
-Experienced with AI tools and creator of http://GlobalMarketTimes.in. Open to work and available for opportunities.
+const res = await getEmgbedding([`
+   Prathamesh Raut — Full-Stack Developer & Computer Vision enthusiast from Pune.Skills: React/Next.js, Node.js, Python, ML, Generative AIPortfolio: https://portfolio-black-nine-39.vercel.app  Immediate joiner. DMs open!#OpenToWork #Hiring #FullStack #AI #React
+
 
 
 `])

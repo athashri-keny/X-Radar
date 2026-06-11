@@ -18,7 +18,7 @@ const stages: PipelineStage[] = [
 const slowMessages = [
   "Scanning X for the freshest leads...",
   "This is taking a bit longer than usual...",
-  "Still working, X has a lot of tweets to scan...",
+  "It usually takes 2-3 mins to complete the whole scan!",
   "Almost there, hang tight...",
 ]
 

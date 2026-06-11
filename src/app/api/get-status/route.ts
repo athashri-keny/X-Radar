@@ -240,6 +240,7 @@ Write a reply for HIRING tweets (score 7+) that:
 ═══════════════════════════════════════
 FINAL RULES
 ═══════════════════════════════════════
+STRICT RULE: Call only ONE tool at a time. Wait for the result before calling the next tool.
 - Process ALL tweets before calling any tool
 - Then sort results and call HIRING_TWEETs, self-promo_tweets
 - Never classify tweets yourself without Pinecone references

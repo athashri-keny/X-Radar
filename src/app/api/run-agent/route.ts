@@ -40,7 +40,8 @@ import { UserModel } from "@/models/user";
 
 
         // finding the last run searched by the user.
-        const lastRun = await UserModel.findById(session.user._id)
+        const lastRun = await SearchRunModel.findOne({UserId: session.user._id , status: 'done'})
+        .sort({ createdAt: -1 })
 
 
 // getting the total runs done by users 
@@ -59,20 +60,26 @@ return NextResponse.json({
 
 // for paid user hiting the cooldown timer 
 // getting the last run of the user and converting it to normal time
+
 if (lastRun?.LastRun) {
-  const hoursSinceLastRun = (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60) 
-// if the the normal time is greater than 6 
-if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
-   const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
-  return NextResponse.json({
-    messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
-  } , {status: 429})
-} else {
-  const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
-   return NextResponse.json({
-    messsage: ` Error! Cooldown Active Try Again in ${hoursLeft} hours`
-  } , {status: 429})
-}
+  const hoursSinceLastRun =  (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60)
+
+  // Pro user — 6 hour cooldown
+  if (hoursSinceLastRun < 6 && session.user.plan === 'pro') {
+    const hoursLeft = Math.ceil(6 - hoursSinceLastRun)
+    return NextResponse.json({
+      message: `Error! Cooldown Active. Try Again in ${hoursLeft} hours`
+    }, { status: 429 })
+  }
+
+  // Free user — 24 hour cooldown
+  if (hoursSinceLastRun < 24 && session.user.plan === 'free') {
+    const hoursLeft = Math.ceil(24 - hoursSinceLastRun)
+    return NextResponse.json({
+      message: `Error! Cooldown Active. Try Again in ${hoursLeft} hours`
+    }, { status: 429 })
+  }
+
 }
 
      // Creating a new Search Model with status 'pending' for (fire and poll method)
@@ -87,7 +94,7 @@ if (hoursSinceLastRun < Math.ceil(6) && session.user.plan == 'pro') {
 
        await NewSearchRunModel.save()
        
-      const user =  await UserModel.findByIdAndUpdate(session.user._id, {
+      await UserModel.findByIdAndUpdate(session.user._id, {
   LastRun: new Date() 
 })
 
