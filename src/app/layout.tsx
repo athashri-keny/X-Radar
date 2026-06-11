@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "X-Radar",
+  title: "X-Radar | AI Lead Generation Platform",
   description: "X-Radar scans Twitter/X in real-time, finds hiring tweets, scores leads with AI, and crafts perfect reply suggestions. Find your next client today.",
 };
 
@@ -32,6 +32,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", inter.variable)}>
+      <head>
+         <Script
+          id="schema-website"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "X-Radar",
+              "alternateName": ["XRadar", "xradar"],
+              "url": "https://xradar.in"
+            })
+          }}
+        />
+        <Script
+          id="schema-organization"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "X-Radar",
+              "alternateName": "xradar",
+              "url": "https://xradar.in",
+              "sameAs": ["https://x.com/Athashri_k"]
+            })
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
