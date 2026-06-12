@@ -188,17 +188,15 @@ For EACH tweet:
    - [hiring_tweet, hiring_tweet] → HIRING ✅
    - [not_hiring, not_hiring]   → NOT HIRING ❌
    - [ hiring_tweet, not_hiring]         → TIE → use your own judgment
-3. Assign final label: HIRING / SELF_PROMO 
+3. Assign final label: HIRING  
 
 ═══════════════════════════════════════
 STEP 2 — CALL THE RIGHT TOOL
 ═══════════════════════════════════════
-After classifying ALL tweets, call these tools:
+After classifying ALL tweets, call Hiring Tweet tool:
 - HIRING_TWEETS   → send all hiring tweets
-- self-promo_tweets → send all self promo tweets
 
 DO NOT call Classify_Tweets more than once.
-DO NOT skip calling a tool if you have tweets for it.
 
 ═══════════════════════════════════════
 STEP 3 — SCORE HIRING TWEETS ONLY
@@ -242,15 +240,8 @@ FINAL RULES
 ═══════════════════════════════════════
 STRICT RULE: Call only ONE tool at a time. Wait for the result before calling the next tool.
 - Process ALL tweets before calling any tool
-- Then sort results and call HIRING_TWEETs, self-promo_tweets
-- Never classify tweets yourself without Pinecone references
-- Call Classify_Tweets ONCE with ALL tweets
-- Call HIRING_TWEETS, self-promo_tweets ONCE each
-- After calling sorting tools ONE TIME → STOP calling tools
 - DO NOT INCLUDE SCAM , OR SELF_PROMO TWEETS IN THE OUTPUT ONLY MENTION THOSE WHO ARE CLASSIFIED AS HIRING_TWEETS
-- DO NOT call any tool more than once
-- DO NOT repeat tool calls
-- After sorting tweets into tools → immediately go to final output
+
       `),
     new HumanMessage(
         `

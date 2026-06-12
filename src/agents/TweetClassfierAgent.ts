@@ -163,7 +163,7 @@ return JSON.stringify(classifiedTweets)
 
         }, {
             name: 'classify_Tweets',
-            description: 'Classify the tweets into SCAM TWEETS , HIRING TWEETS , AND SELF PROMORION BY LOOKING AT THE REFERENCE TWEETS FROM Vector DB. CLASSIFY THEM AND SCORE BASED ON CLOSED EMBEDDINGS YOU GET',
+            description: 'Classify the tweets into HIRING TWEETS BY LOOKING AT THE REFERENCE TWEETS FROM Vector DB. CLASSIFY THEM  BASED ON CLOSED EMBEDDINGS YOU GET',
             schema: z.object({
                 tweets: z.array(z.string()).describe("Tweets to classify")
             })
@@ -178,7 +178,7 @@ const HIRING_TWEETS = tool(
     },
     {
         name: 'HIRING_TWEETS',
-        description: 'Store all classified hiring tweets with their scores and suggested replies',
+        description: 'These are the hiring tweets stored by you , its just a stored and return a json format , calling this function once do not call it again ',
         schema: z.object({
             hiringTweets: z.array(z.string()).describe("Hiring tweets classified by the agent")
         })
@@ -200,18 +200,18 @@ const HIRING_TWEETS = tool(
     // )
 
 
-    // // self promo
-    const SELF_PROMO_TWEET = tool(
-        async({SELF_PROMO}) => {
-    return JSON.stringify(SELF_PROMO);
-        }, {
-            name: 'SELF_PROMO_TWEET',
-            description: 'THESE ARE ALL SELF PROMOTION TWEETS CLASSIFED BY YOU',
-            schema: z.object({
-            SELF_PROMO: z.array(z.string()).describe("Self promo")
-            })
-        }
-    )
+    // // // self promo
+    // const SELF_PROMO_TWEET = tool(
+    //     async({SELF_PROMO}) => {
+    // return JSON.stringify(SELF_PROMO);
+    //     }, {
+    //         name: 'SELF_PROMO_TWEET',
+    //         description: 'THESE ARE ALL SELF PROMOTION TWEETS CLASSIFED BY YOU',
+    //         schema: z.object({
+    //         SELF_PROMO: z.array(z.string()).describe("Self promo")
+    //         })
+    //     }
+    // )
 
 
     //   {
@@ -235,7 +235,7 @@ const outputSchema = z.object({
 })
 
 
-    const Tools = [classify_Tweets  , HIRING_TWEETS , SELF_PROMO_TWEET]
+    const Tools = [classify_Tweets  , HIRING_TWEETS]
 
     // tools.map() converts each tool into a [name, tool] pair
     // Object.fromEntries() converts those pairs into an object 
@@ -305,17 +305,6 @@ const outputSchema = z.object({
         return END;
     } 
 
-    //   /// ADD THIS — count completed tool calls
-    // const toolMessages = state.messages.filter((m: any) => 
-    //     m._getType?.() === "tool"
-    // )
-
-    // // 4 tools total: Classify_Tweets + HIRING + SCAM + SELF_PROMO
-    // if (toolMessages.length >= 3) {
-    //     return "structuredOutputNode"  // force stop 
-    // }
-
-
     // If the LLM makes a tool call, then perform an action
     if (lastMessage.tool_calls?.length) {
         return "toolNode";
@@ -350,6 +339,7 @@ const outputSchema = z.object({
 
     // linking all the and building graph
    export const AgentBuilder = new StateGraph(AgnetState)
+   // adding all the nodes 
     .addNode("llmCall" , llmCall)
     .addNode('toolNode' , toolNode)
     .addNode("structuredOutputNode" , structuredOutputNode)
@@ -361,7 +351,7 @@ const outputSchema = z.object({
     // logic
     
     .addConditionalEdges("llmCall", shouldContinue, ["toolNode", "structuredOutputNode"])
-    .addEdge('toolNode' , 'llmCall')
+    .addEdge('toolNode' , 'structuredOutputNode')
     .addEdge("structuredOutputNode" , END)
 
     .compile() as any
