@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
             // authorize() is ONLY for Credentials login
            async authorize(credentials: any):Promise<any> {
             await DBConnect()
-            //   console.log("1. authorize called", credentials?.email)
+              console.log("1. authorize called", credentials?.email)
             // for normal login
           try {
                 if(credentials?.email && credentials.password) {
@@ -55,19 +55,26 @@ export const authOptions: NextAuthOptions = {
   }
 
                 //    console.log("4. isVerifiedEmail", user.isVerifiedEmail)
+                  
                   if (!user.isVerifiedEmail) {
                       throw new Error("email is not verified")
                   }
                   // check password 
-                  const Ispassswordcorrect = await bycrpt.compare(credentials.password, user.password)
-                //   console.log("5. password correct?", Ispassswordcorrect)
 
-                  if (Ispassswordcorrect) {
+
+                  console.log("Credentails password" , credentials.password)
+                  console.log("User password" , user.password)
+                  
+                  const Ispassswordcorrect = await bycrpt.compare(credentials.password, user.password)
+                  console.log("5. password correct?", Ispassswordcorrect)
+
+                  if (Ispassswordcorrect === false) {
                     // console.log("user = " , user)
-                      return user;
-                  } else {
-                      return new Error("Error password is incorrect!")
-                  }
+                    console.log("Error entered the wrong password")
+                     throw new Error("Error password is incorrect!")                    
+                  } 
+
+                  return user
                 }
                 
           } catch (error: any) {

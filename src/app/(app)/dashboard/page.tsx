@@ -35,7 +35,7 @@ export default function Dashboard() {
 const {data: session , status} = useSession()
 
 
-// console.log("Session " , session)
+console.log("Session " , session)
 
 // console.log("stats" , status)
 

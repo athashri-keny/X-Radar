@@ -19,7 +19,11 @@ import { UserModel } from "@/models/user";
          } , {status: 500})   
         }
 
+        console.log("Session" , session)
+
         const foundLeads = await LeadsModel.find({userId: session.user._id})
+
+        console.log("Found leads" , foundLeads)
         
         const searchruns = await SearchRunModel.find({UserId: session.user._id})
 

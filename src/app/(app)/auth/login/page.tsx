@@ -56,21 +56,23 @@ e.preventDefault()
     return
   }
 
-    setloading(true)
-    try {
-     const res =  await signIn("credentials" , {
-        email,
-        password,
-        redirect: false
-      })
+      setloading(true)
+      try {
+      const res =  await signIn("credentials" , {
+          email,
+          password,
+          redirect: false
+        })
+
+      console.log("Res from frontend " ,res)
 
 if (res?.error) {
   seterror(res.error) // show this in your UI
 }
-     if (res?.status == 200) {
+    if (res?.status === 200) {
        window.location.href = '/dashboard'
          toast.success("Successfully login!")
-     }
+    }
 
       setloading(false)
     } catch (error: any) {
