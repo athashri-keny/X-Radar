@@ -1,71 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import DBConnect from "@/lib/connectdb";
-import DodoPayments from 'dodopayments';
-
+import DodoPayments from "dodopayments";
 
 // Initialize the Dodo Payments client
 const client = new DodoPayments({
   bearerToken: process.env.DODO_PAYMENTS_API_KEY,
-  environment: 'live_mode', // defaults to 'live_mode'
+  environment: "live_mode", // defaults to 'live_mode'
 });
 
-
 export async function POST(request: NextRequest) {
-    try {
-        
+  try {
+    await DBConnect();
 
-        await DBConnect()
+    const session = await getServerSession(authOptions);
 
-        const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-         if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    // create a payment
+    const payment = await client.checkoutSessions.create({
+      product_cart: [
+        {
+          // PROD:
+          //   product_id: "pdt_0NgN6URzSXMAIqZzpdHuv",
 
-
-  // create a payment
-      const payment = await client.checkoutSessions.create({
-        product_cart: [
-            {
-                // PROD: 
-                product_id: 'pdt_0NgN6URzSXMAIqZzpdHuv',  
-                // product_id: 'pdt_0NdNc1lbF1UroSFjMeIhQ',
-                quantity: 1,
-            }
-        ],
-        customer: {
-            email: session.user.email,
-            name: session.user.name,
+          product_id: "pdt_0NgN6URzSXMAIqZzpdHuv",
+          quantity: 1,
         },
-    //     billing_address: {
-    //     street: '123 Main St',
-    //     city: 'San Francisco',
-    //     state: 'CA',
-    //     country: 'US', // Required: ISO 3166-1 alpha-2 country code
-    //     zipcode: '94102'
-    //   },
-      
-    // TODO: remove this and add prod 
-    return_url: process.env.DODO_PAYMENTS_RETURN_URL,
+      ],
+      customer: {
+        email: session.user.email,
+        name: session.user.name,
+      },
+      //     billing_address: {
+      //     street: '123 Main St',
+      //     city: 'San Francisco',
+      //     state: 'CA',
+      //     country: 'US', // Required: ISO 3166-1 alpha-2 country code
+      //     zipcode: '94102'
+      //   },
 
-    
+      // TODO: remove this and add prod
+      return_url: process.env.DODO_PAYMENTS_RETURN_URL,
+
       // custom data for webhook
       metadata: {
         userId: session.user._id || "",
-        plan: 'pro'
-      }
-      })
+        plan: "pro",
+      },
+    });
 
-      console.log("Payment checckout url recvied = " , payment.checkout_url)
+    console.log("Payment checckout url recvied = ", payment.checkout_url);
 
-      return NextResponse.json({ checkout_url: payment.checkout_url } , {status: 200})
-
-    } catch (error) {
-        console.log("Error while processing the payment" , error)
-        return NextResponse.json({
-            message: "Eror while prooccing the payment"
-        } , {status: 500})
-    }
+    return NextResponse.json(
+      { checkout_url: payment.checkout_url },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.log("Error while processing the payment", error);
+    return NextResponse.json(
+      {
+        message: "Eror while prooccing the payment",
+      },
+      { status: 500 },
+    );
+  }
 }

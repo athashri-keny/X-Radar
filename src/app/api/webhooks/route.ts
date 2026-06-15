@@ -1,56 +1,54 @@
 import { Webhooks } from "@dodopayments/nextjs";
 import { UserModel } from "@/models/user";
-
-
+import SearchRunModel from "@/models/SearchRun";
 
 export const POST = Webhooks({
+  webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY!,
 
-    
-    webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY!,
-    onSubscriptionActive: async (payload) => {
+  onSubscriptionActive: async (payload) => {
+    // console.log("payload data = ", payload.data);
 
-      // console.log("payload data = " , payload.data)
+    const email = payload.data.customer.email;
 
-        const email = payload.data.customer.email
-        // console.log("Email "  , email)
+    const UserId = payload.data.metadata.userId;
 
-        await UserModel.findOneAndUpdate(
-            {Email: email},
-            {
-                plan: 'pro',
-                planActivatedAt: payload.data.created_at,
-                planExpiresAt: payload.data.expires_at,
-                dodoCustomerId: payload.data.customer.customer_id,
-                subscriptionId: payload.data.subscription_id,
-                LastRun: null
-            }
-        )
-    },
+    // console.log("UserId found", UserId);
 
+    // console.log("Email "  , email)
+
+    await SearchRunModel.deleteMany({ UserId: UserId });
+
+    await UserModel.findOneAndUpdate(
+      { Email: email },
+      {
+        plan: "pro",
+        planActivatedAt: payload.data.created_at,
+        planExpiresAt: payload.data.expires_at,
+        dodoCustomerId: payload.data.customer.customer_id,
+        subscriptionId: payload.data.subscription_id,
+        LastRun: null,
+      },
+    );
+  },
 
   // 4. This runs if payment fails or user cancels
   onSubscriptionFailed: async (payload) => {
     await UserModel.findOneAndUpdate(
       { email: payload.data.customer.email },
-      { plan: "free" }
+      { plan: "free" },
     );
   },
 
-
-
-
-  // 5 if the user Cancell the subscriptions this web hook handler will run 
+  // 5 if the user Cancell the subscriptions this web hook handler will run
 
   onSubscriptionCancelled: async (payload) => {
     await UserModel.findOneAndUpdate(
-      {Email: payload.data.customer.email},
+      { Email: payload.data.customer.email },
       {
-            plan: 'free',
-            subscriptionId: null,
-            planExpiresAt: null,
-        }
-      
-    )
-  }
-
-})
+        plan: "free",
+        subscriptionId: null,
+        planExpiresAt: null,
+      },
+    );
+  },
+});
