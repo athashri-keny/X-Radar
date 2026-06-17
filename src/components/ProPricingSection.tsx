@@ -27,33 +27,34 @@ const features = [
   "Every new feature free until stable",
 ];
 
-export default function ProPricingSection({ nextBillingDate }: { nextBillingDate: string | null }) {
-
+export default function ProPricingSection({
+  nextBillingDate,
+}: {
+  nextBillingDate: string | null;
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading , setloading ] = useState(false)
-  const [error , seterror] = useState<any>("")
+  const [loading, setloading] = useState(false);
+  const [error, seterror] = useState<any>("");
 
-  
-
-  const handleCancelSubscription = async() => {
-    setloading(true)
-    seterror("")
+  const handleCancelSubscription = async () => {
+    setloading(true);
+    seterror("");
     try {
-     const res =  await axios.post('/api/cancel-subscription')
-     console.log(res.data)
-      console.log("Successfully cancelled the subscription")
-      toast.success("Successfully cancelled the subscription")
-      setIsOpen(false)
-      setloading(false)
-    } catch (error:any) {
-      console.log("Error while cancelling the subscrption " , error)
-      seterror(error) 
-      setloading(false)
+      const res = await axios.post("/api/cancel-subscription");
+      console.log(res.data);
+      console.log("Successfully cancelled the subscription");
+      toast.success("Successfully cancelled the subscription");
+      setIsOpen(false);
+      setloading(false);
+    } catch (error: any) {
+      console.log("Error while cancelling the subscrption ", error);
+      seterror(error);
+      setloading(false);
       setTimeout(() => {
-        seterror("")
-      }, 5000)
+        seterror("");
+      }, 5000);
     } finally {
-      setloading(false)
+      setloading(false);
     }
   };
 
@@ -66,7 +67,7 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
             Current Plan
           </p>
           <p className="text-2xl font-black text-white">
-            $9.99
+            $4.99
             <span className="ml-1 text-xs font-normal text-white">/mo</span>
           </p>
         </div>
@@ -75,7 +76,12 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 280, damping: 20, delay: 0.1 }}
+            transition={{
+              type: "spring",
+              stiffness: 280,
+              damping: 20,
+              delay: 0.1,
+            }}
             className="flex items-center gap-1.5 rounded-full border border-[#2e3254] bg-[#1a1d2e] px-2.5 py-1 text-[10px] font-bold tracking-widest text-[#818cf8]"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-[#818cf8]" />
@@ -115,9 +121,11 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
         transition={{ delay: 0.6, duration: 0.3 }}
         className="mt-7 flex items-center justify-center gap-2 text-[10px] text-[#64748b]"
       >
-        <span className="text-white font-medium text-xs">Next Billing Date:</span>
+        <span className="text-white font-medium text-xs">
+          Next Billing Date:
+        </span>
         <span className="px-2.5 py-1 rounded-md bg-[#1a1d2e] border border-[#2e3254] text-xs text-white">
-          {new Date(nextBillingDate || "").toDateString() }
+          {new Date(nextBillingDate || "").toDateString()}
         </span>
       </motion.div>
 
@@ -130,7 +138,8 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
             transition={{ duration: 0.2 }}
             className="absolute top-2 left-0 right-0 mx-auto w-full max-w-xs bg-red-900/20 border border-red-600 text-red-400 px-4 py-2 rounded-lg text-xs text-center"
           >
-            {error?.message || "An error occurred while cancelling subscription"}
+            {error?.message ||
+              "An error occurred while cancelling subscription"}
           </motion.div>
         )}
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -148,7 +157,11 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
                 {loading ? (
                   <motion.span
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                     className="inline-flex items-center gap-2"
                   >
                     <Loader2 size={14} />
@@ -174,7 +187,8 @@ export default function ProPricingSection({ nextBillingDate }: { nextBillingDate
                   <AlertDialogHeader>
                     <AlertDialogTitle>Cancel Subscription?</AlertDialogTitle>
                     <AlertDialogDescription className="text-white">
-                      Are you sure you want to cancel your subscription? You'll lose access to all Pro features.
+                      Are you sure you want to cancel your subscription? You'll
+                      lose access to all Pro features.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <div className="flex gap-3 justify-end">

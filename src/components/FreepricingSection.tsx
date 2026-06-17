@@ -18,19 +18,15 @@ const proOnlyFeatures = [
 ];
 
 export default function PricingSection() {
-
-  
-  const handleRedicrectOfPayment = async() => {
+  const handleRedicrectOfPayment = async () => {
     try {
-      const res = await axios.post('/api/checkout')
+      const res = await axios.post("/api/checkout");
 
-      window.location.href = res.data.checkout_url
-
+      window.location.href = res.data.checkout_url;
     } catch (error) {
-      console.log("Error while redirecting to payment page" , error)
+      console.log("Error while redirecting to payment page", error);
     }
-  }
-
+  };
 
   return (
     <div className="flex flex-col gap-3 font-sans">
@@ -87,7 +83,7 @@ export default function PricingSection() {
             <p className="text-2xl font-black text-[#e2e8f0]">X-Radar Pro</p>
           </div>
           <div className="text-right">
-            <p className="text-xl font-black text-white mt-3 ">$9.99</p>
+            <p className="text-xl font-black text-white mt-3 ">$4.99</p>
             <p className="text-[10px] text-white">/month</p>
           </div>
         </div>
@@ -121,7 +117,9 @@ export default function PricingSection() {
                   </span>
                 </span>
               ) : (
-                <span className="text-xs text-white font-semibold">{f.text}</span>
+                <span className="text-xs text-white font-semibold">
+                  {f.text}
+                </span>
               )}
             </motion.li>
           ))}

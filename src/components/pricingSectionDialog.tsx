@@ -49,7 +49,7 @@ function PricingSectionDialog({
     },
     {
       name: "Pro",
-      price: "$9.99",
+      price: "$4.99",
       period: "/ month",
       desc: "For serious freelancers and job seekers",
       popular: true,
