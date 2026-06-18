@@ -30,16 +30,17 @@ export function DashboardNavbar() {
   const [open, setOpen] = useState(false);
   const [isIndia, setIsIndia] = useState(false);
 
+  useEffect(() => {
+    const detectCountry = async () => {
+      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const data = await res.json();
+      setIsIndia(data.isIndia);
+    };
+    detectCountry();
+  }, []);
+
   const handleRedicrectOfPayment = async () => {
     try {
-      useEffect(() => {
-        const detectCountry = async () => {
-          const res = await fetch("/api/detech-country"); // your API route reads the header
-          const data = await res.json();
-          setIsIndia(data.isIndia);
-        };
-        detectCountry();
-      }, []);
       const res = await axios.post("/api/checkout");
 
       window.location.href = res.data.checkout_url;
