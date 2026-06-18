@@ -23,7 +23,6 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { headers } from "next/headers";
 
 export function DashboardNavbar() {
   const { data: session, status } = useSession();
