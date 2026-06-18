@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import DBConnect from "@/lib/connectdb";
 import DodoPayments from "dodopayments";
+import { headers } from "next/headers";
 
 // Initialize the Dodo Payments client
 const client = new DodoPayments({
@@ -20,14 +21,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const headersList = await headers();
+    const country = headersList.get("x-vercel-ip-country");
+    console.log("Country", country);
+
     // create a payment
     const payment = await client.checkoutSessions.create({
       product_cart: [
+        //pdt_0NgN6URzSXMAIqZzpdHuv // USD
         {
-          // PROD:
-          //   product_id: "pdt_0NgN6URzSXMAIqZzpdHuv",
-
-          product_id: "pdt_0NgN6URzSXMAIqZzpdHuv",
+          product_id:
+            country === "IN"
+              ? "pdt_0NhIMIOJhmuIcBXKNcRmm"
+              : "pdt_0NgN6URzSXMAIqZzpdHuv",
           quantity: 1,
         },
       ],

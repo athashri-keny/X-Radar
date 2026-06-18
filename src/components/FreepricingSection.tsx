@@ -3,6 +3,7 @@
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const freeFeatures = [
   { text: "24-hour cooldown", upgradesTo: "6-hour cooldown" },
@@ -18,6 +19,18 @@ const proOnlyFeatures = [
 ];
 
 export default function PricingSection() {
+  const [isIndia, setIsIndia] = useState(false);
+
+  useEffect(() => {
+    const detectCountry = async () => {
+      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const data = await res.json();
+      console.log(data);
+      setIsIndia(data.isIndia);
+    };
+    detectCountry();
+  }, []);
+
   const handleRedicrectOfPayment = async () => {
     try {
       const res = await axios.post("/api/checkout");
@@ -83,7 +96,9 @@ export default function PricingSection() {
             <p className="text-2xl font-black text-[#e2e8f0]">X-Radar Pro</p>
           </div>
           <div className="text-right">
-            <p className="text-xl font-black text-white mt-3 ">$4.99</p>
+            <p className="text-xl font-black text-white mt-3 ">
+              {isIndia ? "₹699" : "$9.99"}
+            </p>
             <p className="text-[10px] text-white">/month</p>
           </div>
         </div>

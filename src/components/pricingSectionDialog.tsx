@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,18 @@ function PricingSectionDialog({
 }) {
   //   const {data: session} = useSession()
 
+  const [isIndia, setIsIndia] = useState(false);
+
+  useEffect(() => {
+    const detectCountry = async () => {
+      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const data = await res.json();
+      console.log(data);
+      setIsIndia(data.isIndia);
+    };
+    detectCountry();
+  }, []);
+
   const handleRedicrectOfPayment = async () => {
     try {
       const res = await axios.post("/api/checkout");
@@ -34,7 +46,7 @@ function PricingSectionDialog({
   const plans = [
     {
       name: "Free",
-      price: "$0",
+      price: isIndia ? "₹" : "$",
       period: "forever",
       desc: "Perfect for getting started",
       popular: false,
@@ -49,7 +61,7 @@ function PricingSectionDialog({
     },
     {
       name: "Pro",
-      price: "$4.99",
+      price: isIndia ? "₹699" : "$9.99",
       period: "/ month",
       desc: "For serious freelancers and job seekers",
       popular: true,

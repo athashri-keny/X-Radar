@@ -21,13 +21,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { headers } from "next/headers";
 
 export function DashboardNavbar() {
   const { data: session, status } = useSession();
 
   const [open, setOpen] = useState(false);
+  const [isIndia, setIsIndia] = useState(false);
+
+  useEffect(() => {
+    const detectCountry = async () => {
+      const res = await fetch("/api/country"); // your API route reads the header
+      const data = await res.json();
+      setIsIndia(data.isIndia);
+    };
+    detectCountry();
+  }, []);
 
   const handleRedicrectOfPayment = async () => {
     try {
@@ -42,7 +53,7 @@ export function DashboardNavbar() {
   const plans = [
     {
       name: "Free",
-      price: "$0",
+      price: isIndia ? "₹" : "$",
       period: "forever",
       desc: "Perfect for getting started",
       popular: false,
@@ -57,7 +68,7 @@ export function DashboardNavbar() {
     },
     {
       name: "Pro",
-      price: "$4.99",
+      price: isIndia ? "₹699" : "$9.99",
       period: "/ month",
       desc: "For serious freelancers and job seekers",
       popular: true,

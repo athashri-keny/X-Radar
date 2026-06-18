@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Providers } from "./providers";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/next"
-import { Toaster } from "@/components/ui/sonner"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
-import "./globals.css"
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "X-Radar | AI Lead Generation Platform",
-  description: "X-Radar scans Twitter/X in real-time, finds hiring tweets, scores leads with AI, and crafts perfect reply suggestions. Find your next client today.",
+  description:
+    "X-Radar scans Twitter/X in real-time, finds hiring tweets, scores leads with AI, and crafts perfect reply suggestions. Find your next client today.",
 };
 
 export default function RootLayout({
@@ -33,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <head>
-         <Script
+        <Script
           id="schema-website"
           type="application/ld+json"
           strategy="beforeInteractive"
@@ -41,10 +43,10 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "X-Radar",
-              "alternateName": ["XRadar", "xradar"],
-              "url": "https://xradar.in"
-            })
+              name: "X-Radar",
+              alternateName: ["XRadar", "xradar"],
+              url: "https://xradar.in",
+            }),
           }}
         />
         <Script
@@ -55,18 +57,18 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "X-Radar",
-              "alternateName": "xradar",
-              "url": "https://xradar.in",
-              "sameAs": ["https://x.com/Athashri_k"]
-            })
+              name: "X-Radar",
+              alternateName: "xradar",
+              url: "https://xradar.in",
+              sameAs: ["https://x.com/Athashri_k"],
+            }),
           }}
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         <Script
+        <Script
           id="microsoft-clarity"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -81,9 +83,9 @@ export default function RootLayout({
         />
         <Providers>
           {children}
-          <Toaster/>
-          <Analytics/>
-          <SpeedInsights/>
+          <Toaster />
+          <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>

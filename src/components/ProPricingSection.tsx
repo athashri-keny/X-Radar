@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Loader2 } from "lucide-react";
 import {
@@ -36,6 +36,18 @@ export default function ProPricingSection({
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState<any>("");
 
+  const [isIndia, setIsIndia] = useState(false);
+
+  useEffect(() => {
+    const detectCountry = async () => {
+      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const data = await res.json();
+      console.log(data);
+      setIsIndia(data.isIndia);
+    };
+    detectCountry();
+  }, []);
+
   const handleCancelSubscription = async () => {
     setloading(true);
     seterror("");
@@ -67,7 +79,7 @@ export default function ProPricingSection({
             Current Plan
           </p>
           <p className="text-2xl font-black text-white">
-            $4.99
+            {isIndia ? "₹699" : "$9.99"}
             <span className="ml-1 text-xs font-normal text-white">/mo</span>
           </p>
         </div>
