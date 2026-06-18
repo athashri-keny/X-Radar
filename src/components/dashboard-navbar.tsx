@@ -32,7 +32,7 @@ export function DashboardNavbar() {
 
   useEffect(() => {
     const detectCountry = async () => {
-      const res = await fetch("/api/country"); // your API route reads the header
+      const res = await fetch("/api/detech-country"); // your API route reads the header
       const data = await res.json();
       setIsIndia(data.isIndia);
     };
