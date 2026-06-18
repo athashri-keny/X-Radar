@@ -52,7 +52,7 @@ export function DashboardNavbar() {
   const plans = [
     {
       name: "Free",
-      price: isIndia ? "₹" : "$",
+      price: isIndia ? "₹0" : "$0",
       period: "forever",
       desc: "Perfect for getting started",
       popular: false,
