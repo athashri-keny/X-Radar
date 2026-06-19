@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const freeFeatures = [
-  { text: "24-hour cooldown", upgradesTo: "6-hour cooldown" },
+  { text: "12-hour cooldown", upgradesTo: "6-hour cooldown" },
   { text: "Tweets from last 6-days", upgradesTo: "Within 24 hrs" },
   { text: "5 leads max per search", upgradesTo: "Unlimited leads" },
   { text: "AI reply suggestions", upgradesTo: null },

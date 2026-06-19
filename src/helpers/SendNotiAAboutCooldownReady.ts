@@ -36,7 +36,7 @@ function getCooldownEmailHtml(name: string) {
               </p>
 
               <p style="margin:0 0 12px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
-                Your 24-hour cooldown is over. Fresh hiring tweets are waiting for you on X-Radar.
+                Your 12-hour cooldown is over. Fresh hiring tweets are waiting for you on X-Radar.
               </p>
               <p style="margin:0 0 28px 0;font-size:14px;color:#666666;line-height:1.75;font-family:Arial,sans-serif;">
                 New clients are posting right now — don't let them hire someone else first.
