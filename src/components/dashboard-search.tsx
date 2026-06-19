@@ -23,7 +23,6 @@ const SubNiches: Record<string, string[]> = {
     "Next.js",
     "Vue",
     "Node.js",
-    "Python",
     "Django",
     "Laravel",
     "Flutter",
