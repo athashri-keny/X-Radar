@@ -51,6 +51,17 @@ export async function POST(request: NextRequest) {
       status: "done",
     });
 
+    // FOR Epesscially one user giving the pro features for free
+    if (session.user.plan === "pro" && session.user.SearchLimit) {
+      if (totalRuns >= session.user.SearchLimit) {
+        return NextResponse.json(
+          {
+            message: `Your ${session.user.SearchLimit} trial searches are used up. Upgrade to keep using X-Radar!`,
+          },
+          { status: 403 },
+        );
+      }
+    }
     // for Free user hitting the paywall after first run
     if (totalRuns >= 2 && session.user.plan === "free") {
       return NextResponse.json(
@@ -74,7 +85,7 @@ export async function POST(request: NextRequest) {
         const hoursLeft = Math.ceil(6 - hoursSinceLastRun);
         return NextResponse.json(
           {
-            message: `Error! Cooldown Active. Try Again in ${hoursLeft} hours`,
+            message: `Error! Cooldown Active. T  ry Again in ${hoursLeft} hours`,
           },
           { status: 429 },
         );

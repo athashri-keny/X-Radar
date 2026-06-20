@@ -27,6 +27,7 @@ export const POST = Webhooks({
         dodoCustomerId: payload.data.customer.customer_id,
         subscriptionId: payload.data.subscription_id,
         LastRun: null,
+        SearchLimit: null,
       },
     );
   },

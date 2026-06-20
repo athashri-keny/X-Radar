@@ -165,6 +165,8 @@ export const authOptions: NextAuthOptions = {
           token.isVerifiedEmail = user.isVerifiedEmail || false;
           token.email = user.Email;
           token.plan = user.plan || "free";
+          // temepory
+          token.SearchLimit = user.SearchLimit || null;
 
           // if the login is from google (oauth)
         }
@@ -179,6 +181,8 @@ export const authOptions: NextAuthOptions = {
             token.isVerifiedEmail = dbuser.isVerifiedEmail || false;
             token.email = dbuser.Email;
             token.plan = dbuser.plan;
+            // temepory
+            token.SearchLimit = dbuser.SearchLimit || null;
           }
         }
       }
@@ -187,8 +191,10 @@ export const authOptions: NextAuthOptions = {
         await DBConnect();
 
         console.log("Update !! trixggeed");
-        // finding the user
         token.plan = session.plan;
+        const freshUser = await UserModel.findOne({ email: token.email });
+        // finding the user
+        token.SearchLimit = freshUser?.SearchLimit ?? null;
       }
       return token;
     },
@@ -205,6 +211,8 @@ export const authOptions: NextAuthOptions = {
           (session.user.email = token.email),
           (session.user.isVerifiedEmail = token.isVerifiedEmail || false));
         session.user.plan = token.plan;
+        // temporay
+        session.user.SearchLimit = token.SearchLimit || null;
       }
       return session;
     },

@@ -29,11 +29,13 @@ export async function POST(request: NextRequest) {
     const payment = await client.checkoutSessions.create({
       product_cart: [
         //pdt_0NgN6URzSXMAIqZzpdHuv // USD
+        // pdt_0NdNc1lbF1UroSFjMeIhQ // LOCALHOST
         {
           product_id:
             country === "IN"
               ? "pdt_0NhIMIOJhmuIcBXKNcRmm"
               : "pdt_0NgN6URzSXMAIqZzpdHuv",
+
           quantity: 1,
         },
       ],
