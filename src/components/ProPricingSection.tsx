@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, Zap } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,12 +35,11 @@ export default function ProPricingSection({
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState<any>("");
-
   const [isIndia, setIsIndia] = useState(false);
 
   useEffect(() => {
     const detectCountry = async () => {
-      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const res = await fetch("/api/detech-country");
       const data = await res.json();
       console.log(data);
       setIsIndia(data.isIndia);
@@ -54,21 +53,22 @@ export default function ProPricingSection({
     try {
       const res = await axios.post("/api/cancel-subscription");
       console.log(res.data);
-      console.log("Successfully cancelled the subscription");
       toast.success("Successfully cancelled the subscription");
       setIsOpen(false);
       setloading(false);
     } catch (error: any) {
-      console.log("Error while cancelling the subscrption ", error);
+      console.log("Error while cancelling the subscription ", error);
       seterror(error);
       setloading(false);
-      setTimeout(() => {
-        seterror("");
-      }, 5000);
+      setTimeout(() => seterror(""), 5000);
     } finally {
       setloading(false);
     }
   };
+
+  const currentPrice = isIndia ? "₹299" : "$4.99";
+  const originalPrice = isIndia ? "₹599" : "$9.99";
+  const discountTag = isIndia ? "57% OFF" : "50% OFF";
 
   return (
     <div className="rounded-2xl border border-[#1f2330] bg-[#111318] p-5">
@@ -78,10 +78,26 @@ export default function ProPricingSection({
           <p className="mb-1 text-[10px] uppercase tracking-widest text-white">
             Current Plan
           </p>
-          <p className="text-2xl font-black text-white">
-            {isIndia ? "₹699" : "$9.99"}
-            <span className="ml-1 text-xs font-normal text-white">/mo</span>
-          </p>
+
+          {/* Strikethrough original price */}
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-sm font-bold text-white/80 line-through">
+              {originalPrice}
+            </span>
+            <span className="text-[10px] font-semibold text-violet-400">
+              Early Bird Price
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <p className="text-2xl font-black text-white">
+              {currentPrice}
+              <span className="ml-1 text-xs font-normal text-white">/mo</span>
+            </p>
+            <span className="px-2 py-0.5 rounded-md bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[10px] font-bold tracking-wide">
+              {discountTag}
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
@@ -101,6 +117,21 @@ export default function ProPricingSection({
           </motion.div>
         </div>
       </div>
+
+      {/* Early Bird Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg border border-violet-500/30 bg-violet-500/10"
+      >
+        <Zap size={12} className="text-violet-400 flex-shrink-0" />
+        <p className="text-[10px] text-violet-300 font-medium leading-4">
+          <span className="font-bold">Early Bird Deal</span>
+          {" — "}
+          locked in for life as long as you stay subscribed.
+        </p>
+      </motion.div>
 
       <div className="my-4 border-t border-[#1a1d2a]" />
 

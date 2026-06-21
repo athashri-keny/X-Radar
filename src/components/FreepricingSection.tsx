@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const freeFeatures = [
@@ -23,7 +23,7 @@ export default function PricingSection() {
 
   useEffect(() => {
     const detectCountry = async () => {
-      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const res = await fetch("/api/detech-country");
       const data = await res.json();
       console.log(data);
       setIsIndia(data.isIndia);
@@ -34,12 +34,15 @@ export default function PricingSection() {
   const handleRedicrectOfPayment = async () => {
     try {
       const res = await axios.post("/api/checkout");
-
       window.location.href = res.data.checkout_url;
     } catch (error) {
       console.log("Error while redirecting to payment page", error);
     }
   };
+
+  const currentPrice = isIndia ? "₹299" : "$4.99";
+  const originalPrice = isIndia ? "₹599" : "$9.99";
+  const discountTag = isIndia ? "57% OFF" : "50% OFF";
 
   return (
     <div className="flex flex-col gap-3 font-sans">
@@ -95,13 +98,35 @@ export default function PricingSection() {
             </p>
             <p className="text-2xl font-black text-[#e2e8f0]">X-Radar Pro</p>
           </div>
-          <div className="text-right">
-            <p className="text-xl font-black text-white mt-3 ">
-              {isIndia ? "₹699" : "$9.99"}
-            </p>
+          <div className="text-right mt-3">
+            {/* Strikethrough original price */}
+            <div className="flex items-center justify-end gap-1.5 mb-0.5">
+              <span className="text-sm font-bold text-white/80 line-through">
+                {originalPrice}
+              </span>
+              <span className="px-1.5 py-0.5 rounded bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[10px] font-bold tracking-wide">
+                {discountTag}
+              </span>
+            </div>
+            <p className="text-xl font-black text-white">{currentPrice}</p>
             <p className="text-[10px] text-white">/month</p>
           </div>
         </div>
+
+        {/* Early Bird Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.3 }}
+          className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg border border-violet-500/30 bg-violet-500/10"
+        >
+          <Zap size={11} className="text-violet-400 flex-shrink-0" />
+          <p className="text-[10px] text-violet-300 font-medium leading-4">
+            <span className="font-bold">Early Bird Deal</span>
+            {" — "}
+            price locked in for life as long as you stay subscribed.
+          </p>
+        </motion.div>
 
         <div className="my-4 border-t border-[#1a1d2a]" />
 
@@ -165,11 +190,11 @@ export default function PricingSection() {
           onClick={() => handleRedicrectOfPayment()}
           className="mt-5 w-full rounded-lg bg-[#818cf8] py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 cursor-pointer"
         >
-          Upgrade to Pro
+          Claim Early Bird Deal →
         </motion.button>
 
         <p className="mt-2 text-center text-[10px] text-white">
-          Cancel anytime · No hidden fees
+          🔒 Locked in forever · Cancel anytime · No hidden fees
         </p>
       </div>
     </div>

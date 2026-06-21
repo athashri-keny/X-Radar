@@ -9,7 +9,7 @@ import {
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { Check, X } from "lucide-react";
+import { Check, X, Zap, Clock } from "lucide-react";
 import { Button } from "@base-ui/react";
 
 function PricingSectionDialog({
@@ -19,13 +19,11 @@ function PricingSectionDialog({
   isopen: boolean;
   onClose: () => void;
 }) {
-  //   const {data: session} = useSession()
-
   const [isIndia, setIsIndia] = useState(false);
 
   useEffect(() => {
     const detectCountry = async () => {
-      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const res = await fetch("/api/detech-country");
       const data = await res.json();
       console.log(data);
       setIsIndia(data.isIndia);
@@ -36,7 +34,6 @@ function PricingSectionDialog({
   const handleRedicrectOfPayment = async () => {
     try {
       const res = await axios.post("/api/checkout");
-
       window.location.href = res.data.checkout_url;
     } catch (error) {
       console.log("Error while redirecting to payment page", error);
@@ -47,39 +44,47 @@ function PricingSectionDialog({
     {
       name: "Free",
       price: isIndia ? "₹0" : "$0",
+      originalPrice: null,
       period: "forever",
       desc: "Perfect for getting started",
       popular: false,
+      discountTag: null,
       features: [
         { text: "12 hour cooldown", included: true },
         { text: "Only last 6 days tweets (no 24 hrs)", included: true },
         { text: "Only 2 free searches", included: true },
         { text: "5 leads max", included: true },
         { text: "AI reply suggestions", included: true },
-        { text: "Automated 2 Search quries as per your niche", included: true },
-      ],
-    },
-    {
-      name: "Pro",
-      price: isIndia ? "₹699" : "$9.99",
-      period: "/ month",
-      desc: "For serious freelancers and job seekers",
-      popular: true,
-      features: [
-        { text: "6 hour cooldown", included: true },
-        { text: "Get lastest tweets (24hr)", included: true },
-        { text: "Unlimited Searches", included: true },
-        { text: "Unlimited leads (as per result)", included: true },
-        { text: " AI replies suggestions ", included: true },
-        { text: "Automated 5 Search quries as per your niche", included: true },
-        { text: "Get persona lized leads via Email", included: true },
         {
-          text: "Users Get every new feature first free of charge until stable",
+          text: "Automated 2 search queries as per your niche",
           included: true,
         },
       ],
     },
+    {
+      name: "Pro",
+      price: isIndia ? "₹299" : "$4.99",
+      originalPrice: isIndia ? "₹599" : "$9.99",
+      period: "/ month",
+      desc: "For serious freelancers and job seekers",
+      popular: true,
+      discountTag: isIndia ? "57% OFF" : "50% OFF",
+      features: [
+        { text: "6 hour cooldown", included: true },
+        { text: "Get latest tweets (24hr)", included: true },
+        { text: "Unlimited Searches", included: true },
+        { text: "Unlimited leads (as per result)", included: true },
+        { text: "AI reply suggestions", included: true },
+        {
+          text: "Automated 5 search queries as per your niche",
+          included: true,
+        },
+        { text: "Get personalized leads via Email", included: true },
+        { text: "Every new feature free until stable", included: true },
+      ],
+    },
   ];
+
   return (
     <div>
       <Dialog
@@ -99,8 +104,26 @@ function PricingSectionDialog({
             </DialogDescription>
           </DialogHeader>
 
+          {/* Early Bird Banner */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 sm:mt-4"
+          >
+            <div className="flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 sm:py-3 rounded-xl border border-violet-500/40 bg-violet-500/10 backdrop-blur-sm">
+              <Zap size={14} className="text-violet-400 flex-shrink-0" />
+              <p className="text-xs sm:text-sm font-medium text-violet-300 text-center">
+                <span className="font-bold">Early Bird Deal</span>
+                locked in for life as long as you stay subscribed. Price goes up
+                once we hit capacity.
+              </p>
+              <Clock size={14} className="text-violet-400 flex-shrink-0" />
+            </div>
+          </motion.div>
+
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-4 sm:mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-4 sm:mt-6">
             {plans.map((plan, i) => (
               <motion.div
                 key={plan.name}
@@ -110,7 +133,7 @@ function PricingSectionDialog({
                 whileHover={{ scale: 1.02, y: -5 }}
                 className={`glass-card p-4 sm:p-6 relative border rounded-lg transition-all duration-300 ${
                   plan.popular
-                    ? "border-white/30 bg-white/10 ring-2 ring-yellow-500/50"
+                    ? "border-white/30 bg-white/10 ring-2 ring-violet-500/50"
                     : "border-white/10 bg-white/5 hover:border-white/20"
                 }`}
               >
@@ -123,10 +146,17 @@ function PricingSectionDialog({
                       type: "spring",
                       stiffness: 200,
                     }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 text-xs font-bold whitespace-nowrap"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-violet-500/20 border border-violet-500/50 text-violet-300 text-xs font-bold whitespace-nowrap"
                   >
                     Most Popular
                   </motion.span>
+                )}
+
+                {/* Discount badge */}
+                {plan.discountTag && (
+                  <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-violet-500/20 border border-violet-500/40 text-violet-300 text-xs font-bold tracking-wide">
+                    {plan.discountTag}
+                  </span>
                 )}
 
                 <motion.div
@@ -141,12 +171,25 @@ function PricingSectionDialog({
                     {plan.desc}
                   </p>
                   <div className="mt-3 mb-4 sm:mt-4 sm:mb-6">
-                    <span className="text-2xl sm:text-3xl font-black text-white">
-                      {plan.price}
-                    </span>
-                    <span className="text-white/60 text-xs sm:text-sm ml-1">
-                      {plan.period}
-                    </span>
+                    {/* Strikethrough original price */}
+                    {plan.originalPrice && (
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-white/80 text-sm sm:text-base font-bold line-through">
+                          {plan.originalPrice}
+                        </span>
+                        <span className="text-xs text-violet-400 font-semibold">
+                          Early Bird Price
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-end gap-1">
+                      <span className="text-2xl sm:text-3xl font-black text-white">
+                        {plan.price}
+                      </span>
+                      <span className="text-white/60 text-xs sm:text-sm ml-1 mb-0.5">
+                        {plan.period}
+                      </span>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -196,12 +239,17 @@ function PricingSectionDialog({
                   transition={{ delay: i * 0.15 + 0.3, duration: 0.3 }}
                 >
                   {plan.popular ? (
-                    <Button
-                      onClick={() => handleRedicrectOfPayment()}
-                      className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-yellow-500 hover:bg-yellow-600 text-black shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40"
-                    >
-                      Get Started
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => handleRedicrectOfPayment()}
+                        className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
+                      >
+                        Claim Early Bird Deal →
+                      </Button>
+                      <p className="text-center text-xs text-white/40 mt-2">
+                        🔒 Locked in forever · Cancel anytime
+                      </p>
+                    </>
                   ) : (
                     <Button className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 border border-white/20 bg-white/5 hover:bg-white/10 text-white hover:border-white/40">
                       Start Free
@@ -211,6 +259,12 @@ function PricingSectionDialog({
               </motion.div>
             ))}
           </div>
+
+          {/* Bottom urgency note */}
+          <p className="text-center text-xs text-white/30 mt-3">
+            Early bird pricing is limited. Regular price resumes once we hit
+            capacity.
+          </p>
         </DialogContent>
       </Dialog>
     </div>

@@ -1,6 +1,15 @@
 "use client";
 
-import { Radar, LogOut, User, UserRound, Zap, Check, X } from "lucide-react";
+import {
+  Radar,
+  LogOut,
+  User,
+  UserRound,
+  Zap,
+  Check,
+  X,
+  Clock,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -53,31 +62,41 @@ export function DashboardNavbar() {
     {
       name: "Free",
       price: isIndia ? "₹0" : "$0",
+      originalPrice: null,
       period: "forever",
       desc: "Perfect for getting started",
       popular: false,
+      discountTag: null,
       features: [
         { text: "12 hour cooldown", included: true },
         { text: "Only last 6 days tweets (no 24 hrs)", included: true },
         { text: "Only 2 free searches", included: true },
         { text: "5 leads max", included: true },
         { text: "AI reply suggestions", included: true },
-        { text: "Automated 2 Search quries as per your niche", included: true },
+        {
+          text: "Automated 2 search queries as per your niche",
+          included: true,
+        },
       ],
     },
     {
       name: "Pro",
-      price: isIndia ? "₹699" : "$9.99",
+      price: isIndia ? "₹299" : "$4.99",
+      originalPrice: isIndia ? "₹599" : "$9.99",
       period: "/ month",
       desc: "For serious freelancers and job seekers",
       popular: true,
+      discountTag: isIndia ? "57% OFF" : "50% OFF",
       features: [
         { text: "6 hour cooldown", included: true },
-        { text: "Get lastest tweets (24hr)", included: true },
+        { text: "Get latest tweets (24hr)", included: true },
         { text: "Unlimited Searches", included: true },
         { text: "Unlimited leads (as per result)", included: true },
-        { text: " AI replies suggestions ", included: true },
-        { text: "Automated 5 Search quries as per your niche", included: true },
+        { text: "AI reply suggestions", included: true },
+        {
+          text: "Automated 5 search queries as per your niche",
+          included: true,
+        },
         { text: "Get personalized leads via Email", included: true },
       ],
     },
@@ -227,8 +246,27 @@ export function DashboardNavbar() {
             </DialogDescription>
           </DialogHeader>
 
+          {/* Early Bird Banner */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 sm:mt-4"
+          >
+            <div className="flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 sm:py-3 rounded-xl border border-violet-500/40 bg-violet-500/10 backdrop-blur-sm">
+              <Zap size={14} className="text-violet-400 flex-shrink-0" />
+              <p className="text-xs sm:text-sm font-medium text-violet-300 text-center">
+                <span className="font-bold">Early Bird Deal</span>
+                {" — "}
+                locked in for life as long as you stay subscribed. Price goes up
+                once we hit capacity.
+              </p>
+              <Clock size={14} className="text-violet-400 flex-shrink-0" />
+            </div>
+          </motion.div>
+
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-4 sm:mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-4 sm:mt-6">
             {plans.map((plan, i) => (
               <motion.div
                 key={plan.name}
@@ -238,7 +276,7 @@ export function DashboardNavbar() {
                 whileHover={{ scale: 1.02, y: -5 }}
                 className={`glass-card p-4 sm:p-6 relative border rounded-lg transition-all duration-300 ${
                   plan.popular
-                    ? "border-white/30 bg-white/10 ring-2 ring-yellow-500/50"
+                    ? "border-white/30 bg-white/10 ring-2 ring-violet-500/50"
                     : "border-white/10 bg-white/5 hover:border-white/20"
                 }`}
               >
@@ -251,10 +289,17 @@ export function DashboardNavbar() {
                       type: "spring",
                       stiffness: 200,
                     }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 text-xs font-bold whitespace-nowrap"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-violet-500/20 border border-violet-500/50 text-violet-300 text-xs font-bold whitespace-nowrap"
                   >
                     Most Popular
                   </motion.span>
+                )}
+
+                {/* Discount badge */}
+                {plan.discountTag && (
+                  <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-violet-500/20 border border-violet-500/40 text-violet-300 text-xs font-bold tracking-wide">
+                    {plan.discountTag}
+                  </span>
                 )}
 
                 <motion.div
@@ -269,12 +314,24 @@ export function DashboardNavbar() {
                     {plan.desc}
                   </p>
                   <div className="mt-3 mb-4 sm:mt-4 sm:mb-6">
-                    <span className="text-2xl sm:text-3xl font-black text-white">
-                      {plan.price}
-                    </span>
-                    <span className="text-white/60 text-xs sm:text-sm ml-1">
-                      {plan.period}
-                    </span>
+                    {plan.originalPrice && (
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-white/80 text-sm sm:text-base font-bold line-through">
+                          {plan.originalPrice}
+                        </span>
+                        <span className="text-xs text-violet-400 font-semibold">
+                          Early Bird Price
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-end gap-1">
+                      <span className="text-2xl sm:text-3xl font-black text-white">
+                        {plan.price}
+                      </span>
+                      <span className="text-white/60 text-xs sm:text-sm ml-1 mb-0.5">
+                        {plan.period}
+                      </span>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -324,12 +381,17 @@ export function DashboardNavbar() {
                   transition={{ delay: i * 0.15 + 0.3, duration: 0.3 }}
                 >
                   {plan.popular ? (
-                    <Button
-                      onClick={() => handleRedicrectOfPayment()}
-                      className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-yellow-500 hover:bg-yellow-600 text-black shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40"
-                    >
-                      Get Started
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => handleRedicrectOfPayment()}
+                        className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
+                      >
+                        Claim Early Bird Deal →
+                      </Button>
+                      <p className="text-center text-xs text-white/40 mt-2">
+                        🔒 Locked in forever · Cancel anytime
+                      </p>
+                    </>
                   ) : (
                     <Button
                       onClick={() => setOpen(false)}
@@ -342,6 +404,11 @@ export function DashboardNavbar() {
               </motion.div>
             ))}
           </div>
+
+          <p className="text-center text-xs text-white/30 mt-3">
+            Early bird pricing is limited. Regular price resumes once we hit
+            capacity.
+          </p>
         </DialogContent>
       </Dialog>
     </>
