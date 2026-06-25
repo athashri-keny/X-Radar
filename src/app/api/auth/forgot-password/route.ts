@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   { $set: { verifycode: verifycode } }  
 );
 
-         SendForgotPasswordOTP(Email , Namee , verifycode )
+       await SendForgotPasswordOTP(Email , Namee , verifycode )
        
 
         return NextResponse.json({

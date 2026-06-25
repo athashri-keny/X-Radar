@@ -56,10 +56,9 @@ If you didn't request this, ignore this email — your password won't change.
 export async function SendForgotPasswordOTP(Email: string, Name: string, Otp: string) {
 
 
-
     try {
         await resend.emails.send({
-            from: "X-Radar <hello@xradar.in>",
+            from: `"X-Radar" <hello@xradar.in>`,
             to: Email,
             subject: `Your password reset code`,
             html: generateForgotPasswordHtml(Name, Otp),
