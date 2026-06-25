@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Radar,
-  LogOut,
-  User,
-  UserRound,
-  Zap,
-  Check,
-  X,
-  Clock,
-} from "lucide-react";
+import { Radar, LogOut, UserRound, Zap, Check, X, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -41,7 +32,7 @@ export function DashboardNavbar() {
 
   useEffect(() => {
     const detectCountry = async () => {
-      const res = await fetch("/api/detech-country"); // your API route reads the header
+      const res = await fetch("/api/detech-country");
       const data = await res.json();
       setIsIndia(data.isIndia);
     };
@@ -51,7 +42,6 @@ export function DashboardNavbar() {
   const handleRedicrectOfPayment = async () => {
     try {
       const res = await axios.post("/api/checkout");
-
       window.location.href = res.data.checkout_url;
     } catch (error) {
       console.log("Error while redirecting to payment page", error);
@@ -109,6 +99,7 @@ export function DashboardNavbar() {
 
   return (
     <>
+      {/* ───── Navbar ───── */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -135,11 +126,10 @@ export function DashboardNavbar() {
             </span>
           </motion.div>
 
-          {/* Right Section - Upgrade & User */}
+          {/* Right section */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Upgrade Button */}
-
-            {session?.user.plan == "free" ? (
+            {/* Upgrade button — only shown to free users */}
+            {session?.user.plan === "free" ? (
               <motion.div
                 initial={{ x: 16, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -158,14 +148,13 @@ export function DashboardNavbar() {
                     className="border border-white/30 hover:border-white/60 bg-white/5 hover:bg-white/10 text-white font-semibold gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all duration-300 text-xs sm:text-sm"
                   >
                     <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="hidden xs:inline">Upgrade</span>
-                    <span className="xs:hidden">Upgrade</span>
+                    Upgrade
                   </Button>
                 </motion.div>
               </motion.div>
             ) : null}
 
-            {/* User Avatar Dropdown */}
+            {/* Avatar dropdown */}
             <motion.div
               initial={{ x: 16, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -204,25 +193,11 @@ export function DashboardNavbar() {
 
                   <DropdownMenuSeparator className="bg-white/10" />
 
-                  <DropdownMenuItem
-                    className="gap-2 cursor-pointer 
-                    text-white/80
-                    hover:bg-white/10 focus:bg-white/10 focus:text-white
-                    transition-all duration-150
-                    hover:translate-x-1
-                    group"
-                  >
-                    <Link href={"/user-info"}>View Account</Link>
+                  <DropdownMenuItem className="gap-2 cursor-pointer text-white/80 hover:bg-white/10 focus:bg-white/10 focus:text-white transition-all duration-150 hover:translate-x-1 group">
+                    <Link href="/user-info">View Account</Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem
-                    className="gap-2 cursor-pointer 
-                    text-red-400
-                    hover:bg-red-500/10 focus:bg-red-500/10 focus:text-red-400
-                    transition-all duration-150
-                    hover:translate-x-1
-                    group"
-                  >
+                  <DropdownMenuItem className="gap-2 cursor-pointer text-red-400 hover:bg-red-500/10 focus:bg-red-500/10 focus:text-red-400 transition-all duration-150 hover:translate-x-1 group">
                     <LogOut className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
                     <button onClick={() => signOut()}>Logout</button>
                   </DropdownMenuItem>
@@ -233,40 +208,70 @@ export function DashboardNavbar() {
         </div>
       </motion.nav>
 
-      {/* Upgrade Dialog */}
+      {/* ───── Upgrade Dialog ───── */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl w-[95vw] sm:w-full border border-white/10 bg-black/80 backdrop-blur-xl p-4 sm:p-6 rounded-xl sm:rounded-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader className="space-y-1 sm:space-y-2">
+        {/*
+          FIX 1: [&::-webkit-scrollbar]:hidden  → hides scrollbar in Chrome/Safari
+                  Example: Chrome shows a scrollbar on the right when content overflows.
+                  This CSS targets that scrollbar element and sets display:none on it.
+
+          FIX 2: [scrollbar-width:none]          → hides scrollbar in Firefox
+                  Example: Firefox uses a different property called scrollbar-width.
+                  Setting it to "none" tells Firefox to not render any scrollbar at all.
+
+          FIX 3: max-h-[95vh] (was 90vh)         → gives 5% more room before overflow kicks in
+                  Example: on a 900px tall screen, 90vh = 810px, 95vh = 855px.
+                  That extra 45px is often enough to fit the content without any scroll.
+
+          FIX 4: p-4 sm:p-5 (was sm:p-6)         → less padding = less total height needed
+                  Example: p-6 = 24px padding on all 4 sides.
+                  p-5 = 20px. Saves 4px top + 4px bottom = 8px total height.
+        */}
+        <DialogContent className="max-w-3xl w-[95vw] sm:w-full border border-white/10 bg-black/80 backdrop-blur-xl p-4 sm:p-5 rounded-xl sm:rounded-2xl max-h-[95vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          {/*
+            space-y-0.5 (was sm:space-y-2)
+            Example: space-y-2 = 8px gap between title and description.
+            space-y-0.5 = 2px gap. Saves 6px of vertical space.
+          */}
+          <DialogHeader className="space-y-0.5">
             <DialogTitle className="text-lg sm:text-2xl font-bold text-white">
               Upgrade Your Plan
             </DialogTitle>
-            <DialogDescription className="text-xs sm:text-base text-white/60">
+            <DialogDescription className="text-xs sm:text-sm text-white/60">
               Choose the perfect plan for your needs. Start free, upgrade when
               ready.
             </DialogDescription>
           </DialogHeader>
 
-          {/* Early Bird Banner */}
+          {/*
+            mt-2 (was mt-3 sm:mt-4)
+            Example: mt-4 = 16px gap above the early bird banner.
+            mt-2 = 8px. Saves 8px.
+          */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="mt-3 sm:mt-4"
+            className="mt-2"
           >
-            <div className="flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 sm:py-3 rounded-xl border border-violet-500/40 bg-violet-500/10 backdrop-blur-sm">
-              <Zap size={14} className="text-violet-400 flex-shrink-0" />
-              <p className="text-xs sm:text-sm font-medium text-violet-300 text-center">
-                <span className="font-bold">Early Bird Deal</span>
-                {" — "}
+            <div className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-violet-500/40 bg-violet-500/10 backdrop-blur-sm">
+              <Zap size={13} className="text-violet-400 flex-shrink-0" />
+              <p className="text-xs font-medium text-violet-300 text-center">
+                <span className="font-bold">Early Bird Deal — </span>
                 locked in for life as long as you stay subscribed. Price goes up
                 once we hit capacity.
               </p>
-              <Clock size={14} className="text-violet-400 flex-shrink-0" />
+              <Clock size={13} className="text-violet-400 flex-shrink-0" />
             </div>
           </motion.div>
 
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-4 sm:mt-6">
+          {/*
+            gap-3 sm:gap-4 (was sm:gap-6) and mt-3 (was sm:mt-6)
+            Example: gap-6 = 24px between the two plan cards.
+            gap-4 = 16px. Saves 8px.
+            mt-6 = 24px above the grid. mt-3 = 12px. Saves 12px.
+          */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-3">
             {plans.map((plan, i) => (
               <motion.div
                 key={plan.name}
@@ -274,7 +279,7 @@ export function DashboardNavbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                className={`glass-card p-4 sm:p-6 relative border rounded-lg transition-all duration-300 ${
+                className={`glass-card p-4 sm:p-5 relative border rounded-lg transition-all duration-300 ${
                   plan.popular
                     ? "border-white/30 bg-white/10 ring-2 ring-violet-500/50"
                     : "border-white/10 bg-white/5 hover:border-white/20"
@@ -295,7 +300,6 @@ export function DashboardNavbar() {
                   </motion.span>
                 )}
 
-                {/* Discount badge */}
                 {plan.discountTag && (
                   <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-violet-500/20 border border-violet-500/40 text-violet-300 text-xs font-bold tracking-wide">
                     {plan.discountTag}
@@ -307,16 +311,21 @@ export function DashboardNavbar() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.15 + 0.1, duration: 0.4 }}
                 >
-                  <h3 className="text-base sm:text-xl font-bold text-white">
+                  <h3 className="text-base sm:text-lg font-bold text-white">
                     {plan.name}
                   </h3>
-                  <p className="text-white/60 text-xs sm:text-sm mt-0.5 sm:mt-1">
-                    {plan.desc}
-                  </p>
-                  <div className="mt-3 mb-4 sm:mt-4 sm:mb-6">
+                  <p className="text-white/60 text-xs mt-0.5">{plan.desc}</p>
+
+                  {/*
+                    mt-2 mb-3 (was mt-4 mb-6)
+                    Example: the price "$4.99 / month" block used to have
+                    16px above it and 24px below it.
+                    Now 8px above and 12px below. Saves 20px total.
+                  */}
+                  <div className="mt-2 mb-3">
                     {plan.originalPrice && (
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-white/80 text-sm sm:text-base font-bold line-through">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-white/80 text-sm font-bold line-through">
                           {plan.originalPrice}
                         </span>
                         <span className="text-xs text-violet-400 font-semibold">
@@ -328,15 +337,22 @@ export function DashboardNavbar() {
                       <span className="text-2xl sm:text-3xl font-black text-white">
                         {plan.price}
                       </span>
-                      <span className="text-white/60 text-xs sm:text-sm ml-1 mb-0.5">
+                      <span className="text-white/60 text-xs ml-1 mb-0.5">
                         {plan.period}
                       </span>
                     </div>
                   </div>
                 </motion.div>
 
+                {/*
+                  space-y-1 mb-3 (was space-y-2 mb-6)
+                  Example: Pro plan has 7 features.
+                  space-y-2 = 8px gap between each → 7 gaps × 8px = 56px total spacing.
+                  space-y-1 = 4px gap → 7 gaps × 4px = 28px total spacing.
+                  Saves 28px just from the feature list alone!
+                */}
                 <motion.ul
-                  className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6"
+                  className="space-y-1 mb-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.15 + 0.2, duration: 0.4 }}
@@ -344,7 +360,7 @@ export function DashboardNavbar() {
                   {plan.features.map((f, idx) => (
                     <motion.li
                       key={f.text}
-                      className="flex items-start gap-2 text-xs sm:text-sm"
+                      className="flex items-start gap-2 text-xs"
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.15 + 0.2 + idx * 0.05 }}
@@ -356,11 +372,11 @@ export function DashboardNavbar() {
                           transition={{ type: "spring", stiffness: 200 }}
                           className="mt-0.5 flex-shrink-0"
                         >
-                          <Check size={13} className="text-green-400" />
+                          <Check size={12} className="text-green-400" />
                         </motion.div>
                       ) : (
                         <X
-                          size={13}
+                          size={12}
                           className="text-white/20 flex-shrink-0 mt-0.5"
                         />
                       )}
@@ -384,18 +400,18 @@ export function DashboardNavbar() {
                     <>
                       <Button
                         onClick={() => handleRedicrectOfPayment()}
-                        className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
+                        className="w-full py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40"
                       >
                         Claim Early Bird Deal →
                       </Button>
-                      <p className="text-center text-xs text-white/40 mt-2">
+                      <p className="text-center text-xs text-white/40 mt-1.5">
                         🔒 Locked in forever · Cancel anytime
                       </p>
                     </>
                   ) : (
                     <Button
                       onClick={() => setOpen(false)}
-                      className="w-full py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 border border-white/20 bg-white/5 hover:bg-white/10 text-white hover:border-white/40"
+                      className="w-full py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 border border-white/20 bg-white/5 hover:bg-white/10 text-white hover:border-white/40"
                     >
                       Start Free
                     </Button>
@@ -405,7 +421,8 @@ export function DashboardNavbar() {
             ))}
           </div>
 
-          <p className="text-center text-xs text-white/30 mt-3">
+          {/* mt-2 (was mt-3) — saves 4px at the very bottom */}
+          <p className="text-center text-xs text-white/30 mt-2">
             Early bird pricing is limited. Regular price resumes once we hit
             capacity.
           </p>

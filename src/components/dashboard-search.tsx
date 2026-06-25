@@ -26,14 +26,17 @@ const SubNiches: Record<string, string[]> = {
     "Django",
     "Laravel",
     "Flutter",
+    "Mern Stack",
+    "Python",
+
     "Full Stack",
   ],
-  VideoEditor: ["YouTube", "Reels", "Shorts", "Podcast", "Motion Graphics"],
-  "Graphic Designer": [
-    "Logo Designer",
-    "Ad Creative Designer",
-    "Social Media Designer",
-  ],
+  VideoEditor: ["YouTube", "Reels", "Shorts"],
+  // "Graphic Designer": [
+  //   "Logo Designer",
+  //   "Ad Creative Designer",
+  //   "Social Media Designer",
+  // ],
 };
 
 const Niches = Object.keys(SubNiches);
@@ -330,7 +333,14 @@ export function DashboardSearch({
           animate={{ opacity: 1 }}
           className="text-xs sm:text-sm text-yellow-500/80 font-medium"
         >
-          ⏳ Next search available in {countdown}
+          ⏳ Next search available in {countdown} <br></br>
+          Thats sit, These are the latest Tweets in your niche that found from
+          last 48 hours , we will mail you once we found another leads in your{" "}
+          <br></br>
+          niche. Keep Checking the your Email for latest leads <br></br>
+          If you want latest leads in your niche then Uprade to pro or we
+          recommend to wait 3-4 hours before searches again! Thanks! The radar
+          is on
         </motion.p>
       )}
 

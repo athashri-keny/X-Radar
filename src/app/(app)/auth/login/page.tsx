@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Radar, ArrowRight } from 'lucide-react'
+import { Radar, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -17,6 +17,7 @@ import SignSchema from '@/Schemas/SignInSchema'
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error , seterror] = useState('')
   const [loading , setloading ] = useState(false)
   const router = useRouter()
@@ -310,16 +311,32 @@ function RadarCanvas() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Password
               </label>
+              <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 focus:border-white/30 transition"
+                className="w-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 rounded-lg py-2 px-4 pr-11 focus:border-white/30 transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-white transition"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </motion.div>
+
+            <motion.div variants={itemVariants} className="flex justify-end">
+              <Link href="/auth/forgot-password" className="text-sm text-gray-400 hover:text-white transition">
+                Forgot Password?
+              </Link>
             </motion.div>
- 
+
             {error && (
               <motion.p
                 initial={{ opacity: 0, y: -6 }}
