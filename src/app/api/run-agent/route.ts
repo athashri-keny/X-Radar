@@ -10,6 +10,8 @@ import { generateQueries } from "@/helpers/NicheQuries";
 import axios from "axios";
 import { UserModel } from "@/models/user";
 
+
+
 // THIS ROUTE GI  VES SEARCHID TO FRONTEND FOR POLLLING
 
 export async function POST(request: NextRequest) {
@@ -63,11 +65,14 @@ export async function POST(request: NextRequest) {
       }
     }
     // for Free user hitting the paywall after first run
-    if (totalRuns >= 2 && session.user.plan === "free") {
+
+      // console.log("Session " , session.user)
+
+    if (totalRuns >= 5 && session.user.plan === "free") {
       return NextResponse.json(
         {
           message:
-            "You've used all 2 free searches. Upgrade to Pro to keep using X-Radar",
+            "You've used all 3 free searches. Upgrade to Pro to keep using X-Radar",
         },
         { status: 403 },
       );
@@ -76,32 +81,32 @@ export async function POST(request: NextRequest) {
     // for paid user hiting the cooldown timer
     // getting the last run of the user and converting it to normal time
 
-    if (lastRun?.LastRun) {
-      const hoursSinceLastRun =
-        (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60);
+    // if (lastRun?.LastRun) {
+    //   const hoursSinceLastRun =
+    //     (Date.now() - new Date(lastRun.LastRun).getTime()) / (1000 * 60 * 60);
 
-      // Pro user — 6 hour cooldown
-      if (hoursSinceLastRun < 6 && session.user.plan === "pro") {
-        const hoursLeft = Math.ceil(6 - hoursSinceLastRun);
-        return NextResponse.json(
-          {
-            message: `Error! Cooldown Active. T  ry Again in ${hoursLeft} hours`,
-          },
-          { status: 429 },
-        );
-      }
+    //   // Pro user — 6 hour cooldown
+    //   if (hoursSinceLastRun < 6 && session.user.plan === "pro") {
+    //     const hoursLeft = Math.ceil(6 - hoursSinceLastRun);
+    //     return NextResponse.json(
+    //       {
+    //         message: `Error! Cooldown Active. T  ry Again in ${hoursLeft} hours`,
+    //       },
+    //       { status: 429 },
+    //     );
+    //   }
 
-      // Free user — 24 hour cooldown
-      if (hoursSinceLastRun < 12 && session.user.plan === "free") {
-        const hoursLeft = Math.ceil(12 - hoursSinceLastRun);
-        return NextResponse.json(
-          {
-            message: `Error! Cooldown Active. Try Again in ${hoursLeft} hours`,
-          },
-          { status: 429 },
-        );
-      }
-    }
+    //   // Free user — 24 hour cooldown
+    //   if (hoursSinceLastRun < 12 && session.user.plan === "free") {
+    //     const hoursLeft = Math.ceil(12 - hoursSinceLastRun);
+    //     return NextResponse.json(
+    //       {
+    //         message: `Error! Cooldown Active. Try Again in ${hoursLeft} hours`,
+    //       },
+    //       { status: 429 },
+    //     );
+    //   }
+    // }
 
     // Creating a new Search Model with status 'pending' for (fire and poll method)
     const NewSearchRunModel = new SearchRunModel({

@@ -14,6 +14,8 @@ import PricingSectionDialog from "@/components/pricingSectionDialog";
 import { LeadPipelineLoader } from "@/components/SpinnerLoader";
 import PaywallOverlay from "@/components/pricingsectionpaywall";
 import UpgradePopover from "@/components/updrade-popover";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@base-ui/react";
 
 interface leads {
   _id: string;
@@ -32,22 +34,33 @@ interface leadsHistory {
 export default function Dashboard() {
   const { data: session, status } = useSession();
 
-  // console.log("Session " , session)
-
-  // console.log("stats" , status)
-
   const [isScanning, setIsScanning] = useState(false);
   const [leadsFoundNumber, setLeadsFoundNumber] = useState(0);
   const [cooldownMessage, setcooldownmessage] = useState("");
-  const [cooldownEndTime, setCooldownEndTime] = useState(0);
   const [leads, setleads] = useState<leads[]>([]);
   const [leadsHistory, setleadsHistory] = useState<leadsHistory[]>([]);
   const [message, setmesssage] = useState("");
   const [apifyStatus, setApifyStatus] = useState("");
   const [open, setOpen] = useState(false);
+  const [pricingsectionDialogOpen, SetPricingSectionDialogCLose] =
+    useState(false);
+
+      const [isCooldown, setIsCooldown] = useState(false);
+        const [localScanning, setLocalScanning] = useState(false);
+        const [hasRun , sethasRun] = useState(false)
+
+
 
   const TWEETYFOURHOURS_MS = 12 * 60 * 60 * 1000; // 24 hours
   const SIXHOURCOOLDOWN = 6 * 60 * 60 * 1000; // 6 hours
+
+  // for bluring the leads
+  const isFree = session?.user?.plan === "free";
+  const FREE_LIMIT = 5;
+
+  const visibleLeads = isFree ? leads.slice(0, FREE_LIMIT) : leads; // index 0 , 1 , 2 , 3 , 4 , 5
+  const lockedLeads = isFree ? leads.slice(FREE_LIMIT) : []; // and then 5 , 6 , 7, ..... etc
+  const lockCount = lockedLeads.length;
 
   const endTime =
     Date.now() +
@@ -57,6 +70,9 @@ export default function Dashboard() {
     setIsScanning(true);
     setLeadsFoundNumber(0);
     setcooldownmessage("");
+    setLocalScanning(true)
+    setIsCooldown(true)
+    sethasRun(true)
 
     // console.log("From handle search = " , keyword , selectedDays)
 
@@ -85,11 +101,12 @@ export default function Dashboard() {
 
           if (data.status === "done") {
             setIsScanning(false); // ← only stops here when actually done
+            setLocalScanning(false)
+            setIsCooldown(false)
 
             if (data.leads.length > 0) {
               setLeadsFoundNumber(data.leads.length);
               setleads(data.leads || []);
-              setCooldownEndTime(endTime);
               localStorage.setItem("CooldownEndTime", JSON.stringify(endTime));
             } else {
               console.log("No current lastest leads in your niche");
@@ -103,6 +120,8 @@ export default function Dashboard() {
 
           if (data.status === "failed") {
             setIsScanning(false);
+             setLocalScanning(false)
+            setIsCooldown(false)
             return;
           }
 
@@ -111,6 +130,7 @@ export default function Dashboard() {
         } catch (error) {
           console.log("Poll error", error);
           setIsScanning(false);
+
         }
       };
 
@@ -136,12 +156,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const saved = localStorage.getItem("CooldownEndTime");
-    if (saved) {
-      setCooldownEndTime(Number(saved));
-      // console.log('Cooldown setted succcessfully')
-
-      // if the search has uprade in it then upddate the token from free to paid
-    }
+   
     const fetchLeadsFrombackend = async () => {
       try {
         const res = await axios.get("/api/get-recent-leads");
@@ -151,7 +166,6 @@ export default function Dashboard() {
         setleadsHistory(res.data.searchruns ?? []);
 
         if (res.data.lastSearchAt === null) {
-          setCooldownEndTime(0);
           localStorage.removeItem("CooldownEndTime");
         }
 
@@ -179,7 +193,10 @@ export default function Dashboard() {
             onSearch={handleSearch}
             isScanning={isScanning}
             leadsFound={leadsFoundNumber}
-            cooldownEndTime={cooldownEndTime}
+            cooldownEndTime={0}
+            LocalScanning={localScanning}
+            isCooldown={isCooldown}
+            hasRun={hasRun}
           />
 
           {cooldownMessage && (
@@ -211,8 +228,7 @@ export default function Dashboard() {
                 </div>
               ) : leadsFoundNumber > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {session?.user?.plan === "free" ? <UpgradePopover /> : null}
-                  {leads.map((tweet: any) => (
+                  {visibleLeads.map((tweet: any) => (
                     <LeadCard
                       key={tweet.tweetId || tweet._id}
                       score={tweet.score || tweet.Score}
@@ -223,7 +239,59 @@ export default function Dashboard() {
                       tweetUrl={tweet.tweetUrl || tweet.Tweeturl}
                     />
                   ))}
+                  {/* locked leads section - only renders when free user has more than 5 leads */}
+                  {lockCount > 0 && (
+                    <div className="relative">
+                      {/* real lead cards blurred behind the overlay - shows max 2 cards */}
+                      <div
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                        style={{
+                          filter: "blur(6px)",
+                          pointerEvents: "none",
+                          userSelect: "none",
+                        }}
+                      >
+                        {lockedLeads.map((tweet: any) => (
+                          <LeadCard
+                            key={tweet.tweetId || tweet._id}
+                            score={tweet.score || tweet.Score}
+                            suggestReplyAi={
+                              tweet.suggestedReply || tweet.suggestedReply
+                            }
+                            tweet={tweet.tweetText || tweet.TweetText}
+                            tweetUrl={tweet.tweetUrl || tweet.Tweeturl}
+                          />
+                        ))}
+                      </div>
+
+                      {/* overlay on top of blurred cards */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="glass-effect border border-white/20 rounded-xl px-8 py-6 flex flex-col items-center gap-3 text-center">
+                          <p className="text-white font-bold text-lg">
+                            🔒 {lockCount} more leads found
+                          </p>
+                          <p className="text-gray-400 text-sm">
+                            Upgrade to Pro to unlock all leads + AI replies
+                          </p>
+
+                          <Button
+                            onClick={() => SetPricingSectionDialogCLose(true)}
+                            className="w-full py-2 px-6 bg-white text-black rounded-lg text-sm font-medium hover:bg-white/90 transition text-center"
+                          >
+                            Unlock all leads →
+                          </Button>
+                          <PricingSectionDialog
+                            isopen={pricingsectionDialogOpen}
+                            onClose={() => SetPricingSectionDialogCLose(false)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
+               
+
               ) : message ? (
                 <div className="flex justify-center py-16">
                   <div className="relative flex items-start gap-3 bg-red-950/40 border border-red-500/50 text-red-300 rounded-xl px-5 py-4 max-w-md w-full shadow-lg shadow-red-900/20 animate-in fade-in slide-in-from-bottom-3 duration-500">
@@ -255,7 +323,6 @@ export default function Dashboard() {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <SearchHistorySidebar
-                cooldownEndTime={cooldownEndTime}
                 searches={leadsHistory.map((item) => ({
                   id: item._id,
                   keyword: item.keywords,

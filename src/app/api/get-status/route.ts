@@ -220,6 +220,7 @@ Write a reply for HIRING tweets (score 7+) that:
 FINAL RULES
 ═══════════════════════════════════════
 STRICT RULE: Call only ONE tool at a time. Wait for the result before calling the next tool.
+- IMPORTANT: When returning the scored leads array, always sort them in DESCENDING order by score — highest scored lead first, lowest last. Never return leads in the order they were input.
 - Process ALL tweets before calling any tool
 - DO NOT INCLUDE SCAM , OR SELF_PROMO TWEETS IN THE OUTPUT ONLY MENTION THOSE WHO ARE CLASSIFIED AS HIRING_TWEETS
 
@@ -316,13 +317,13 @@ STRICT RULE: Call only ONE tool at a time. Wait for the result before calling th
       });
 
       await client.publishJSON({
-        url: "https://xradar.in/api/notify-cooldown",
+        url: "https://xradar.in/api/automated-search-for-users",
         body: {
           userId: session.user._id,
-          Email: session.user.email,
-          Name: session.user.name,
+          // Email: session.user.email,
+          // Name: session.user.name,
         },
-        delay: session.user.plan === "pro" ? 21600 : 43200,
+        delay: 21600,
       });
 
       return NextResponse.json(
@@ -360,13 +361,13 @@ STRICT RULE: Call only ONE tool at a time. Wait for the result before calling th
     });
 
     await client.publishJSON({
-      url: "https://xradar.in/api/notify-cooldown",
+     url: "https://xradar.in/api/automated-search-for-users",
       body: {
         userId: session.user._id,
-        Email: session.user.email,
-        Name: session.user.name,
+        // Email: session.user.email,
+        // Name: session.user.name,
       },
-      delay: session.user.plan === "pro" ? 21600 : 43200,
+      delay: 21600
     });
 
     return NextResponse.json({ status: "done", leads: leads }, { status: 200 });

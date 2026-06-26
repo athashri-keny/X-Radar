@@ -8,6 +8,7 @@ import { AgentBuilder } from "@/agents/TweetClassfierAgent";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import LeadsModel from "@/models/leads";
 import { SendEmailAboutNewLeads } from "@/helpers/SendEmailAboutNewLeads";
+import { Client } from "@upstash/qstash";
 
 // this where the qstash cron job will hit
 // find the user first
@@ -31,9 +32,12 @@ export async function POST(req: NextRequest) {
 
     await DBConnect();
 
+    const client = new Client({ token: process.env.QSTASH_TOKEN });
+    
+
     const { userId } = await req.json();
 
-    console.log("UserId" , userId)
+    // console.log("UserId" , userId)
 
     if (!userId) {
        return NextResponse.json(
@@ -47,6 +51,9 @@ export async function POST(req: NextRequest) {
     const LastRUnOfTheUser = await SearchRunModel.findOne({UserId: userId}).sort({ createdAt: -1 }) // getting the last run done by the user
 
     const user = await UserModel.findById(userId)
+    
+    const Name = user?.Name
+ 
 
     const keywords = LastRUnOfTheUser.keywords
     console.log("Keywords for the next automated search" , keywords)
@@ -98,7 +105,7 @@ const tweets: Tweet[] = res.data.filter(
       (raw: any) => raw.type === "tweet" && raw.id !== -1,
     );
 
-   console.log("Tweets" , tweets)
+  //  console.log("Tweets" , tweets)
 
 
     // All tweets
@@ -283,11 +290,19 @@ const tweets: Tweet[] = res.data.filter(
       });
     }
 
-    console.log("New leads " , newLeads)
+    // console.log("New leads " , newLeads)
 
     // sending the nwe leads via email
-  await SendEmailAboutNewLeads(newLeads , user?.Email || "")
+  await SendEmailAboutNewLeads(newLeads , user?.Email || "" , Name || "")
   
+  // triggering the timer again
+   await client.publishJSON({
+     url: "https://xradar.in/api/automated-search-for-users",
+      body: {
+        userId: user?._id,
+      },
+      delay: 21600
+    });
 
      return NextResponse.json(
             { status: "done" , message: "Successfully runned the automated Search and send the leads to the user sucesfully"},

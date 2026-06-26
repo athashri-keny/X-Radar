@@ -26,9 +26,7 @@ const SubNiches: Record<string, string[]> = {
     "Django",
     "Laravel",
     "Flutter",
-    "Mern Stack",
     "Python",
-
     "Full Stack",
   ],
   VideoEditor: ["YouTube", "Reels", "Shorts"],
@@ -46,13 +44,19 @@ interface DashboardSearchProps {
   isScanning?: boolean;
   leadsFound?: number;
   cooldownEndTime?: number;
+  isCooldown: boolean,
+  LocalScanning: boolean,
+  hasRun: boolean
 }
 
 export function DashboardSearch({
   onSearch,
-  isScanning = false,
+  isScanning,
   leadsFound = 0,
-  cooldownEndTime = 0,
+  cooldownEndTime,
+  isCooldown,
+  LocalScanning,
+  hasRun
 }: DashboardSearchProps) {
   const { data: session } = useSession();
 
@@ -62,9 +66,8 @@ export function DashboardSearch({
 
   const [stack, setStack] = useState("");
   const [selectedDays, setSelectedDays] = useState("");
-  const [localScanning, setLocalScanning] = useState(false);
-  const [countdown, setCountdown] = useState("");
-  const [isCooldown, setIsCooldown] = useState(false);
+  // const [countdown, setCountdown] = useState("");
+
 
   // put this above the component or in a separate file
   const SUBTITLES = [
@@ -74,33 +77,8 @@ export function DashboardSearch({
   ];
 
   // for updating the countdown
-  useEffect(() => {
-    if (cooldownEndTime === 0) {
-      setCountdown("");
-      setIsCooldown(false);
-      return;
-    }
+ 
 
-    const updateCountdown = () => {
-      const now = Date.now();
-      const remaining = Math.max(0, cooldownEndTime - now);
-      if (remaining === 0) {
-        setCountdown("");
-        setIsCooldown(false);
-      } else {
-        setIsCooldown(true);
-        const hours = Math.floor(remaining / 3600000);
-        const minutes = Math.floor((remaining % 3600000) / 60000);
-        const seconds = Math.floor((remaining % 60000) / 1000);
-        setCountdown(
-          `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`,
-        );
-      }
-    };
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [cooldownEndTime]);
 
   const handleNicheSelect = (niche: string) => {
     setSelectedMain(niche);
@@ -110,15 +88,13 @@ export function DashboardSearch({
   const searchQuery = `${stack} `.trim();
 
   const handleSearch = async () => {
-    console.log("Full query before tool call:", searchQuery);
-    if (!searchQuery.trim()) return;
-    setLocalScanning(true);
-    try {
-      await onSearch(searchQuery, selectedDays);
-    } catch {
-      console.log("Error");
-    }
-  };
+  if (!searchQuery.trim()) return;
+  try {
+    await onSearch(searchQuery, selectedDays);
+  } catch {
+    console.log("Error");
+  }
+};
 
   // console.log("seleccted days " , selectedDays)
 
@@ -135,7 +111,7 @@ export function DashboardSearch({
           type="single"
           value={stack}
           onValueChange={(val) => setStack(val)}
-          disabled={localScanning || isCooldown}
+          disabled={LocalScanning || isCooldown}
           className="flex flex-wrap gap-1.5 sm:gap-2 justify-start"
         >
           {options.map((item) => (
@@ -195,7 +171,7 @@ export function DashboardSearch({
             <Combobox items={Niches}>
               <ComboboxInput
                 placeholder="e.g. Developer, VideoEditor..."
-                disabled={localScanning || isCooldown}
+                disabled={LocalScanning || isCooldown}
                 readOnly
               />
               <ComboboxContent className="bg-black">
@@ -234,7 +210,7 @@ export function DashboardSearch({
                     setSelectedDays(val);
                   }
                 }}
-                disabled={localScanning || isCooldown}
+                disabled={LocalScanning || isCooldown}
                 className="flex flex-wrap gap-1.5 sm:gap-2 justify-start"
               >
                 <div className="relative group">
@@ -290,10 +266,10 @@ export function DashboardSearch({
         {/* Hunt Leads button */}
         <Button
           onClick={handleSearch}
-          disabled={localScanning || isCooldown || !canSearch}
+          disabled={LocalScanning || isCooldown || !canSearch}
           className="w-full md:w-auto px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-6 bg-white text-black hover:bg-gray-100 disabled:bg-gray-700 disabled:text-gray-500 font-semibold rounded-lg flex items-center justify-center md:justify-start gap-2 text-sm sm:text-base transition"
         >
-          {localScanning ? (
+          {LocalScanning ? (
             <>
               <motion.div
                 animate={{ rotate: 360 }}
@@ -312,40 +288,25 @@ export function DashboardSearch({
         </Button>
       </motion.div>
 
-      {/* Scanning progress bar */}
-      {/* {localScanning && (
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-          <p className="text-xs sm:text-sm text-gray-400">🔍 Scanning Twitter for hiring leads...</p>
-          <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-            <motion.div
-              animate={{ width: ['0%', '100%'] }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-              className="h-full bg-linear-to-r from-white via-gray-400 to-white"
-            />
-          </div>
-        </motion.div>
-      )} */}
-
       {/* Cooldown timer */}
-      {isCooldown && countdown && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-xs sm:text-sm text-yellow-500/80 font-medium"
-        >
-          ⏳ Next search available in {countdown} <br></br>
-          Thats sit, These are the latest Tweets in your niche that found from
-          last 48 hours , we will mail you once we found another leads in your{" "}
-          <br></br>
-          niche. Keep Checking the your Email for latest leads <br></br>
-          If you want latest leads in your niche then Uprade to pro or we
-          recommend to wait 3-4 hours before searches again! Thanks! The radar
-          is on
-        </motion.p>
-      )}
+
+      {!isCooldown && !LocalScanning && hasRun && (
+ <motion.p
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  className="text-xs sm:text-sm text-white/90 font-bold mt-2 leading-relaxed"
+>
+  That&apos;s it! These are the latest tweets in your niche from the last 48 hours.
+  We&apos;ll email you once we find new leads. <br />
+  You can search again now, but we recommend waiting 3–4 hours to get the freshest leads. <br />
+  <span className="inline-flex items-center gap-1.5 text-white/60 text-xs mt-1">
+  </span>
+</motion.p>
+)}
+    
 
       {/* Leads found */}
-      {leadsFound > 0 && !localScanning && (
+      {leadsFound > 0 && !LocalScanning && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

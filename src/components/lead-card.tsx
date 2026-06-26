@@ -41,6 +41,8 @@ export function LeadCard({
   }
 
   return (
+
+    
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -75,6 +77,7 @@ export function LeadCard({
           </div>
         </motion.div>
       )}
+
 
       {/* Top section: Score + small subtle view tweet link */}
       <div className="flex items-start justify-between">
