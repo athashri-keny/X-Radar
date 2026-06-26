@@ -38,11 +38,11 @@ const LeadsSchema = new Schema<Lead>({
       required: false,
       maxLength: 5000
     },
-     createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 60 * 60 * 12, // 24 hours
-  },
+    createdAt: {
+  type: Date,
+  default: Date.now,
+ expires: 60 * 60 * 24, // 24 hours ✅ (was 60 * 60 * 12)
+},
 } , {
    
 })
