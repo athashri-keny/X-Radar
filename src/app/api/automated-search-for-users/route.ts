@@ -301,7 +301,7 @@ const tweets: Tweet[] = res.data.filter(
       body: {
         userId: user?._id,
       },
-      delay: 21600
+      delay: 43200 // 12h later
     });
 
      return NextResponse.json(
