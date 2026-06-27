@@ -51,8 +51,22 @@ export async function POST(req: NextRequest) {
     const LastRUnOfTheUser = await SearchRunModel.findOne({UserId: userId}).sort({ createdAt: -1 }) // getting the last run done by the user
 
     const user = await UserModel.findById(userId)
+
+
+    if (!user) {
+      return NextResponse.json({
+        message: "Error user not found"
+      } , {status: 404})
+    }
     
     const Name = user?.Name
+
+
+if (user.plan === 'free' && user.AutoScanUsed >= 2) {
+  return NextResponse.json({
+    message: "You have exhausted your free autoscans. Upgrade to Pro to continue."
+  }, { status: 403 })
+}
  
 
     const keywords = LastRUnOfTheUser.keywords
@@ -81,7 +95,7 @@ export async function POST(req: NextRequest) {
     // generating quries 
     const searchTermss = generateQueries(keywords).map((singleQurey: any) => {
    return `${singleQurey} within_time:24h -filter:retweets lang:en -filter:replies`;
-    }).slice(0 , 3)
+    }).slice(0 , 5)
    
 
     // running the apify with the genereated quries 
@@ -294,6 +308,9 @@ const tweets: Tweet[] = res.data.filter(
 
     // sending the nwe leads via email
   await SendEmailAboutNewLeads(newLeads , user?.Email || "" , Name || "")
+
+   user.AutoScanUsed += 1
+      await user.save()
   
   // triggering the timer again
    await client.publishJSON({

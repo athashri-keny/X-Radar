@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import { Client } from "@upstash/qstash";
 import { AgentBuilder } from "@/agents/TweetClassfierAgent";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { UserModel } from "@/models/user";
 const client = new Client({ token: process.env.QSTASH_TOKEN });
 
 // tweet type
@@ -30,6 +31,8 @@ export async function GET(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json({ message: "Please login!" }, { status: 401 });
     }
+
+
 
     // getting the search from the url
     const searchRunId = request.nextUrl.searchParams.get("searchRunId");
@@ -316,6 +319,11 @@ STRICT RULE: Call only ONE tool at a time. Wait for the result before calling th
         seenTweetIds: leads.map((tweet: any) => tweet?.tweetId),
       });
 
+       const userModel = await UserModel.findById(session.user._id)
+    if (!userModel) return NextResponse.json({ error: "User not found" }, { status: 404 })
+    userModel.manualSearchesUsed += 1 
+    await userModel.save()
+
       await client.publishJSON({
         url: "https://xradar.in/api/automated-search-for-users",
         body: {
@@ -353,6 +361,14 @@ STRICT RULE: Call only ONE tool at a time. Wait for the result before calling th
 
     SearchRun.status = "done";
     await SearchRun.save();
+
+
+    // updating the user model that he used one of its searches out of 3
+    const userModel = await UserModel.findById(session.user._id)
+    if (!userModel) return NextResponse.json({ error: "User not found" }, { status: 404 })
+    userModel.manualSearchesUsed += 1 
+    await userModel.save()
+
 
     // updating the search run model
     await SearchRunModel.findByIdAndUpdate(searchRunId, {

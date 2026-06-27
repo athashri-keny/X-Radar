@@ -16,25 +16,19 @@ import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import { useSession } from "next-auth/react";
 import PricingSectionDialog from "./pricingSectionDialog";
 import PaywallOverlay from "./pricingsectionpaywall";
+import SearchStatsBar from "./SearchBar";
+import axios from "axios";
 
 const SubNiches: Record<string, string[]> = {
   Developer: [
     "React",
-    "Next.js",
-    "Vue",
-    "Node.js",
-    "Django",
-    "Laravel",
-    "Flutter",
-    "Python",
-    "Full Stack",
+  "Next.js",
+  "Node.js",
+  "Flutter",
+  "Python",
+  "Full Stack",
   ],
   VideoEditor: ["YouTube", "Reels", "Shorts"],
-  // "Graphic Designer": [
-  //   "Logo Designer",
-  //   "Ad Creative Designer",
-  //   "Social Media Designer",
-  // ],
 };
 
 const Niches = Object.keys(SubNiches);
@@ -63,10 +57,16 @@ export function DashboardSearch({
   const [selectedMain, setSelectedMain] = useState("");
 
   const [open, setOpen] = useState(false);
+   const [searchStats, setSearchStats] = useState({ 
+  manualSearchesUsed: 0, 
+  autoScansUsed: 0 
+})
 
   const [stack, setStack] = useState("");
   const [selectedDays, setSelectedDays] = useState("");
   // const [countdown, setCountdown] = useState("");
+  // Temporarily add this where you render SearchStatsBar
+console.log("Passing to SearchStatsBar:", { searchStats })
 
 
   // put this above the component or in a separate file
@@ -78,6 +78,14 @@ export function DashboardSearch({
 
   // for updating the countdown
  
+  useEffect(() => {
+
+   const fetchStatus = async() => {
+     const res = await axios.get('/api/search-status')
+     setSearchStats(res.data)
+   }
+  fetchStatus()
+  } , [leadsFound])
 
 
   const handleNicheSelect = (niche: string) => {
@@ -95,6 +103,8 @@ export function DashboardSearch({
     console.log("Error");
   }
 };
+
+
 
   // console.log("seleccted days " , selectedDays)
 
@@ -145,6 +155,11 @@ export function DashboardSearch({
           </motion.p>
         </div>
       )}
+
+        <SearchStatsBar 
+        autoScansUsed={searchStats.autoScansUsed}
+        manualSearchesUsed={searchStats.manualSearchesUsed}
+        />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -204,11 +219,7 @@ export function DashboardSearch({
                 type="single"
                 value={selectedDays}
                 onValueChange={(val) => {
-                  if (val === "24" && session?.user.plan === "free") {
-                    setOpen(true);
-                  } else {
-                    setSelectedDays(val);
-                  }
+                setSelectedDays(val)
                 }}
                 disabled={LocalScanning || isCooldown}
                 className="flex flex-wrap gap-1.5 sm:gap-2 justify-start"
@@ -216,25 +227,12 @@ export function DashboardSearch({
                 <div className="relative group">
                   <ToggleGroupItem
                     value="24"
-                    className="px-3 sm:px-4 py-1.5 rounded-full border border-white/10 text-xs sm:text-sm 
+                    className="px-3 sm:px-4 py-1.5 rounded-full border
     data-[state=on]:bg-white data-[state=on]:text-black 
-    text-gray-400 hover:text-white hover:border-white/30 transition
-    aria-disabled:opacity-40 aria-disabled"
-                    aria-disabled={session?.user.plan === "free"}
+    text-gray-400 hover:text-white hover:border-white/30 transition"
+                    
                   >
                     Last 24 hours
-                    {session?.user.plan === "free" && (
-                      <span className="ml-1.5 text-[10px]">🔒</span>
-                    )}
-                  </ToggleGroupItem>
-                  <ToggleGroupItem
-                    value="48"
-                    className="px-3 sm:px-4 py-1.5 rounded-full border border-white/10 text-xs sm:text-sm 
-    data-[state=on]:bg-white data-[state=on]:text-black 
-    text-gray-400 hover:text-white hover:border-white/30 transition
-"
-                  >
-                    Last 48 hours
                   </ToggleGroupItem>
                   <PricingSectionDialog
                     isopen={open}

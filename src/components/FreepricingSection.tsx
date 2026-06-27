@@ -5,16 +5,18 @@ import { motion } from "framer-motion";
 import { Check, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
+
 const freeFeatures = [
-  { text: "12-hour cooldown", upgradesTo: "6-hour cooldown" },
-  { text: "Tweets from last 6-days", upgradesTo: "Within 24 hrs" },
-  { text: "5 leads max per search", upgradesTo: "Unlimited leads" },
+  { text: "3 manual searches lifetime", upgradesTo: "Unlimited manual searches" },
+  { text: "2 autoscans lifetime", upgradesTo: "Autoscan every 12hrs forever" },
+  { text: "24hr fresh leads", upgradesTo: null },
+  { text: "Top 5 leads shown, rest blurred", upgradesTo: "All leads visible, no blur" },
   { text: "AI reply suggestions", upgradesTo: null },
-  { text: "2 search queries", upgradesTo: "5 smart queries" },
+  { text: "Email teaser — 5 leads + locked count", upgradesTo: "Full leads + reply suggestions in email" },
 ];
 
 const proOnlyFeatures = [
-  "Get personalized leads via Email",
+  "One-tap back to app from email",
   "Every new feature free until stable",
 ];
 

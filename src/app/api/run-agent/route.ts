@@ -47,6 +47,15 @@ export async function POST(request: NextRequest) {
       status: "done",
     }).sort({ createdAt: -1 });
 
+    const userr = await UserModel.findById(session.user._id)
+
+    if (!userr) {
+      return NextResponse.json({
+        message: "User not foubd"
+      } , {status: 404})
+    }
+
+
     // getting the total runs done by users
     const totalRuns = await SearchRunModel.countDocuments({
       UserId: new mongoose.Types.ObjectId(session.user._id),
@@ -68,15 +77,12 @@ export async function POST(request: NextRequest) {
 
       // console.log("Session " , session.user)
 
-    if (totalRuns >= 5 && session.user.plan === "free") {
-      return NextResponse.json(
-        {
-          message:
-            "You've used all 3 free searches. Upgrade to Pro to keep using X-Radar",
-        },
-        { status: 403 },
-      );
-    }
+      // In manual search route
+if (session.user.plan === 'free' && userr?.manualSearchesUsed >= 3) {
+  return NextResponse.json({
+    message: "You have exhausted your free searches. Upgrade to Pro to continue."
+  }, { status: 403 })
+}
 
     // for paid user hiting the cooldown timer
     // getting the last run of the user and converting it to normal time

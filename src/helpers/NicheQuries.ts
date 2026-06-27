@@ -91,6 +91,13 @@ export const nicheQueries: Record<string, string[]> = {
     "backend developer job opening",
     "backend developer remote job",
   ],
+  "MernStack": [
+  "looking for a MernStack developer",
+  "need a freelance Mernstack developer",
+   "hiring MernStack developer",
+   "Mernstack developer job opening",
+   "MernStack developer remote job"
+  ],
 
   // ── Video Editor ──
   "YouTube": [

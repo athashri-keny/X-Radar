@@ -16,6 +16,7 @@ import PaywallOverlay from "@/components/pricingsectionpaywall";
 import UpgradePopover from "@/components/updrade-popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@base-ui/react";
+import SearchStatsBar from "@/components/SearchBar";
 
 interface leads {
   _id: string;
@@ -48,6 +49,7 @@ export default function Dashboard() {
       const [isCooldown, setIsCooldown] = useState(false);
         const [localScanning, setLocalScanning] = useState(false);
         const [hasRun , sethasRun] = useState(false)
+       
 
 
 
@@ -155,7 +157,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem("CooldownEndTime");
    
     const fetchLeadsFrombackend = async () => {
       try {
@@ -164,16 +165,13 @@ export default function Dashboard() {
         setleads(res.data.foundLeads);
         setLeadsFoundNumber(res.data.foundLeads.length);
         setleadsHistory(res.data.searchruns ?? []);
+ 
 
-        if (res.data.lastSearchAt === null) {
-          localStorage.removeItem("CooldownEndTime");
-        }
-
-        // console.log(res.data)
       } catch (error: any) {
         console.error("Error while fetching recent leads:", error.message);
       }
     };
+
     fetchLeadsFrombackend();
   }, []);
 
@@ -186,6 +184,7 @@ export default function Dashboard() {
       {/* Content */}
       <div className="relative z-10">
         <DashboardNavbar />
+      
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 mb-55">
           {/* Search section */}

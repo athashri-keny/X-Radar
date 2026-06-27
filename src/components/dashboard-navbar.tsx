@@ -49,49 +49,45 @@ export function DashboardNavbar() {
   };
 
   const plans = [
-    {
-      name: "Free",
-      price: isIndia ? "₹0" : "$0",
-      originalPrice: null,
-      period: "forever",
-      desc: "Perfect for getting started",
-      popular: false,
-      discountTag: null,
-      features: [
-        { text: "12 hour cooldown", included: true },
-        { text: "Only last 6 days tweets (no 24 hrs)", included: true },
-        { text: "Only 2 free searches", included: true },
-        { text: "5 leads max", included: true },
-        { text: "AI reply suggestions", included: true },
-        {
-          text: "Automated 2 search queries as per your niche",
-          included: true,
-        },
-      ],
-    },
-    {
-      name: "Pro",
-      price: isIndia ? "₹299" : "$4.99",
-      originalPrice: isIndia ? "₹599" : "$9.99",
-      period: "/ month",
-      desc: "For serious freelancers and job seekers",
-      popular: true,
-      discountTag: isIndia ? "57% OFF" : "50% OFF",
-      features: [
-        { text: "6 hour cooldown", included: true },
-        { text: "Get latest tweets (24hr)", included: true },
-        { text: "Unlimited Searches", included: true },
-        { text: "Unlimited leads (as per result)", included: true },
-        { text: "AI reply suggestions", included: true },
-        {
-          text: "Automated 5 search queries as per your niche",
-          included: true,
-        },
-        { text: "Get personalized leads via Email", included: true },
-      ],
-    },
-  ];
-
+  {
+    name: "Free",
+    price: isIndia ? "₹0" : "$0",
+    originalPrice: null,
+    period: "forever",
+    desc: "Taste the value, then decide",
+    popular: false,
+    discountTag: null,
+    features: [
+      { text: "3 manual searches — lifetime", included: true },
+      { text: "2 autoscans — lifetime (runs every 12hrs)", included: true },
+      { text: "24hr fresh leads", included: true },
+      { text: "Top 5 leads shown, rest blurred", included: true },
+      { text: "AI reply suggestions", included: true },
+      { text: "Email teaser (5 leads + locked count)", included: true },
+      { text: "Unlimited manual searches", included: false },
+      { text: "Full leads in email", included: false },
+    ],
+  },
+  {
+    name: "Pro",
+    price: isIndia ? "₹699" : "$4.99",
+    originalPrice: isIndia ? "₹1399" : "$9.99",
+    period: "/ month",
+    desc: "Leads find you — even while you sleep",
+    popular: true,
+    discountTag: isIndia ? "50% OFF" : "50% OFF",
+    features: [
+      { text: "Unlimited manual searches", included: true },
+      { text: "Autoscan every 12hrs — forever", included: true },
+      { text: "24hr fresh leads", included: true },
+      { text: "All leads visible, no blur", included: true },
+      { text: "AI reply suggestions", included: true },
+      { text: "Full leads + reply suggestions in email", included: true },
+      { text: "One-tap back to app from email", included: true },
+      { text: "Every new feature free until stable", included: true },
+    ],
+  },
+]
   if (status === "loading")
     return (
       <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 animate-pulse border border-white/10" />

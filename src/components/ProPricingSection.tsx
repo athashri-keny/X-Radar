@@ -18,15 +18,14 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const features = [
-  "6-hour cooldown between searches",
-  "Latest tweets pulled within 24 hrs",
-  "Unlimited leads per search result",
+  "Unlimited manual searches — no cooldown, no cap",
+  "Latest tweets pulled within 24hrs",
+  "All leads visible — no blur, no limits",
   "AI-generated reply suggestions",
-  "5 smart search queries auto-built for your niche",
-  "Personalized leads delivered to your inbox",
+  "Autoscan every 12hrs — finds leads while you sleep",
+  "Full leads + reply suggestions delivered to your inbox",
   "Every new feature free until stable",
 ];
-
 export default function ProPricingSection({
   nextBillingDate,
 }: {

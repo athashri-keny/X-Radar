@@ -19,6 +19,8 @@ export interface User extends Document {
   // ── dodo payments ────────────────────────────────
   dodoCustomerId?: string; // e.g. "cust_abc123" — Dodo's internal ID
   subscriptionId?: string;
+  AutoScanUsed: number
+  manualSearchesUsed: number
 }
 
 const UserSchema = new Schema<User>(
@@ -86,6 +88,14 @@ const UserSchema = new Schema<User>(
       type: Number,
       default: null,
     },
+    AutoScanUsed: {
+      type: Number,
+      default: 0
+    },
+    manualSearchesUsed: {
+      type: Number,
+      default: 0
+    }
   },
   {
     timestamps: true,
