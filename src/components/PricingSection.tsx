@@ -39,7 +39,7 @@ const PricingSection = () => {
   },
   {
     name: "Pro",
-    price: isIndia ? "₹699" : "$4.99",
+    price: isIndia ? "₹299" : "$4.99",
     originalPrice: isIndia ? "₹1399" : "$9.99",
     period: "/ month",
     desc: "Leads find you — even while you sleep",
