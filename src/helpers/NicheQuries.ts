@@ -14,6 +14,13 @@ export const nicheQueries: Record<string, string[]> = {
     "Next.js developer job opening",
     "Next.js developer remote job",
   ],
+  "Java": [
+    "looking for a Java developer",
+    "need a Java developer",
+    "hiring Java developer",
+    "Java developer job opening",
+    "Java developer remote job",
+  ],
   "Vue": [
     "looking for a Vue developer",
     "need a Vue.js developer",

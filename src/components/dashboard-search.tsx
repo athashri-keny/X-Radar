@@ -26,6 +26,7 @@ const SubNiches: Record<string, string[]> = {
   "Node.js",
   "Flutter",
   "Python",
+  "Java",
   "Full Stack",
   ],
   VideoEditor: ["YouTube", "Reels", "Shorts"],
