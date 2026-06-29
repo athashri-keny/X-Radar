@@ -149,7 +149,7 @@ if (session.user.plan === 'free' && userr?.manualSearchesUsed >= 3) {
           return `${singleQurey} since_time:${threeDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en -filter:replies`;
         }
       })
-      .slice(0, session.user.plan === "free" ? 2 : 5);
+      .slice(0, session.user.plan === "free" ? 4 : 5);
 
     // console.log("SearchTerms returnd" , searchTermss)
     // return NextResponse.json({
