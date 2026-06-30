@@ -9,17 +9,8 @@ const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 
 const res = await getEmgbedding([
   `
-Ever tried this powerful combo? 
-
-React + TanStack Router = A modern, fast, and scalable stack that actually feels good to work with!
-Clean file-based routing, full type safety, developer-friendly, and seriously powerful. 
-
-This is quickly becoming one of the best combinations for building modern web apps.
-If you're tired of overcomplicated routing setups, this might be exactly what you've been looking for.
-Highly recommended!
-
-What do you think would you try this stack? Drop a comment below 👇
-
+Hiring a Frontend Developer skilled in responsive websites, clean UI, fast performance, and modern web design.
+If you know HTML, CSS, JavaScript, React or similar tools — let’s connect
 `,
 ]);
 

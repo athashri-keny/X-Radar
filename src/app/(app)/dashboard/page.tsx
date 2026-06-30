@@ -81,7 +81,6 @@ export default function Dashboard() {
     try {
       const res = await axios.post("/api/run-agent", {
         keywords: keyword,
-        TimePeriod: selectedDays,
       });
 
       // console.log('successfully agent fired', res.data)

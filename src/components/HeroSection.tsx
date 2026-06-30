@@ -135,8 +135,7 @@ const HeroSection = () => {
                   </div>
                 </motion.div>
               )}
-
-              {showCard && (
+{showCard && (
                 <motion.div
                   key="card"
                   initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -151,11 +150,11 @@ const HeroSection = () => {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-foreground text-sm">Sarah Chen</span>
-                            <span className="text-muted-foreground text-xs">@sarahchen_dev</span>
+                            <span className="font-semibold text-foreground text-sm">Jake Morrison</span>
+                            <span className="text-muted-foreground text-xs">@jakemorrison_yt</span>
                           </div>
                           <p className="text-foreground/80 text-sm mt-1 leading-relaxed">
-                            Looking for a freelance React developer for a 3-month project. Must know TypeScript, Tailwind, and have experience with SaaS products. DM me! 🚀
+                            Need a video editor for my YouTube channel, weekly uploads. Must know Premiere Pro, motion graphics a plus. DM me your rates! 🎬
                           </p>
                         </div>
                       </div>
@@ -173,7 +172,7 @@ const HeroSection = () => {
                       <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
                         <p className="text-xs text-muted-foreground mb-1 font-medium">AI Suggested Reply:</p>
                         <p className="text-xs text-foreground/90 leading-relaxed">
-                          "Hi Sarah! I'm a React/TS dev with 4+ years of SaaS experience. Would love to chat about your project — DM sent!"
+                          "Hi Jake! I'm a video editor with 4+ years editing for YouTube creators, Premiere Pro + motion graphics. Would love to chat — DM sent!"
                         </p>
                       </div>
                     </div>

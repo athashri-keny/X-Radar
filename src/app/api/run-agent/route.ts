@@ -28,16 +28,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { keywords, TimePeriod } = await request.json();
+    const { keywords } = await request.json();
 
     // console.log( "keywords" , keywords , "Timeperiod"  , TimePeriod)
 
-    if (!keywords || !TimePeriod) {
+    if (!keywords) {
       return NextResponse.json(
         {
           message: "Error keywords required!",
         },
-        { status: 404 },
+        { status: 500 },
       );
     }
 
@@ -136,18 +136,7 @@ if (session.user.plan === 'free' && userr?.manualSearchesUsed >= 3) {
 
     const searchTermss = generateQueries(keywords)
       .map((singleQurey: any) => {
-        if (TimePeriod === "24") {
           return `${singleQurey} within_time:24h -filter:retweets lang:en -filter:replies`;
-        } else if (TimePeriod === "48") {
-          const now = Date.now();
-
-          const oneDayAgo = Math.floor((now - 1 * 24 * 60 * 60 * 1000) / 1000); // 24h ago
-          const threeDaysAgo = Math.floor(
-            (now - 3 * 24 * 60 * 60 * 1000) / 1000,
-          ); // 72h ago
-
-          return `${singleQurey} since_time:${threeDaysAgo} until_time:${oneDayAgo} -filter:retweets lang:en -filter:replies`;
-        }
       })
       .slice(0, session.user.plan === "free" ? 4 : 5);
 

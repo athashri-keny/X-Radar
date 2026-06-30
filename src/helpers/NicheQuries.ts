@@ -1,181 +1,218 @@
 export const nicheQueries: Record<string, string[]> = {
-  // ── Developer ──
-  "React": [
-    "looking for a React developer",
-    "need a freelance React developer",
-    "hiring React developer",
-    "React developer job opening",
-    "React developer remote job",
+
+  // ── Frontend dev ──
+  "React / Next.js": [
+  "react developer contract",
+  "Senior Frontend Developer",
+  "Junior Frontend Developer",
+  "Frontend Developer hiring",
+  "Front End Developer role"
   ],
-  "Next.js": [
-    "looking for a Next.js developer",
-    "need a freelance Next.js dev",
-    "hiring Next.js developer",
-    "Next.js developer job opening",
-    "Next.js developer remote job",
+  "Vue / Nuxt": [
+    "hiring frontend developer vue nuxt",
+    "looking for vue nuxt developer freelance",
+    "need someone to build website vue nuxt",
+    "vue nuxt developer needed startup",
+    "frontend contract work vue nuxt",
+    "vue nuxt developer needed remote",
   ],
-  "Java": [
-    "looking for a Java developer",
-    "need a Java developer",
-    "hiring Java developer",
-    "Java developer job opening",
-    "Java developer remote job",
+  "Angular / Enterprise": [
+    "hiring frontend developer angular",
+    "looking for angular developer freelance",
+    "need someone to build website angular",
+    "angular developer needed startup",
+    "frontend contract work angular",
+    "angular developer needed remote",
   ],
-  "Vue": [
-    "looking for a Vue developer",
-    "need a Vue.js developer",
-    "hiring Vue developer",
-    "Vue developer job opening",
-    "Vue developer remote job",
+
+  // ── Backend dev ──
+  "Node.js + Express": [
+    "nodejs developer",
+    "looking for node.js express developer freelance",
+    "need someone to build api node.js express",
+    "node.js express developer needed startup",
+    "backend contract work node.js express",
+    "node.js express developer needed remote",
   ],
-  "Angular": [
-    "looking for an Angular developer",
-    "need a freelance Angular dev",
-    "hiring Angular developer",
-    "Angular developer job opening",
-    "Angular developer remote job",
+  "Python + Django": [
+    "hiring backend developer python django",
+    "looking for python django developer freelance",
+    "need someone to build api python django",
+    "python django developer needed startup",
+    "backend contract work python django",
+    "python django developer needed remote",
   ],
-  "Node.js": [
-    "looking for a Node.js developer",
-    "need a freelance Node.js dev",
-    "hiring Node.js developer",
-    "Node.js developer job opening",
-    "Node.js backend developer remote",
+  "Java + Spring": [
+    "hiring backend developer java spring",
+    "looking for java spring developer freelance",
+    "need someone to build api java spring",
+    "java spring developer needed startup",
+    "backend contract work java spring",
+    "java spring developer needed remote",
   ],
-  "Python": [
-    "looking for a Python developer",
-    "need a freelance Python dev",
-    "hiring Python developer",
-    "Python developer job opening",
-    "Python developer remote job",
+  "Go + Postgres": [
+    "hiring backend developer golang postgres",
+    "looking for golang postgres developer freelance",
+    "need someone to build api golang postgres",
+    "golang postgres developer needed startup",
+    "backend contract work golang postgres",
+    "golang postgres developer needed remote",
   ],
-  "Django": [
-    "looking for a Django developer",
-    "need a freelance Django dev",
-    "hiring Django developer",
-    "Django developer job opening",
-    "Django developer remote job",
+
+  // ── Full stack ──
+  "MERN Stack": [
+    "hiring full stack developer mern",
+    "looking for mern stack developer freelance",
+    "need someone to build app mern stack",
+    "mern stack developer needed startup",
+    "full stack contract work mern",
+    "mern stack developer needed remote",
   ],
-  "Laravel": [
-    "looking for a Laravel developer",
-    "need a freelance Laravel dev",
-    "hiring Laravel developer",
-    "Laravel developer job opening",
-    "Laravel developer remote job",
+  "Next.js + Prisma": [
+    "hiring full stack developer next.js prisma",
+    "looking for next.js prisma developer freelance",
+    "need someone to build app next.js prisma",
+    "next.js prisma developer needed startup",
+    "full stack contract work next.js prisma",
+    "next.js prisma developer needed remote",
   ],
-  "Flutter": [
-    "looking for a Flutter developer",
-    "need a freelance Flutter dev",
-    "hiring Flutter developer",
-    "Flutter developer job opening",
-    "Flutter mobile developer remote",
+  "T3 Stack": [
+    "hiring full stack developer t3 stack",
+    "looking for t3 stack developer freelance",
+    "need someone to build app t3 stack",
+    "t3 stack developer needed startup",
+    "full stack contract work t3 stack",
+    "t3 stack developer needed remote",
+  ],
+
+  // ── Mobile dev ──
+  "Flutter + Dart": [
+    "hiring mobile developer flutter dart",
+    "looking for flutter dart developer freelance",
+    "need someone to build app flutter dart",
+    "flutter dart developer needed startup",
+    "mobile contract work flutter dart",
+    "flutter dart developer needed remote",
   ],
   "React Native": [
-    "looking for a React Native developer",
-    "need a freelance React Native dev",
-    "hiring React Native developer",
-    "React Native developer job opening",
-    "React Native developer remote job",
+    "hiring mobile developer react native",
+    "looking for react native developer freelance",
+    "need someone to build app react native",
+    "react native developer needed startup",
+    "mobile contract work react native",
+    "react native developer needed remote",
   ],
-  "Full Stack": [
-    "looking for a full stack developer",
-    "hiring full stack developer",
-    "need a freelance full stack dev",
-    "full stack developer job opening",
-    "full stack developer remote job",
+  "iOS (Swift)": [
+    "hiring mobile developer ios swift",
+    "looking for ios swift developer freelance",
+    "need someone to build app ios swift",
+    "ios swift developer needed startup",
+    "mobile contract work ios swift",
+    "ios swift developer needed remote",
   ],
-  "Frontend": [
-    "looking for a frontend developer",
-    "need a freelance frontend dev",
-    "hiring frontend developer",
-    "frontend developer job opening",
-    "frontend developer remote job",
+
+  // ── Data / ML ──
+  "Python + Pandas": [
+    "hiring data developer python pandas",
+    "looking for python pandas developer freelance",
+    "need someone to build data pipeline python pandas",
+    "python pandas developer needed startup",
+    "data contract work python pandas",
+    "python pandas developer needed remote",
   ],
-  "Backend": [
-    "looking for a backend developer",
-    "need a freelance backend dev",
-    "hiring backend developer",
-    "backend developer job opening",
-    "backend developer remote job",
+  "ML Engineer": [
+    "hiring ml engineer pytorch tensorflow",
+    "looking for ml engineer freelance",
+    "need someone to build ml model pytorch",
+    "ml engineer needed startup",
+    "ml contract work pytorch tensorflow",
+    "ml engineer needed remote",
   ],
-  "MernStack": [
-  "looking for a MernStack developer",
-  "need a freelance Mernstack developer",
-   "hiring MernStack developer",
-   "Mernstack developer job opening",
-   "MernStack developer remote job"
+  "Data Engineer": [
+    "hiring data engineer spark airflow",
+    "looking for data engineer freelance",
+    "need someone to build data pipeline spark",
+    "data engineer needed startup",
+    "data contract work spark airflow",
+    "data engineer needed remote",
   ],
 
   // ── Video Editor ──
   "YouTube": [
-    "looking for a YouTube video editor",
-    "need someone to edit my YouTube videos",
-    "hiring YouTube editor",
-    "YouTube editor job opening",
-    "video editor needed for YouTube channel",
+    "hiring youtube video editor",
+    "looking for youtube editor freelance",
+    "need someone to edit youtube videos",
+    "youtube editor needed startup",
+    "video editing contract work youtube",
+    "youtube editor needed remote",
   ],
   "Reels": [
-    "looking for a Reels editor",
-    "need someone to edit my Instagram Reels",
-    "hiring Reels video editor",
-    "Reels editor job opening",
-    "social media editor needed for Reels",
+    "hiring reels video editor",
+    "looking for reels editor freelance",
+    "need someone to edit instagram reels",
+    "reels editor needed startup",
+    "video editing contract work reels",
+    "reels editor needed remote",
   ],
   "Shorts": [
-    "looking for a Shorts editor",
-    "need someone to edit my YouTube Shorts",
-    "hiring Shorts video editor",
-    "Shorts editor job opening",
-    "short form video editor needed",
+    "hiring shorts video editor",
+    "looking for shorts editor freelance",
+    "need someone to edit youtube shorts",
+    "shorts editor needed startup",
+    "video editing contract work shorts",
+    "shorts editor needed remote",
   ],
   "Podcast": [
-    "looking for a podcast editor",
-    "need someone to edit my podcast",
     "hiring podcast editor",
-    "podcast editor job opening",
-    "audio video editor needed for podcast",
+    "looking for podcast editor freelance",
+    "need someone to edit podcast",
+    "podcast editor needed startup",
+    "audio editing contract work podcast",
+    "podcast editor needed remote",
   ],
   "Motion Graphics": [
-    "looking for a motion graphics designer",
+    "hiring motion graphics designer",
+    "looking for motion graphics designer freelance",
     "need someone to create motion graphics",
-    "hiring motion graphics editor",
-    "motion graphics job opening",
-    "motion designer needed for video content",
+    "motion graphics designer needed startup",
+    "motion graphics contract work remote",
+    "motion graphics designer needed remote",
   ],
 
-
-    // ── Graphic Desginer ──
-"Logo Designer": [
-    "looking for a logo designer",
-    "need a freelance logo designer",
+  // ── Graphic Designer ──
+  "Logo Designer": [
     "hiring logo designer",
-    "logo designer job opening",
-    "logo designer remote job",
+    "looking for logo designer freelance",
+    "need someone to design a logo",
+    "logo designer needed startup",
+    "design contract work logo",
+    "logo designer needed remote",
   ],
   "Ad Creative Designer": [
-    "looking for an ad creative designer",
-    "need a freelance ad designer",
     "hiring ad creative designer",
-    "ad creative designer job opening",
-    "ad creative designer remote job",
+    "looking for ad creative designer freelance",
+    "need someone to design ad creatives",
+    "ad creative designer needed startup",
+    "design contract work ad creatives",
+    "ad creative designer needed remote",
   ],
   "Social Media Designer": [
-    "looking for a social media designer",
-    "need a freelance social media designer",
     "hiring social media designer",
-    "social media designer job opening",
-    "social media designer remote job",
+    "looking for social media designer freelance",
+    "need someone to design social media posts",
+    "social media designer needed startup",
+    "design contract work social media",
+    "social media designer needed remote",
   ],
 }
 
 export function generateQueries(niche: string): string[] {
-  const queries = nicheQueries[niche] // accessing the array[] key with the niche word
+  const queries = nicheQueries[niche]
 
   if (!queries) {
     console.warn("No queries found for:", niche)
     return []
   }
 
-  // console.log("Generating queries for:", niche, queries)
   return queries
 }
