@@ -68,7 +68,7 @@ export default function Dashboard() {
     Date.now() +
     (session?.user?.plan === "free" ? TWEETYFOURHOURS_MS : SIXHOURCOOLDOWN); // calutate it
 
-  const handleSearch = async (keyword: string, selectedDays: string) => {
+  const handleSearch = async (keyword: string) => {
     setIsScanning(true);
     setLeadsFoundNumber(0);
     setcooldownmessage("");
