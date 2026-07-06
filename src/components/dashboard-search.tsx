@@ -132,7 +132,7 @@ const VIDEO_SUBNICHE_QUERIES: Record<string, string> = {
 
 const Niches = ["VideoEditor"];
 
-const VIDEO_SUBNICHES = ["YouTube", "Reels", "Shorts" , "Podcasts"];
+const VIDEO_SUBNICHES = ["YouTube", "Reels", "Shorts" ];
 
 // ─── Props ───────────────────────────────────────────────────────────────────
 
