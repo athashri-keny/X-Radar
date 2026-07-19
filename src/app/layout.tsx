@@ -22,9 +22,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "X-Radar | AI Lead Generation Platform",
+  title: "AI Lead Generation Tool for Freelance Video Editors | Xradar",
   description:
-    "X-Radar scans Twitter/X in real-time, finds hiring tweets, scores leads with AI, and crafts perfect reply suggestions. Find your next client today.",
+    "Xradar is the ultimate lead generation platform for video editors. Track real-time Twitter/X hiring tweets, find high-intent clients, and automate outreach.",
 };
 
 export default function RootLayout({

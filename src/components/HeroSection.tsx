@@ -31,9 +31,9 @@ const useTypewriter = (text: string, speed = 40, delay = 800) => {
 };
 
 const HeroSection = () => {
-  const heading1 = "Hunt clients on X. ";
+  const heading1 = "Find Video Editing Clients on X ";
   const heading2 = "In seconds.";
-   const subtitle = "Run multiple queries at once and X-Radar filters out the noise surfacing only real hiring tweets that match your skills, with AI-crafted replies ready to send.";
+   const subtitle = "Run automated queries to instantly surface high-intent freelance leads. Xradar filters out the noise, delivering real video editor hiring tweets alongside AI-crafted replies ready to send";
 
   const { displayed: h1Text, done: h1Done } = useTypewriter(heading1, 50, 400);
   const { displayed: h2Text, done: h2Done } = useTypewriter(heading2, 50, 400 + heading1.length * 50 + 200);
@@ -69,7 +69,7 @@ const HeroSection = () => {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight mb-6">
               {h1Text}
-              <span className="gradient-text">{h2Text}</span>
+              <span className="gradient-text"> <br></br>{h2Text}</span>
               {!subDone && <span className="inline-block w-[3px] h-[1em] bg-primary animate-pulse ml-0.5 align-text-bottom" />}
             </h1>
 
