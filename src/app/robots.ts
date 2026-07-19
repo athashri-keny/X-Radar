@@ -14,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
         "/user-info",
       ],
     },
-    sitemap: "https://xradar.in/sitemap.xml", // tells Google where your sitemap is
+    sitemap: "https://www.xradar.in/sitemap.xml", // tells Google where your sitemap is
   };
 }
