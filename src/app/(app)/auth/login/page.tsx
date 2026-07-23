@@ -207,6 +207,10 @@ function RadarCanvas() {
           <div className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 py-10">
  
       <GradientOrbs />
+       <title>Sign In to Your Account | Xradar</title>
+<meta name="description" content="Log into your Xradar account to track real-time hiring tweets, manage your freelance leads, and automate your client outreach."/>
+
+
  
       {/* Split card — single col on mobile, two cols on md+ */}
       <motion.div

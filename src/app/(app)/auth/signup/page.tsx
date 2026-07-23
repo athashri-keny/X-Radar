@@ -241,6 +241,8 @@ export default function SignupPage() {
     <div className="relative min-h-screen bg-black overflow-hidden flex items-center justify-center px-4 py-10">
       {/* Background effects */}
       <GradientOrbs />
+       <title>Create Your Free Account | Xradar</title>
+<meta name="description" content="Sign up for Xradar today. Access the ultimate AI-powered lead generation platform built specifically for freelance video editors."/>
 
   <motion.div
         variants={containerVariants}
@@ -276,6 +278,8 @@ export default function SignupPage() {
               high-intent leads tailored to your niche — automatically, every day.
             </motion.p>
           </div>
+
+        
  
           <motion.div
             variants={itemVariants}
