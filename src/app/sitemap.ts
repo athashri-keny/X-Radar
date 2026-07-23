@@ -11,6 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1.0, // most important
     },
+     {
+      url: `${baseUrl}/how-to-find-clients-on-twitter-x`, // homepage
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0, // most important
+    },
     {
       url: `${baseUrl}/auth/login`,
       lastModified: new Date(),
